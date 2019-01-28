@@ -1,7 +1,3 @@
-/**
- * index.js
- */
-
 const logSomething = options => ({
   ...options,
   anotherOption: 'Hello!',
