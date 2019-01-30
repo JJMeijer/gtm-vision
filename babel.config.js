@@ -5,6 +5,8 @@ const presets = [
       useBuiltIns: 'usage',
     },
   ],
-]
+];
 
-module.exports = { presets }
+const plugins = ['transform-inline-environment-variables'];
+
+module.exports = { presets, plugins };
