@@ -32,8 +32,7 @@ app.use(express.static('public'));
 // use parcel bundler
 if (process.env.NODE_ENV !== 'production') {
   const bundler = new Bundler('./src/index.js', {
-    outDir: 'public/js',
-    watch: false,
+    outDir: 'public',
   });
 
   bundler.bundle();
