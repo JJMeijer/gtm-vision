@@ -1,12 +1,12 @@
 import React from 'react';
 import uniqueId from 'react-html-id';
-import '@babel/polyfill';
+import PropTypes from 'prop-types';
 
-import FormError from './form-error';
+import SearchError from './SearchError';
 
-import './form.scss';
+import './SearchBar.css';
 
-class FormGtm extends React.Component {
+class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,12 +35,12 @@ class FormGtm extends React.Component {
     if (value === '') {
       this.setState({
         valid: false,
-        errorMessage: 'a Value is required',
+        errorMessage: 'a value is required',
       });
     } else {
       this.setState({
         valid: false,
-        errorMessage: 'The ID you provided is not valid. <br /> a valid GTM container ID looks like "GTM-XXXXXX"',
+        errorMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
       });
     }
 
@@ -57,55 +57,54 @@ class FormGtm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { value } = this.state;
 
-    async function getContainer() {
-      const location = `${document.location.origin}/api/gtm`;
-      const settings = {
+    if (this.validate()) {
+      const { value } = this.state;
+      const { callbackWithData } = this.props;
+
+      fetch(`${document.location.origin}/api/gtm`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ value }),
-      };
-
-      const response = await fetch(location, settings);
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      const data = await response.json();
-      return data;
-    }
-
-    if (this.validate()) {
-      getContainer()
-        .then(data => console.log(data))
-        .catch(err => console.log(err.message));
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response;
+        })
+        .then(response => response.json())
+        .then(data => callbackWithData(data))
+        .catch(error => console.log(error));
     }
   }
 
   render() {
-    console.log(this.state);
+    console.log('SearchBar state: ', this.state);
     const { value, valid, errorMessage } = this.state;
 
     let errorElement;
     if (!valid) {
-      errorElement = <FormError message={errorMessage} />;
+      errorElement = <SearchError message={errorMessage} />;
     }
 
     return (
-      <form ref={this.formElement} onSubmit={this.handleSubmit}>
+      <form ref={this.formElement} onSubmit={this.handleSubmit} className="searchBar">
         <label htmlFor={this.nextUniqueId()}>
           GTM Container ID:
           <input type="text" id={this.lastUniqueId()} name="gtmid" value={value} onChange={this.handleChange} placeholder="GTM-NTQ25T" />
           {errorElement}
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Get" />
       </form>
     );
   }
 }
 
-export default FormGtm;
+SearchBar.propTypes = {
+  callbackWithData: PropTypes.func.isRequired,
+};
+
+export default SearchBar;

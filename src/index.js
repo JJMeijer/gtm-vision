@@ -1,27 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
-import PropTypes from 'prop-types';
+import { BrowserRouter } from 'react-router-dom';
 
-import FormGtm from './form';
-import './index.scss';
+import App from './App';
 
-if (module.hot) {
-  module.hot.accept();
+function renderApp() {
+  render((
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  ), document.getElementById('root'));
 }
 
-function Title({ title }) {
-  return <h1 className="title">{title}</h1>;
-}
+renderApp();
 
-Title.propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-const App = () => (
-  <div>
-    <Title title="Main Title" />
-    <FormGtm />
-  </div>
-);
-
-render(<App />, document.getElementById('root'));
+module.hot.accept(renderApp);

@@ -10,11 +10,11 @@ const router = express.Router();
 /* GET Main Page */
 router.get('*', (req, res) => {
   res.render('index', {
-    title: 'GTM Insight',
+    title: 'Tagmanager Insight',
   });
 });
 
-/* Post GTM Form */
+/* POST GTM ID */
 router.post('/api/gtm', (req, res, next) => {
   if (req.body && req.body.value) {
     const { value } = req.body;
@@ -24,14 +24,18 @@ router.post('/api/gtm', (req, res, next) => {
     (err, data) => {
       if (err) {
         next(err);
-      } else {
+      } else if (data.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)) {
         const containerText = data.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
         res.json(JSON.parse(unescape(containerText)));
+      } else {
+        const error = new Error('Not a Valid ID');
+        error.status = 400;
+        next(error);
       }
     });
   } else {
     const error = new Error('Missing post request body');
-    error.httpStatusCode = 400;
+    error.status = 400;
     next(error);
   }
 });

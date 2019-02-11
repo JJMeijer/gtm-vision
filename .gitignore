@@ -1,6 +1,8 @@
 # Ignored maps/files
 node_modules/
+design/
 .eslintrc.js
+.eslintignore
 .editorconfig
 .env
 .cache/
