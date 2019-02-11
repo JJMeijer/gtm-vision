@@ -1,0 +1,26 @@
+nav {
+  display: flex;
+}
+
+nav ul {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  float: left;
+  width: 25%;
+}
+
+nav li a {
+  display: block;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+
+nav li a.active {
+  font-weight: bold;
+}

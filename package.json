@@ -2,9 +2,9 @@
   "name": "turbo-umbrella",
   "version": "1.0.0",
   "description": "GTM Insight Application",
-  "main": "server/app.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "nodemon -i public/ --exec babel-node server/app.js",
+    "start": "babel-node server/server.js",
     "lint": "eslint . --ext .js,.jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,6 +33,7 @@
     "@babel/runtime": "^7.3.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
@@ -41,7 +42,7 @@
     "parcel-bundler": "^1.11.0",
     "prop-types": "^15.6.2",
     "pug": "^2.0.3",
-    "react": "^16.7.0",
+    "react": "^16.8.1",
     "react-dom": "^16.7.0",
     "react-html-id": "^0.1.5",
     "react-router-dom": "^4.3.1",
@@ -54,13 +55,13 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.12.1",
+    "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.15.0",
-    "eslint-plugin-jsx-a11y": "^6.2.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "nodemon": "^1.18.9",
     "pre-commit": "^1.2.2",
-    "pug-lint": "^2.5.0"
+    "react-hot-loader": "^4.6.5"
   }
 }
