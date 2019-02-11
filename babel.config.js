@@ -9,13 +9,7 @@ const presets = [
 
 const plugins = [
   'transform-inline-environment-variables',
-  [
-    '@babel/plugin-transform-runtime',
-    {
-      helpers: true,
-      regenerator: true,
-    },
-  ],
+  'react-hot-loader/babel',
 ];
 
 module.exports = { presets, plugins };

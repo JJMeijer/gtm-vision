@@ -1,6 +1,7 @@
 // Module Dependencies
 import express from 'express';
 import dotenv from 'dotenv';
+import compression from 'compression';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -26,6 +27,12 @@ const log = function logMessages(message) {
 app.set('views', './views');
 app.set('view engine', 'pug');
 
+// Morgan logger
+app.use(logger('combined'));
+
+// Use Compression
+app.use(compression());
+
 // serve static files
 app.use(express.static('public'));
 
@@ -33,15 +40,13 @@ app.use(express.static('public'));
 if (process.env.NODE_ENV !== 'production') {
   const bundler = new Bundler('./src/index.js', {
     outDir: 'public',
+    logLevel: 4,
   });
 
   bundler.bundle();
 
   app.use(bundler.middleware());
 }
-
-// Morgan logger
-app.use(logger('short'));
 
 // use body and cookie parser
 app.use(bodyParser.json());
