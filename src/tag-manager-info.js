@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SearchBar from './SearchBar';
-import Title from './Title';
+import SearchBar from './search-bar';
+import Title from './title';
+
+import parseVariables from './parse-variables';
 
 class TagManagerInfo extends React.Component {
   constructor(props) {
@@ -29,6 +31,7 @@ class TagManagerInfo extends React.Component {
     let dataElement;
     if (tagManagerData) {
       dataElement = <div>data</div>;
+      console.log(parseVariables(tagManagerData.macros));
     }
 
     return (
