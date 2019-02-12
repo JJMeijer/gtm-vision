@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './SearchError.css';
+import './search-error.css';
 
 const SearchError = ({ message }) => (
   <span>{message}</span>

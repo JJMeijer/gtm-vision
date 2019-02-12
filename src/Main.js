@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import TagManagerInfo from './TagManagerInfo';
+import TagManagerInfo from './tag-manager-info';
 
 const Main = () => (
   <Switch>

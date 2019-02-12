@@ -2,9 +2,9 @@ import React from 'react';
 import uniqueId from 'react-html-id';
 import PropTypes from 'prop-types';
 
-import SearchError from './SearchError';
+import SearchError from './search-error';
 
-import './SearchBar.css';
+import './search-bar.css';
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -76,7 +76,7 @@ class SearchBar extends React.Component {
           return response;
         })
         .then(response => response.json())
-        .then(data => callbackWithData(data))
+        .then(({ resource }) => callbackWithData(resource))
         .catch(error => console.log(error));
     }
   }
@@ -93,7 +93,7 @@ class SearchBar extends React.Component {
     return (
       <form ref={this.formElement} onSubmit={this.handleSubmit} className="searchBar">
         <label htmlFor={this.nextUniqueId()}>
-          GTM Container ID:
+          GTM Container ID:  GTM-5G6JJ56
           <input type="text" id={this.lastUniqueId()} name="gtmid" value={value} onChange={this.handleChange} placeholder="GTM-NTQ25T" />
           {errorElement}
         </label>
