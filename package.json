@@ -25,12 +25,7 @@
   },
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
-  "pre-commit": [
-    "lint"
-  ],
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "@babel/runtime": "^7.3.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
@@ -38,7 +33,6 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
-    "node-sass": "^4.11.0",
     "parcel-bundler": "^1.11.0",
     "prop-types": "^15.6.2",
     "pug": "^2.0.3",
@@ -52,7 +46,6 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
-    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.13.0",
@@ -61,7 +54,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "nodemon": "^1.18.9",
-    "pre-commit": "^1.2.2",
     "react-hot-loader": "^4.6.5"
   }
 }
