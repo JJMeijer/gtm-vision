@@ -28,7 +28,7 @@ class SearchBar extends React.Component {
   validate() {
     const { value } = this.state;
 
-    if (value.match(/GTM-[0-9A-Z]{6}/)) {
+    if (value.match(/^GTM-[0-9A-Z]{6,7}$/)) {
       return true;
     }
 

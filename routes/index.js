@@ -18,6 +18,7 @@ router.get('*', (req, res) => {
 router.post('/api/gtm', (req, res, next) => {
   if (req.body && req.body.value) {
     const { value } = req.body;
+
     urllib.request(`https://www.googletagmanager.com/gtm.js?id=${value}`, {
       dataType: 'text',
     },

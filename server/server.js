@@ -1,6 +1,5 @@
 // Module Dependencies
 import express from 'express';
-import dotenv from 'dotenv';
 import compression from 'compression';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
@@ -8,11 +7,6 @@ import cookieParser from 'cookie-parser';
 import Bundler from 'parcel-bundler';
 
 import routes from '../routes';
-
-// use dotenv
-dotenv.config({
-  silent: true,
-});
 
 // initialize Express app
 const app = express();

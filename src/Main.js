@@ -22,11 +22,6 @@ const Main = () => (
     />
     <Route
       exact
-      path="/relay42"
-      render={props => <TagManagerInfo {...props} tagManager="Relay42" />}
-    />
-    <Route
-      exact
       path="/dtm"
       render={props => <TagManagerInfo {...props} tagManager="DTM" />}
     />
