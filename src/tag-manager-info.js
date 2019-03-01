@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SearchBar from './search-bar';
 import Title from './title';
 
-import parseVariables from './parse-variables';
+import parseGtm from './parse-gtm';
 
 class TagManagerInfo extends React.Component {
   constructor(props) {
@@ -24,14 +24,13 @@ class TagManagerInfo extends React.Component {
   }
 
   render() {
-    console.log('tagMangerInfo state: ', this.state);
     const { tagManager } = this.props;
     const { tagManagerData } = this.state;
 
     let dataElement;
     if (tagManagerData) {
       dataElement = <div>data</div>;
-      console.log(parseVariables(tagManagerData.macros));
+      parseGtm(tagManagerData);
     }
 
     return (

@@ -1,135 +1,94 @@
-const variableNames = {
-  __e: {
-    fullName: 'Event',
-    counter: 0,
-  },
-  __v: {
-    fullName: 'Datalayer variable',
-    counter: 0,
-  },
-  __aev: {
-    fullName: 'Auto event variable',
-    counter: 0,
-  },
-  __f: {
-    fullName: 'HTTP referrer',
-    counter: 0,
-  },
-  __u: {
-    fullName: 'URL',
-    counter: 0,
-  },
-  __jsm: {
-    fullName: 'Custom javascript',
-    counter: 0,
-  },
-  __k: {
-    fullName: 'Cookie',
-    counter: 0,
-  },
-  __j: {
-    fullName: 'Javascript',
-    counter: 0,
-  },
-  __c: {
-    fullName: 'Constant',
-    counter: 0,
-  },
-  __vis: {
-    fullName: 'Visibility',
-    counter: 0,
-  },
-  __d: {
-    fullName: 'DOM Element',
-    counter: 0,
-  },
-  __uv: {
-    fullName: 'Undefined',
-    counter: 0,
-  },
-  __gas: {
-    fullName: 'Google Analytics settings',
-    counter: 0,
-  },
-  __smm: {
-    fullName: 'Lookup table',
-    counter: 0,
-  },
-  __remm: {
-    fullName: 'Regex lookuptable',
-    counter: 0,
-  },
-  __dbg: {
-    fullName: 'Debug mode',
-    counter: 0,
-  },
-  __cid: {
-    fullName: 'Container ID',
-    counter: 0,
-  },
-  __ctv: {
-    fullName: 'Container Version',
-    counter: 0,
-  },
-  __r: {
-    fullName: 'Random Number',
-    counter: 0,
-  },
-};
-
-let parseJs = function parseJavascriptArray(javascriptArray) {
-  const resultArray = [];
-
-  javascriptArray.forEach((part) => {
-    if (!Array.isArray(part) && part !== 'template') {
-      resultArray.push(part);
-    } else if (Array.isArray(part)) {
-
-    }
-  });
-};
-
-const parseFormat = function parseFormatInVariable(macro) {
-  const formatOptions = ['case', 'false', 'true', 'null', 'undefined'];
-  const formatResult = {};
-
-  formatOptions.forEach((option) => {
-    if (macro[`convert_${option}_to`]) {
-      if (option === 'case') {
-        formatResult[option] = macro[`convert_${option}_to`] === 1 ? 'lowercase' : 'uppercase';
-      } else {
-        formatResult[option] = macro[`convert_${option}_to`];
-      }
-    }
-  });
-
-  return formatResult;
-};
+import { macroDictionary } from './gtm-dictionaries';
 
 const parseVariables = function parseVariables(macrosArray) {
   const parsedArray = [];
+  const variableNames = macroDictionary();
 
   macrosArray.forEach((macro) => {
     const parsedMacro = {};
+
+    parsedMacro.category = 'variable';
     Object.keys(macro).forEach((key) => {
+      /**
+       * Get a meaningful name from the variableName table based
+       * on the value in the 'function' key of the macro. Also
+       * add a counter to the name to keep similar macros recognizable.
+       */
       if (key === 'function') {
-        const variableName = variableNames[macro[key]].fullName;
-        variableNames[macro[key]].counter += 1;
-        const variableCounter = variableNames[macro[key]].counter;
+        if (variableNames[macro[key]]) {
+          const variableName = variableNames[macro[key]].fullName;
+          variableNames[macro[key]].counter += 1;
+          const variableCounter = variableNames[macro[key]].counter;
 
-        parsedMacro.variable = variableName;
-        parsedMacro.reference = `${variableName} - ${variableCounter}`;
+          parsedMacro.type = variableName;
+          parsedMacro.reference = `${variableName}(${variableCounter})`;
+        } else {
+          const variableName = 'Unknown';
+          variableNames.unknown += 1;
+          const variableCounter = variableNames.unknown;
+
+          parsedMacro.type = variableName;
+          parsedMacro.reference = `${variableName}(${variableCounter}) - ${macro[key]}`;
+        }
       }
 
+      // Remove vtp_ part from variable names
       if (key.match('vtp_')) {
-        parsedMacro[key.replace('vtp_', '')] = macro[key];
+        const variableValues = parsedMacro.variableValues || {};
+        variableValues[key.replace('vtp_', '')] = macro[key];
+        parsedMacro.variableValues = variableValues;
       }
 
-      if (key.match(/convert_.+_to/)) {
-        parsedMacro.format = parseFormat(macro);
+      // Cleanup format options of macro and place in specific object.
+      if (key.match(/convert_(.+)_to/)) {
+        parsedMacro.convertFormat = parsedMacro.convertFormat || {};
+        const convertOption = key.match(/convert_(.+)_to/)[1];
+        if (convertOption === 'case') {
+          parsedMacro.convertFormat[convertOption] = macro[key] === 1 ? 'Lowercase' : 'Uppercase';
+        } else {
+          parsedMacro.convertFormat[convertOption] = macro[key];
+        }
       }
     });
 
+    /**
+     * Add Specific info to the reference name based on the variable type.
+     * this is to make the reference as informative as possible.
+     */
+    const { type, variableValues } = parsedMacro;
+    if (type.match(/URL|HTTP/)) {
+      const { component } = variableValues;
+      const description = component === 'URL' ? 'Full URL' : component;
+      parsedMacro.reference = `${parsedMacro.reference}: ${description}`;
+    }
+
+    if (type.match(/Datalayer|Cookie/)) {
+      parsedMacro.reference = `${parsedMacro.reference}: ${variableValues.name}`;
+    }
+
+    if (type === 'Constant') {
+      parsedMacro.reference = `${parsedMacro.reference}: ${variableValues.value}`;
+    }
+
+    if (type === 'Auto event variable') {
+      parsedMacro.reference = `${parsedMacro.reference}: ${variableValues.varType.toLowerCase()}`;
+
+      if (variableValues.varType === 'ATTRIBUTE') {
+        parsedMacro.reference = `${parsedMacro.reference} - ${variableValues.attribute}`;
+      }
+
+      if (variableValues.varType === 'URL') {
+        const { component } = variableValues;
+        const description = component === 'URL' ? 'Full URL' : component.toLowerCase();
+        parsedMacro.reference = `${parsedMacro.reference} - ${description}`;
+      }
+    }
+
+    if (type === 'DOM Element') {
+      parsedMacro.reference = `${parsedMacro.reference} ${variableValues.selectorType}: ${variableValues.elementId || variableValues.elementSelector}`;
+    }
+
+    // Push parsed macro to the new array.
     parsedArray.push(parsedMacro);
   });
 
