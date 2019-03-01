@@ -8,7 +8,6 @@ const presets = [
 ];
 
 const plugins = [
-  'transform-inline-environment-variables',
   'react-hot-loader/babel',
 ];
 
