@@ -67,6 +67,25 @@ const parseTags = function parseTags(tagsArray) {
       }
     });
 
+    const { type, tagValues } = parsedTag;
+    if (type === 'Google Analytics') {
+      const { trackType } = tagValues;
+
+      let gaTagType;
+      let description;
+
+      if (trackType.match('TRACK')) {
+        [, gaTagType] = trackType.match(/TRACK_(.+)/);
+        description = gaTagType.charAt(0) + gaTagType.toLowerCase(0).slice(1);
+      }
+
+      if (trackType.match('DECORATE')) {
+        gaTagType = trackType.replace('_', ' ');
+        description = gaTagType.charAt(0) + gaTagType.toLowerCase(0).slice(1);
+      }
+
+      parsedTag.reference = `${parsedTag.reference} - ${description}`;
+    }
 
     // Push parsed macro to the new array.
     parsedArray.push(parsedTag);
