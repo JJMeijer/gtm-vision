@@ -1,26 +1,27 @@
-nav {
-  display: flex;
+.header {
+  max-height: 50vh;
+  overflow: hidden;
 }
 
-nav ul {
+.header-image {
+  position: relative;
+}
+
+.header-content {
   width: 100%;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+  position: absolute;
+  top: 100px;
 }
 
-nav li {
-  float: left;
-  width: 33.333%;
-}
-
-nav li a {
-  display: block;
+.title {
+  width: 100%;
+  color: white;
   text-align: center;
-  padding: 5px;
-  text-decoration: none;
 }
 
-nav li a.active {
-  font-weight: bold;
+.searchbar {
+ width: 50%;
+ max-width: 450px;
+ margin: auto;
 }
+

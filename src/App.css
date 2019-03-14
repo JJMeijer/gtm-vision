@@ -1,5 +1,13 @@
 body, html {
   padding: 0;
   margin: 0;
-  width: 100%
+  width: 100%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
 }

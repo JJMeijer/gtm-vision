@@ -1,4 +1,4 @@
-const isObject = function checkIfVariableIsObject(obj) {
+const isObject = function checkIfSomethingIsObject(obj) {
   return obj === Object(obj);
 };
 
@@ -23,32 +23,22 @@ const resolveReferences = function resolveInnerReferencesInContainer(completeCon
     }
 
     Object.keys(obj).forEach((key) => {
-      if (Array.isArray(obj[key])) {
-        if (obj[key].length === 2) {
-          if (obj[key][0] === 'macro') {
-            const referencedVariable = completeContainer.variables[obj[key][1]];
-            obj[key] = `{{${referencedVariable.reference}}}`;
-
-            referencedVariable.usedIn = referencedVariable.usedIn || {};
-            referencedVariable.usedIn[cat] = referencedVariable.usedIn[cat] || [];
-            const usedInArray = referencedVariable.usedIn[cat];
-            if (usedInArray.filter(x => x === item).length === 0) {
-              usedInArray.push(item);
-            }
-          }
-          if (obj[key][0] === 'tag') {
-            const referencedTag = completeContainer.tags[obj[key][1]];
-            obj[key] = `{{${referencedTag.reference}}}`;
-
-            referencedTag.usedIn = referencedTag.usedIn || {};
-            referencedTag.usedIn[cat] = referencedTag.usedIn[cat] || [];
-            const usedInArray = referencedTag.usedIn[cat];
-            if (usedInArray.filter(x => x === item).length === 0) {
-              usedInArray.push(item);
-            }
-          }
+      if (Array.isArray(obj[key]) && obj[key].length === 2 && typeof obj[key][0] === 'string' && obj[key][0].match(/^(macro|tag)$/)) {
+        let referencedItem = {};
+        if (obj[key][0] === 'macro') {
+          referencedItem = completeContainer.variables[obj[key][1]];
         } else {
-          getMacroReferences(obj[key]);
+          referencedItem = completeContainer.tags[obj[key][1]];
+        }
+
+        obj[key] = referencedItem.reference;
+
+        referencedItem.usedIn = referencedItem.usedIn || {};
+        referencedItem.usedIn[cat] = referencedItem.usedIn[cat] || [];
+
+        const usedInArray = referencedItem.usedIn[cat];
+        if (usedInArray.filter(x => x === item).length === 0) {
+          usedInArray.push(item);
         }
       } else if (isObject(obj[key]) && !isEmpty(obj[key])) {
         getMacroReferences(obj[key]);

@@ -1,16 +1,18 @@
 import React from 'react';
-import uniqueId from 'react-html-id';
 import PropTypes from 'prop-types';
+import {
+  Form,
+  Tooltip,
+  Input,
+  Button,
+} from 'element-react';
 
-import SearchError from './search-error';
+import 'element-theme-chalk';
 
-import './search-bar.css';
 
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-
-    this.formElement = React.createRef();
 
     this.state = {
       value: '',
@@ -21,8 +23,6 @@ class SearchBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validate = this.validate.bind(this);
-
-    uniqueId.enableUniqueIds(this);
   }
 
   validate() {
@@ -47,9 +47,9 @@ class SearchBar extends React.Component {
     return false;
   }
 
-  handleChange(event) {
+  handleChange(change) {
     this.setState({
-      value: event.target.value,
+      value: change,
       valid: true,
       errorMessage: '',
     });
@@ -82,23 +82,22 @@ class SearchBar extends React.Component {
   }
 
   render() {
-    console.log('SearchBar state: ', this.state);
     const { value, valid, errorMessage } = this.state;
 
-    let errorElement;
-    if (!valid) {
-      errorElement = <SearchError message={errorMessage} />;
-    }
-
     return (
-      <form ref={this.formElement} onSubmit={this.handleSubmit} className="searchBar">
-        <label htmlFor={this.nextUniqueId()}>
-          GTM Container ID:  GTM-5G6JJ56
-          <input type="text" id={this.lastUniqueId()} name="gtmid" value={value} onChange={this.handleChange} placeholder="GTM-NTQ25T" />
-          {errorElement}
-        </label>
-        <input type="submit" value="Get" />
-      </form>
+      <Form onSubmit={this.handleSubmit} className="searchbar">
+        <Tooltip visible={!valid} effect="light" content={errorMessage} placement="bottom" manual="true">
+          <Input
+            onChange={this.handleChange}
+            placeholder="GTM-NTQ25T"
+            autoComplete="on"
+            value={value}
+            append={
+              <Button type="primary" icon="search" size="large">Get</Button>
+            }
+          />
+        </Tooltip>
+      </Form>
     );
   }
 }
