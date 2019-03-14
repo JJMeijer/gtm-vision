@@ -1,15 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+
+import { i18n } from 'element-react';
+import locale from 'element-react/src/locale/lang/en';
 
 import App from './app';
 
+i18n.use(locale);
+
 function renderApp() {
-  render((
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  ), document.getElementById('root'));
+  render(<App />, document.getElementById('root'));
 }
 
 renderApp();
