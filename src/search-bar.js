@@ -53,6 +53,8 @@ class SearchBar extends React.Component {
       valid: true,
       errorMessage: '',
     });
+    const { resultCallback } = this.props;
+    resultCallback(null);
   }
 
   handleSubmit(event) {
@@ -60,7 +62,7 @@ class SearchBar extends React.Component {
 
     if (this.validate()) {
       const { value } = this.state;
-      const { callbackWithData } = this.props;
+      const { resultCallback } = this.props;
 
       fetch(`${document.location.origin}/api/gtm`, {
         method: 'POST',
@@ -76,7 +78,7 @@ class SearchBar extends React.Component {
           return response;
         })
         .then(response => response.json())
-        .then(({ resource }) => callbackWithData(resource))
+        .then(({ resource }) => resultCallback(resource))
         .catch(error => console.log(error));
     }
   }
@@ -86,14 +88,14 @@ class SearchBar extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="searchbar">
-        <Tooltip visible={!valid} effect="light" content={errorMessage} placement="bottom" manual="true">
+        <Tooltip visible={!valid} effect="light" content={errorMessage} placement="bottom" manual>
           <Input
             onChange={this.handleChange}
             placeholder="GTM-NTQ25T"
             autoComplete="on"
             value={value}
             append={
-              <Button type="primary" icon="search" size="large">Get</Button>
+              <Button nativeType="submit" type="primary" icon="search" size="large">Get</Button>
             }
           />
         </Tooltip>
@@ -103,7 +105,7 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  callbackWithData: PropTypes.func.isRequired,
+  resultCallback: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

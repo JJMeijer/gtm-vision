@@ -1,4 +1,4 @@
-import { operatorDictionary } from './gtm-dictionaries';
+import { operatorDictionary, triggerDictionary } from './gtm-dictionaries';
 
 const operatorList = operatorDictionary();
 
@@ -57,4 +57,19 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
   return parsedArray;
 };
 
-export default parseTriggers;
+const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) {
+  const triggerList = triggerDictionary();
+
+  const trigger = _trigger;
+  const triggerType = trigger.conditions.filter(cond => cond.variable.match('Event'))[0].value;
+
+  if (triggerList[triggerType]) {
+    trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
+  } else {
+    trigger.reference = `${trigger.reference} - Event: ${triggerType}`;
+  }
+
+  return trigger;
+};
+
+export { parseTriggers, parseTriggerNames };
