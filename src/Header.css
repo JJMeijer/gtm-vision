@@ -1,16 +1,18 @@
 .header {
-  max-height: 50vh;
   overflow: hidden;
 }
 
 .header-image {
+  min-height: 200px;
+  max-height: 40vh;
   position: relative;
+  width: 100%;
 }
 
 .header-content {
   width: 100%;
   position: absolute;
-  top: 100px;
+  top: 25%;
 }
 
 .title {
