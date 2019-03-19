@@ -1,6 +1,6 @@
 import parseVariables from './parse-variables';
 import parseTags from './parse-tags';
-import parseTriggers from './parse-triggers';
+import { parseTriggers, parseTriggerNames } from './parse-triggers';
 import resolveReferences from './resolve-references';
 
 const parseGtm = function parseGtmContainer(container) {
@@ -12,16 +12,15 @@ const parseGtm = function parseGtmContainer(container) {
     tags,
   } = container;
 
-  const startPerf = performance.now();
-
   parsedContainer.variables = parseVariables(macros);
   parsedContainer.tags = parseTags(tags);
   parsedContainer.triggers = parseTriggers(predicates, rules);
 
   resolveReferences(parsedContainer);
 
-  console.log(`timing: ${(performance.now() - startPerf).toFixed(2)}ms`);
-  console.log(parsedContainer);
+  parsedContainer.triggers.map(parseTriggerNames);
+
+  return parsedContainer;
 };
 
 export default parseGtm;

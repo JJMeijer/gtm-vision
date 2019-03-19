@@ -18,7 +18,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(completeCon
     const obj = o;
 
     if (obj.reference) {
-      item = obj.reference;
+      item = obj;
       cat = obj.category;
     }
 
@@ -31,13 +31,13 @@ const resolveReferences = function resolveInnerReferencesInContainer(completeCon
           referencedItem = completeContainer.tags[obj[key][1]];
         }
 
-        obj[key] = referencedItem.reference;
+        obj[key] = `{{${referencedItem.reference}}}`;
 
         referencedItem.usedIn = referencedItem.usedIn || {};
         referencedItem.usedIn[cat] = referencedItem.usedIn[cat] || [];
 
         const usedInArray = referencedItem.usedIn[cat];
-        if (usedInArray.filter(x => x === item).length === 0) {
+        if (usedInArray.filter(x => x.reference === item.reference).length === 0) {
           usedInArray.push(item);
         }
       } else if (isObject(obj[key]) && !isEmpty(obj[key])) {
