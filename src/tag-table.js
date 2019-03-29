@@ -28,12 +28,14 @@ class TagTable extends React.Component {
           },
         },
         {
-          label: 'Type',
-          prop: 'type',
-        },
-        {
           label: 'Name',
           prop: 'reference',
+          sortable: true,
+        },
+        {
+          label: 'Type',
+          prop: 'type',
+          sortable: true,
         },
       ],
       data,
@@ -48,7 +50,7 @@ class TagTable extends React.Component {
         columns={columns}
         data={data}
         stripe
-        border
+        border={false}
       />
     );
   }
