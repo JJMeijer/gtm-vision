@@ -1,3 +1,16 @@
 .results {
   margin: 10px;
 }
+
+.condition .el-input {
+  width: 250px;
+  margin: 2px 0px;
+  cursor: not-allowed;
+}
+
+.condition .operator {
+  display: inline-block;
+  margin: 25px;
+  text-align: center;
+  width: 100px;
+}

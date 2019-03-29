@@ -26,6 +26,7 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
+    "babel-plugin-prismjs": "^1.0.2",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
@@ -34,7 +35,8 @@
     "element-theme-default": "^1.4.13",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
-    "parcel-bundler": "^1.11.0",
+    "parcel-bundler": "^1.12.3",
+    "prismjs": "^1.16.0",
     "prop-types": "^15.6.2",
     "pug": "^2.0.3",
     "react": "^16.8.1",

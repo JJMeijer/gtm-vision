@@ -10,12 +10,12 @@ const parsePredicate = function parsePredicate(predicate, type) {
   return resultObject;
 };
 
-
 const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rules) {
   const parsedArray = [];
   rules.forEach((rule, index) => {
     const ruleObj = {};
 
+    ruleObj.tagCount = 0;
     ruleObj.category = 'trigger';
     ruleObj.reference = `Trigger(${index})`;
     rule.forEach((rulePart) => {
@@ -39,6 +39,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
         exceptionArray.forEach((tag) => {
           resultArray.push(['tag', tag]);
         });
+        ruleObj.tagCount += resultArray.length;
         ruleObj.exceptions = resultArray;
       }
 
@@ -49,9 +50,11 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
         tagArray.forEach((tag) => {
           resultArray.push(['tag', tag]);
         });
+        ruleObj.tagCount += resultArray.length;
         ruleObj.tags = resultArray;
       }
     });
+
     parsedArray.push(ruleObj);
   });
   return parsedArray;
@@ -65,8 +68,10 @@ const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) 
 
   if (triggerList[triggerType]) {
     trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
+    trigger.type = triggerList[triggerType];
   } else {
     trigger.reference = `${trigger.reference} - Event: ${triggerType}`;
+    trigger.type = 'event';
   }
 
   return trigger;
