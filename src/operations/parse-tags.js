@@ -1,4 +1,4 @@
-import { tagDictionary } from './gtm-dictionaries';
+import tagDictionary from './dictionaries/tags';
 
 const parseTags = function parseTags(tagsArray) {
   const parsedArray = [];

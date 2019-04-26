@@ -21,7 +21,7 @@ const parseCode = function parseCodeArrays(containerElement) {
           resultArray.push(block);
         } else {
           const referenceName = block.filter(part => part.toString().match(/\{\{/));
-          resultArray.push(referenceName);
+          resultArray.push(`"${referenceName}"`);
         }
       });
     } else {

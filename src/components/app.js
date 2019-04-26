@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'element-react';
 
-import parseGtm from './parse-gtm';
+import parseGtm from '../operations/parse-gtm';
 import Header from './header';
 import Result from './result';
 

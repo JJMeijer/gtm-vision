@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import stars from './images/stars.png';
+import stars from '../images/stars.png';
 import SearchBar from './search-bar';
 import './header.css';
 
