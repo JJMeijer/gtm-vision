@@ -3,9 +3,9 @@ import { Tabs } from 'element-react';
 
 import 'element-theme-chalk';
 
-import TagTable from './tag-table';
-import TriggerTable from './trigger-table';
+import DataTable from './data-table';
 import './result.css';
+import LoadingIcon from '../images/ripple.svg';
 
 const Result = (props) => {
   const { parsedData } = props;
@@ -16,18 +16,22 @@ const Result = (props) => {
     resultElement = (
       <Tabs className="results">
         <Tabs.Pane label="Tags" name="1">
-          <TagTable data={parsedData.tags} />
+          <DataTable dataType="tags" data={parsedData.tags} />
         </Tabs.Pane>
         <Tabs.Pane label="Triggers" name="2">
-          <TriggerTable data={parsedData.triggers} />
+          <DataTable dataType="triggers" data={parsedData.triggers} />
         </Tabs.Pane>
         <Tabs.Pane label="Variables" name="3">
-          variables
+          <DataTable dataType="variables" data={parsedData.variables} />
         </Tabs.Pane>
       </Tabs>
     );
   } else {
-    resultElement = <div>No Results</div>;
+    resultElement = (
+      <div>
+        <LoadingIcon className="loading" />
+      </div>
+    );
   }
 
   return resultElement;

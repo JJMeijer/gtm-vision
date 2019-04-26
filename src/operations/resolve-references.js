@@ -11,7 +11,8 @@ const isEmpty = function checkIfObjectIsEmpty(obj) {
   });
 };
 
-const resolveReferences = function resolveInnerReferencesInContainer(completeContainer) {
+const resolveReferences = function resolveInnerReferencesInContainer(container) {
+  const result = container;
   let item = '';
   let cat = '';
   function getMacroReferences(o) {
@@ -26,13 +27,14 @@ const resolveReferences = function resolveInnerReferencesInContainer(completeCon
       if (Array.isArray(obj[key]) && obj[key].length === 2 && typeof obj[key][0] === 'string' && obj[key][0].match(/^(macro|tag)$/)) {
         let referencedItem = {};
         if (obj[key][0] === 'macro') {
-          referencedItem = completeContainer.variables[obj[key][1]];
+          referencedItem = result.variables[obj[key][1]];
         } else {
-          referencedItem = completeContainer.tags[obj[key][1]];
+          referencedItem = result.tags[obj[key][1]];
         }
 
         obj[key] = `{{${referencedItem.reference}}}`;
 
+        referencedItem.occurrences = referencedItem.occurrences + 1 || 1;
         referencedItem.usedIn = referencedItem.usedIn || {};
         referencedItem.usedIn[cat] = referencedItem.usedIn[cat] || [];
 
@@ -46,9 +48,11 @@ const resolveReferences = function resolveInnerReferencesInContainer(completeCon
     });
   }
 
-  if (isObject(completeContainer) && !isEmpty(completeContainer)) {
-    getMacroReferences(completeContainer);
+  if (isObject(result) && !isEmpty(result)) {
+    getMacroReferences(result);
   }
+
+  return result;
 };
 
 export default resolveReferences;
