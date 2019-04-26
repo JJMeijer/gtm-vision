@@ -1,4 +1,5 @@
-import { operatorDictionary, triggerDictionary } from './gtm-dictionaries';
+import operatorDictionary from './dictionaries/operators';
+import triggerDictionary from './dictionaries/triggers';
 
 const operatorList = operatorDictionary();
 
@@ -15,7 +16,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
   rules.forEach((rule, index) => {
     const ruleObj = {};
 
-    ruleObj.tagCount = 0;
+    ruleObj.occurrences = 0;
     ruleObj.category = 'trigger';
     ruleObj.reference = `Trigger(${index})`;
     rule.forEach((rulePart) => {
@@ -39,7 +40,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
         exceptionArray.forEach((tag) => {
           resultArray.push(['tag', tag]);
         });
-        ruleObj.tagCount += resultArray.length;
+        ruleObj.occurrences += resultArray.length;
         ruleObj.exceptions = resultArray;
       }
 
@@ -50,7 +51,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
         tagArray.forEach((tag) => {
           resultArray.push(['tag', tag]);
         });
-        ruleObj.tagCount += resultArray.length;
+        ruleObj.occurrences += resultArray.length;
         ruleObj.tags = resultArray;
       }
     });

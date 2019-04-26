@@ -5,7 +5,6 @@ import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
 
 const parseGtm = function parseGtmContainer(container) {
-  const parsedContainer = {};
   const {
     macros,
     predicates,
@@ -13,13 +12,29 @@ const parseGtm = function parseGtmContainer(container) {
     tags,
   } = container;
 
-  parsedContainer.variables = parseVariables(macros);
-  parsedContainer.tags = parseTags(tags);
-  parsedContainer.triggers = parseTriggers(predicates, rules);
+  /**
+   * Parse the GTM container by giving meaningful names to the elements
+   * and organizing the object.
+   */
+  const parsedContainer = {
+    variables: parseVariables(macros),
+    tags: parseTags(tags),
+    triggers: parseTriggers(predicates, rules),
+  };
 
+  /**
+   * Use the new names in all references to tags, triggers & variables
+   */
   resolveReferences(parsedContainer);
 
+  /**
+   * Use the resolved references to define meaningful trigger names
+   */
   parsedContainer.triggers.map(parseTriggerNames);
+
+  /**
+   * Parse the variable references in code elements
+   */
   parsedContainer.tags.map(parseCode);
   parsedContainer.variables.map(parseCode);
 

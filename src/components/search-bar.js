@@ -25,6 +25,17 @@ class SearchBar extends React.Component {
     this.validate = this.validate.bind(this);
   }
 
+  handleChange(change) {
+    this.setState({
+      value: change,
+      valid: true,
+      errorMessage: '',
+    });
+
+    const { resultCallback } = this.props;
+    resultCallback(null);
+  }
+
   validate() {
     const { value } = this.state;
 
@@ -45,16 +56,6 @@ class SearchBar extends React.Component {
     }
 
     return false;
-  }
-
-  handleChange(change) {
-    this.setState({
-      value: change,
-      valid: true,
-      errorMessage: '',
-    });
-    const { resultCallback } = this.props;
-    resultCallback(null);
   }
 
   handleSubmit(event) {

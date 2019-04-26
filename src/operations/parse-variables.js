@@ -1,4 +1,4 @@
-import { macroDictionary } from './gtm-dictionaries';
+import macroDictionary from './dictionaries/macros';
 
 const parseVariables = function parseVariables(macrosArray) {
   const parsedArray = [];
