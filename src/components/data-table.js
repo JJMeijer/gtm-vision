@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'element-react';
+import Prism from 'prismjs';
 import PropTypes from 'prop-types';
 
 import getTableColumns from './table-columns';
@@ -14,6 +15,10 @@ class DataTable extends React.Component {
       columns: getTableColumns(dataType),
       data,
     };
+  }
+
+  componentDidMount() {
+    Prism.highlightAll();
   }
 
   render() {

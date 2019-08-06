@@ -56,7 +56,7 @@ const parseVariables = function parseVariables(macrosArray) {
      * this is to make the reference as informative as possible.
      */
     const { type, variableValues } = parsedMacro;
-    if (type.match(/URL|HTTP/)) {
+    if (type.match('URL')) {
       const { component } = variableValues;
       const description = component === 'URL' ? 'Full URL' : component;
       parsedMacro.reference = `${parsedMacro.reference}: ${description}`;

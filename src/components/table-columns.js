@@ -1,11 +1,8 @@
 import React from 'react';
 import { Input } from 'element-react';
-import Prism from 'prismjs';
 import Beautify from 'js-beautify';
 
 import '../css/prism.css';
-
-Prism.highlightAll();
 
 const getTableColumns = (type) => {
   const columnDefinitions = {
@@ -17,7 +14,24 @@ const getTableColumns = (type) => {
           const valueArray = [];
           Object.keys(tagValues).forEach((value) => {
             const text = `${value.replace(/([A-Z])/g, ' $1')}: ${tagValues[value]}`;
-            valueArray.push(<p>{text}</p>);
+            if (value === 'code') {
+              valueArray.push(
+                <div>
+                  <pre>
+                    <code className="language-javascript">
+                      {
+                        Beautify(tagValues[value], {
+                          indent_size: 4,
+                        })
+                      }
+                    </code>
+                  </pre>
+                </div>,
+
+              );
+            } else {
+              valueArray.push(<p>{text}</p>);
+            }
           });
 
           return (
@@ -89,7 +103,7 @@ const getTableColumns = (type) => {
             return (
               <div>
                 <pre>
-                  <code className="javascript">
+                  <code className="language-javascript">
                     {
                       Beautify(variableValues.code, {
                         indent_size: 4,
