@@ -41,4 +41,25 @@ router.post('/api/gtm', (req, res, next) => {
   }
 });
 
+router.post('/api/www', (req, res, next) => {
+  if (req.body && req.body.value) {
+    const { value } = req.body;
+
+    urllib.request(value, {
+      dataType: 'text',
+    },
+    (err, data) => {
+      if (err) {
+        next(err);
+      } else {
+        res.send(data);
+      }
+    });
+  } else {
+    const error = new Error('Missing or Incorrect URL');
+    error.status = 400;
+    next(error);
+  }
+});
+
 export default router;
