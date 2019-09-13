@@ -1,8 +1,11 @@
 import React from 'react';
 import { Input } from 'element-react';
 import Beautify from 'js-beautify';
+import Prism from 'prismjs';
 
 import '../css/prism.css';
+
+Prism.highlightAll();
 
 const getTableColumns = (type) => {
   const columnDefinitions = {
@@ -27,13 +30,11 @@ const getTableColumns = (type) => {
                     </code>
                   </pre>
                 </div>,
-
               );
             } else {
               valueArray.push(<p>{text}</p>);
             }
           });
-
           return (
             <div>
               <p>{`Firing Option: ${firingOption}`}</p>
@@ -114,6 +115,7 @@ const getTableColumns = (type) => {
               </div>
             );
           }
+          Prism.highlightAll();
           return <p>test</p>;
         },
       },
