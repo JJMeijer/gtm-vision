@@ -27,3 +27,6 @@
  margin: auto;
 }
 
+.searchtype {
+  min-width: 100px;
+}
