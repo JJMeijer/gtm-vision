@@ -5,6 +5,7 @@ import {
   Tooltip,
   Input,
   Button,
+  Select,
 } from 'element-react';
 
 import 'element-theme-chalk';
@@ -15,21 +16,48 @@ class SearchBar extends React.Component {
     super(props);
 
     this.state = {
+      type: 'GTM ID',
+      placeholder: 'GTM-NTQ25T',
       value: '',
       valid: true,
       errorMessage: '',
+      options: [{
+        type: 'GTM ID',
+        placeholder: 'GTM-NTQ25T',
+        endpoint: '/api/gtm',
+      }, {
+        type: 'URL',
+        placeholder: 'https://www.digital-power.com',
+        endpoint: '/api/www',
+      }],
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleValueChange = this.handleValueChange.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validate = this.validate.bind(this);
   }
 
-  handleChange(change) {
+  handleValueChange(change) {
     this.setState({
       value: change,
       valid: true,
       errorMessage: '',
+    });
+
+    const { resultCallback } = this.props;
+    resultCallback(null);
+  }
+
+  handleTypeChange(type) {
+    const { options } = this.state;
+    const [{ placeholder }] = options.filter(o => o.type === type);
+
+    this.setState({
+      type,
+      placeholder,
+      value: '',
+      valid: true,
     });
 
     const { resultCallback } = this.props;
@@ -62,10 +90,11 @@ class SearchBar extends React.Component {
     event.preventDefault();
 
     if (this.validate()) {
-      const { value } = this.state;
+      const { value, type, options } = this.state;
       const { resultCallback } = this.props;
-
-      fetch(`${document.location.origin}/api/gtm`, {
+      const [{ endpoint }] = options.filter(x => x.type === type);
+      console.log(endpoint);
+      fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,6 +102,7 @@ class SearchBar extends React.Component {
         body: JSON.stringify({ value }),
       })
         .then((response) => {
+          console.log('response:', response);
           if (!response.ok) {
             throw new Error(response.statusText);
           }
@@ -85,19 +115,33 @@ class SearchBar extends React.Component {
   }
 
   render() {
-    const { value, valid, errorMessage } = this.state;
+    const {
+      value,
+      type,
+      placeholder,
+      valid,
+      errorMessage,
+      options,
+    } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className="searchbar">
         <Tooltip visible={!valid} effect="light" content={errorMessage} placement="bottom" manual>
           <Input
-            onChange={this.handleChange}
-            placeholder="GTM-NTQ25T"
+            onChange={this.handleValueChange}
+            placeholder={placeholder}
             autoComplete="on"
             value={value}
             append={
               <Button nativeType="submit" type="primary" icon="search" size="large">Get</Button>
             }
+            prepend={(
+              <Select className="searchtype" size="large" value={type} onChange={this.handleTypeChange}>
+                {
+                  options.map(option => <Select.Option key={option.type} value={option.type} />)
+                }
+              </Select>
+            )}
           />
         </Tooltip>
       </Form>
