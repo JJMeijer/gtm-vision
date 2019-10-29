@@ -2,8 +2,6 @@
 import express from 'express';
 import compression from 'compression';
 import logger from 'morgan';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import Bundler from 'parcel-bundler';
 
 import routes from '../routes';
@@ -11,41 +9,30 @@ import routes from '../routes';
 // initialize Express app
 const app = express();
 const port = process.env.PORT || 3000;
+const appFolder = 'public';
+
+// use compression
+app.use(compression());
+
+// Bodyparser
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Morgan logger
+app.use(logger('combined'));
 
 // basic logger function
 const log = function logMessages(message) {
   process.stdout.write(`[${new Date().toJSON()}] ${message}\n`);
 };
 
-// set view engine
-app.set('views', './views');
-app.set('view engine', 'pug');
-
-// Morgan logger
-app.use(logger('combined'));
-
-// Use Compression
-app.use(compression());
-
 // serve static files
-app.use(express.static('public'));
+app.use(express.static(appFolder));
 
-// use parcel bundler
-if (process.env.NODE_ENV !== 'production') {
-  const bundler = new Bundler('./src/index.js', {
-    outDir: 'public',
-    logLevel: 4,
-  });
-
-  bundler.bundle();
-
-  app.use(bundler.middleware());
-}
-
-// use body and cookie parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// get always routes to site
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root: appFolder });
+});
 
 // Main routing
 app.use('/', routes);
@@ -62,13 +49,20 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   log(err.stack);
   res.status(err.status || 500);
-  res.render('error', {
-    title: `${err.status} Error Page`,
-    message: err.message,
-    status: err.status,
-  });
+  res.send(err.message);
   next();
 });
+
+// use parcel bundler
+if (process.env.NODE_ENV !== 'production') {
+  const bundler = new Bundler('./src/index.html', {
+    outDir: appFolder,
+    logLevel: 4,
+    minify: true,
+  });
+
+  app.use(bundler.middleware());
+}
 
 // Start Express app
 app.listen(port, log(`Server is running on port: ${port}`));

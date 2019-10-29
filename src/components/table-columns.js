@@ -1,47 +1,11 @@
-import React from 'react';
-import { Input } from 'element-react';
-import Beautify from 'js-beautify';
-import Prism from 'prismjs';
-
-import '../css/prism.css';
-
-Prism.highlightAll();
+import { tagExpander, triggerExpander, variableExpander } from './expanders';
 
 const getTableColumns = (type) => {
   const columnDefinitions = {
     tags: [
       {
         type: 'expand',
-        expandPannel: (tagData) => {
-          const { tagValues, firingOption } = tagData;
-          const valueArray = [];
-          Object.keys(tagValues).forEach((value) => {
-            const text = `${value.replace(/([A-Z])/g, ' $1')}: ${tagValues[value]}`;
-            if (value === 'code') {
-              valueArray.push(
-                <div>
-                  <pre>
-                    <code className="language-javascript">
-                      {
-                        Beautify(tagValues[value], {
-                          indent_size: 4,
-                        })
-                      }
-                    </code>
-                  </pre>
-                </div>,
-              );
-            } else {
-              valueArray.push(<p>{text}</p>);
-            }
-          });
-          return (
-            <div>
-              <p>{`Firing Option: ${firingOption}`}</p>
-              {valueArray}
-            </div>
-          );
-        },
+        expandPannel: tagExpander,
       },
       {
         label: 'Name',
@@ -57,27 +21,7 @@ const getTableColumns = (type) => {
     triggers: [
       {
         type: 'expand',
-        expandPannel: (triggerData) => {
-          const { conditions } = triggerData;
-          const valueArray = [];
-          conditions.forEach((condition) => {
-            const { variable, value, operator } = condition;
-            const conditionElement = (
-              <div className="condition">
-                <Input value={variable} />
-                <div className="operator">{`${operator}:`}</div>
-                <Input value={value} disabled />
-              </div>
-            );
-            valueArray.push(conditionElement);
-          });
-
-          return (
-            <div>
-              {valueArray}
-            </div>
-          );
-        },
+        expandPannel: triggerExpander,
       },
       {
         label: 'Name',
@@ -98,26 +42,7 @@ const getTableColumns = (type) => {
     variables: [
       {
         type: 'expand',
-        expandPannel: (variableData) => {
-          const { variableValues } = variableData;
-          if (variableValues.code) {
-            return (
-              <div>
-                <pre>
-                  <code className="language-javascript">
-                    {
-                      Beautify(variableValues.code, {
-                        indent_size: 4,
-                      })
-                    }
-                  </code>
-                </pre>
-              </div>
-            );
-          }
-          Prism.highlightAll();
-          return <p>test</p>;
-        },
+        expandPannel: variableExpander,
       },
       {
         label: 'Name',

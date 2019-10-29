@@ -7,13 +7,6 @@ import urllib from 'urllib';
 
 const router = express.Router();
 
-/* GET Main Page */
-router.get('*', (req, res) => {
-  res.render('index', {
-    title: 'Tagmanager Insight',
-  });
-});
-
 /* POST GTM ID */
 router.post('/api/gtm', (req, res, next) => {
   if (req.body && req.body.value) {
