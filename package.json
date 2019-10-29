@@ -4,7 +4,7 @@
   "description": "GTM Insight Application",
   "main": "server/server.js",
   "scripts": {
-    "start": "babel-node server/server.js",
+    "start": "nodemon --watch server --exec babel-node server/server.js",
     "lint": "eslint . --ext .js,.jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,7 +27,6 @@
   "browserList": "> 0.25%, not dead",
   "dependencies": {
     "babel-plugin-prismjs": "^1.1.1",
-    "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.1.4",
@@ -37,10 +36,9 @@
     "express": "^4.17.1",
     "js-beautify": "^1.10.1",
     "morgan": "^1.9.1",
-    "parcel-bundler": "^1.12.3",
+    "parcel-bundler": "^1.12.4",
     "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
-    "pug": "^2.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "urllib": "^2.34.0"
@@ -58,6 +56,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
+    "nodemon": "^1.19.4",
     "react-hot-loader": "^4.12.10"
   }
 }
