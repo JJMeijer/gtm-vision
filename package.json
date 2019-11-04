@@ -4,7 +4,7 @@
   "description": "GTM Insight Application",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon --watch server --exec babel-node server/server.js",
+    "start": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "lint": "eslint . --ext .js,.jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -41,6 +41,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router": "^5.1.2",
     "urllib": "^2.34.0"
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/preset-env": "^7.5.5",
     "@svgr/parcel-plugin-svgr": "^4.3.2",
+    "acorn": "^7.1.0",
     "babel-eslint": "^10.0.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",

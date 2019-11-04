@@ -3,14 +3,12 @@ import { Tabs } from 'element-react';
 
 import 'element-theme-chalk';
 
-import DataTable from './data-table';
+import DataTable from './table-main';
 import './result.css';
 import LoadingIcon from '../images/ripple.svg';
 
 const Result = (props) => {
   const { parsedData } = props;
-  console.log(parsedData);
-
   let resultElement;
   if (parsedData) {
     resultElement = (
