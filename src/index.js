@@ -9,7 +9,7 @@ import App from './components/app';
 i18n.use(locale);
 
 function renderApp() {
-  render(<App />, document.body);
+  render(<App />, document.getElementById('app'));
 }
 
 renderApp();

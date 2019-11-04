@@ -4,7 +4,7 @@ import compression from 'compression';
 import logger from 'morgan';
 import Bundler from 'parcel-bundler';
 
-import routes from '../routes';
+import router from './routes';
 
 // initialize Express app
 const app = express();
@@ -35,7 +35,7 @@ app.get('*', (req, res) => {
 });
 
 // Main routing
-app.use('/', routes);
+app.use('/', router);
 
 // 404 Handling
 app.use((req, res, next) => {
@@ -58,7 +58,6 @@ if (process.env.NODE_ENV !== 'production') {
   const bundler = new Bundler('./src/index.html', {
     outDir: appFolder,
     logLevel: 4,
-    minify: true,
   });
 
   app.use(bundler.middleware());

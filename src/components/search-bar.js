@@ -93,7 +93,6 @@ class SearchBar extends React.Component {
       const { value, type, options } = this.state;
       const { resultCallback } = this.props;
       const [{ endpoint }] = options.filter(x => x.type === type);
-      console.log(endpoint);
       fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
         headers: {
@@ -102,7 +101,6 @@ class SearchBar extends React.Component {
         body: JSON.stringify({ value }),
       })
         .then((response) => {
-          console.log('response:', response);
           if (!response.ok) {
             throw new Error(response.statusText);
           }

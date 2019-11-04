@@ -1,9 +1,9 @@
 import React from 'react';
 import { Layout } from 'element-react';
 
-import parseGtm from '../operations/parse-gtm';
 import Header from './header';
 import Result from './result';
+import parseGtm from '../parsers/gtm-parser';
 
 import 'element-theme-chalk';
 import './app.css';
@@ -31,7 +31,6 @@ class App extends React.Component {
     if (tagManagerData) {
       parsedData = parseGtm(tagManagerData);
     }
-
     return (
       <div>
         <Layout.Row>
