@@ -26,7 +26,9 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
+    "acorn": "^7.1.0",
     "babel-plugin-prismjs": "^1.1.1",
+    "canvas": "^2.6.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.1.4",
@@ -35,6 +37,7 @@
     "element-theme-default": "^1.4.13",
     "express": "^4.17.1",
     "js-beautify": "^1.10.1",
+    "jsdom": "^15.2.1",
     "morgan": "^1.9.1",
     "parcel-bundler": "^1.12.4",
     "prismjs": "^1.17.1",
@@ -42,7 +45,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router": "^5.1.2",
-    "urllib": "^2.34.0"
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -51,7 +54,6 @@
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/preset-env": "^7.5.5",
     "@svgr/parcel-plugin-svgr": "^4.3.2",
-    "acorn": "^7.1.0",
     "babel-eslint": "^10.0.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
