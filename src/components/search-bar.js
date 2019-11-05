@@ -25,10 +25,18 @@ class SearchBar extends React.Component {
         type: 'GTM ID',
         placeholder: 'GTM-NTQ25T',
         endpoint: '/api/gtm',
+        validateFormat: (value) => {
+          if (value.match(/^GTM-[0-9A-Z]{4,7}$/)) {
+            return true;
+          }
+          return false;
+        },
       }, {
         type: 'URL',
         placeholder: 'https://www.digital-power.com',
         endpoint: '/api/www',
+        // need url validator
+        validateFormat: () => true,
       }],
     };
 
@@ -65,9 +73,10 @@ class SearchBar extends React.Component {
   }
 
   validate() {
-    const { value } = this.state;
+    const { value, type, options } = this.state;
+    const [{ validateFormat }] = options.filter(x => x.type === type);
 
-    if (value.match(/^GTM-[0-9A-Z]{4,7}$/)) {
+    if (validateFormat(value)) {
       return true;
     }
 
