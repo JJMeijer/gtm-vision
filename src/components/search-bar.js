@@ -25,18 +25,14 @@ class SearchBar extends React.Component {
         type: 'GTM ID',
         placeholder: 'GTM-NTQ25T',
         endpoint: '/api/gtm',
-        validateFormat: (value) => {
-          if (value.match(/^GTM-[0-9A-Z]{4,7}$/)) {
-            return true;
-          }
-          return false;
-        },
+        validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
+        validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
       }, {
         type: 'URL',
         placeholder: 'https://www.digital-power.com',
         endpoint: '/api/www',
-        // need url validator
-        validateFormat: () => true,
+        validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
+        validateMessage: 'The URL you provided is not valid',
       }],
     };
 
@@ -74,9 +70,9 @@ class SearchBar extends React.Component {
 
   validate() {
     const { value, type, options } = this.state;
-    const [{ validateFormat }] = options.filter(x => x.type === type);
+    const [{ validateValue, validateMessage }] = options.filter(x => x.type === type);
 
-    if (validateFormat(value)) {
+    if (validateValue(value)) {
       return true;
     }
 
@@ -88,7 +84,7 @@ class SearchBar extends React.Component {
     } else {
       this.setState({
         valid: false,
-        errorMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
+        errorMessage: validateMessage,
       });
     }
 
