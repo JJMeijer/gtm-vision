@@ -1,7 +1,3 @@
-/**
- * Express Router
- */
-
 import express from 'express';
 import request from 'request';
 import puppeteer from 'puppeteer';
@@ -10,39 +6,46 @@ const router = express.Router();
 
 /* POST GTM ID */
 router.post('/api/gtm', (req, res, next) => {
-  if (req.body && req.body.value) {
-    const { value } = req.body;
+  try {
+    if (req.body && req.body.value) {
+      const { value } = req.body;
 
-    request(`https://www.googletagmanager.com/gtm.js?id=${value}`, (err, response, body) => {
-      if (!err) {
-        if (body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)) {
-          const containerText = body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
-          res.json(JSON.parse(unescape(containerText)));
+      request(`https://www.googletagmanager.com/gtm.js?id=${value}`, (err, response, body) => {
+        if (!err) {
+          if (body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)) {
+            const containerText = body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
+            res.json(JSON.parse(unescape(containerText)));
+          } else {
+            throw new Error('No Valid container found for this ID');
+          }
         } else {
-          const error = new Error('No Valid container found for this ID');
-          error.status = 500;
-          next(error);
+          throw new Error(err);
         }
-      } else {
-        next(err);
-      }
-    });
-  } else {
-    const error = new Error('No Request Body found');
-    error.status = 400;
-    next(error);
+      });
+    } else {
+      throw new Error('No Request Body found');
+    }
+  } catch (e) {
+    next(e);
   }
 });
 
 /* POST Website URL */
-router.post('/api/www', (req, res, next) => {
-  if (req.body && req.body.value) {
-    const { value } = req.body;
-    const valueUrl = new URL(value);
-    (async () => {
+router.post('/api/www', async (req, res, next) => {
+  try {
+    if (req.body && req.body.value) {
+      const { value } = req.body;
+
+      const valueUrl = new URL(!value.match('^http') ? `http://${value}` : value);
+
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      await page.goto(valueUrl, { waitUntil: 'domcontentloaded' });
+      try {
+        await page.goto(valueUrl, { waitUntil: 'domcontentloaded' });
+      } catch (e) {
+        console.log(e);
+        throw new Error('Website not found');
+      }
 
       const gtmUrl = await page.evaluate(() => {
         const scripts = Array.prototype.slice.call(document.querySelectorAll('script[src*="googletagmanager.com/gtm.js?id=GTM-"]'));
@@ -56,25 +59,21 @@ router.post('/api/www', (req, res, next) => {
               const containerText = body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
               res.json(JSON.parse(unescape(containerText)));
             } else {
-              const error = new Error('No Valid container found for this URL');
-              error.status = 500;
-              next(error);
+              throw new Error('No Valid container found for this URL');
             }
           } else {
-            next(err);
+            throw new Error(err);
           }
         });
       } else {
-        const error = new Error('No GTM found at URL');
-        error.status = 500;
-        next(error);
+        throw new Error('No GTM container found at URL');
       }
       await browser.close();
-    })();
-  } else {
-    const error = new Error('Missing post request body');
-    error.status = 400;
-    next(error);
+    } else {
+      throw new Error('Missing POST request body');
+    }
+  } catch (e) {
+    next(e);
   }
 });
 
