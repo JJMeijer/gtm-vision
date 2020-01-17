@@ -6,10 +6,12 @@ const parseCode = function parseCodeArrays(containerElement) {
   const destination = containerElement[`${category}Values`];
   if (type === 'Custom javascript') {
     code = destination.javascript;
+    delete destination.javascript;
   }
 
   if (type === 'Custom HTML') {
     code = destination.html;
+    delete destination.html;
   }
 
   if (code.length > 0) {

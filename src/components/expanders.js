@@ -1,6 +1,7 @@
 import React from 'react';
 import Beautify from 'js-beautify';
 import { Input } from 'element-react';
+import Prism from 'prismjs';
 
 const tagExpander = (tagData) => {
   const { tagValues, firingOption } = tagData;
@@ -10,11 +11,13 @@ const tagExpander = (tagData) => {
     if (value === 'code') {
       valueArray.push(
         <div>
+          <h3>Custom HTML</h3>
           <pre>
-            <code className="language-javascript">
+            <code className="language-html">
               {
                 Beautify(tagValues[value], {
                   indent_size: 4,
+                  type: 'html',
                 })
               }
             </code>
@@ -62,12 +65,13 @@ const variableExpander = (variableData) => {
     if (key === 'code') {
       valueArray.push(
         <div>
+          <h3>Custom Javascript</h3>
           <pre>
             <code className="language-javascript">
               {
-                Beautify(variableValues.code, {
+                Prism.highlight(Beautify(variableValues.code, {
                   indent_size: 4,
-                })
+                }), Prism.languages.javascript, 'javascript')
               }
             </code>
           </pre>
