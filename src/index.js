@@ -14,4 +14,4 @@ function renderApp() {
 
 renderApp();
 
-module.hot.accept(renderApp);
+module.hot.accept();

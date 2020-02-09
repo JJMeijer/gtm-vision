@@ -1,10 +1,11 @@
-.header {
+header {
   overflow: hidden;
+  max-height: 40vh;
 }
 
 .header-image {
   min-height: 200px;
-  max-height: 40vh;
+  max-height: auto;
   position: relative;
   width: 100%;
 }

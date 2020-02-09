@@ -15,7 +15,7 @@
     "react-hot-loader/babel",
     "@babel/plugin-proposal-export-default-from",
     ["prismjs", {
-      "languages": ["javascript", "markup"],
+      "languages": ["javascript", "html"],
       "plugins": ["line-numbers"],
       "theme": "default",
       "css": true

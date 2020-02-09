@@ -3,9 +3,10 @@ import parseTags from './parse-tags';
 import { parseTriggers, parseTriggerNames } from './parse-triggers';
 import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
+import removeInner from './remove-inner';
 
 const parseGtm = function parseGtmContainer(container) {
-  console.log(container)
+  console.log(container);
   const {
     macros,
     predicates,
@@ -38,6 +39,12 @@ const parseGtm = function parseGtmContainer(container) {
    */
   parsedContainer.tags.map(parseCode);
   parsedContainer.variables.map(parseCode);
+
+  /**
+   * Filter out tags & triggers that are used by GTM internally
+   * and not defined by the user in the UI
+   */
+  removeInner(parsedContainer);
 
   return parsedContainer;
 };
