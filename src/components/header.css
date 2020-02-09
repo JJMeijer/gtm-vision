@@ -21,13 +21,3 @@ header {
   color: white;
   text-align: center;
 }
-
-.searchbar {
- width: 50%;
- max-width: 450px;
- margin: auto;
-}
-
-.searchtype {
-  min-width: 100px;
-}

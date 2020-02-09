@@ -1,20 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import SearchBarTwo from './search-bar2';
 
-import stars from '../images/nasa_earth.jpg';
-import SearchBar from './search-bar';
-import './header.css';
+const useStyles = makeStyles(theme => ({
+  root: {
+    overflow: 'hidden',
+    maxHeight: '40vh',
+  },
+  title: {
+    textAlign: 'center',
+  },
+}))
 
 const Header = (props) => {
+  const classes = useStyles();
+
   const { resultCallback } = props;
   return (
-    <header>
-      <img className="header-image" src={stars} alt="" />
-      <div className="header-content">
-        <h1 className="title">GTM Insight</h1>
-        <SearchBar resultCallback={resultCallback} />
-      </div>
-    </header>
+      <Container maxWidth="sm" className={classes.root}>
+        <h1 className= {classes.title} >GTM Insight</h1>
+        <SearchBarTwo resultCallback={resultCallback} />
+      </Container>
   );
 };
 
