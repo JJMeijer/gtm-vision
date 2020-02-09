@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
 if (process.env.NODE_ENV !== 'production') {
   const bundler = new Bundler('./src/index.html', {
     outDir: appFolder,
-    logLevel: 3,
+    logLevel: 4,
   });
 
   app.use(bundler.middleware());

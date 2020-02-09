@@ -1,6 +1,5 @@
 # Ignored maps/files
 node_modules/
-design/
 .env
 .cache/
 public/

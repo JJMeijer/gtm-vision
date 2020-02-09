@@ -1,15 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Tooltip,
-  Input,
-  Button,
-  Select,
-} from 'element-react';
-
-import 'element-theme-chalk';
-
+import InputBase from '@material-ui/core/InputBase';
 
 class SearchBar extends React.Component {
   constructor(props) {
