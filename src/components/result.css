@@ -3,7 +3,7 @@
 }
 
 .condition .el-input {
-  width: 250px;
+  width: 275px;
   margin: 2px 0px;
   cursor: not-allowed;
 }
@@ -11,8 +11,16 @@
 .condition .operator {
   display: inline-block;
   margin: 25px;
-  text-align: center;
+  text-align: left;
   width: 100px;
+}
+
+.tagSetting {
+  width: 100%;
+}
+
+.tagSetting p {
+  display: inline;
 }
 
 .loading {

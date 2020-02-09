@@ -1,36 +1,32 @@
 import React from 'react';
-import Beautify from 'js-beautify';
 import { Input } from 'element-react';
-import Prism from 'prismjs';
+
+import CodeComponent from './code-component';
 
 const tagExpander = (tagData) => {
   const { tagValues, firingOption } = tagData;
   const valueArray = [];
   Object.keys(tagValues).forEach((value) => {
-    const text = `${value.replace(/([A-Z])/g, ' $1')}: ${tagValues[value]}`;
     if (value === 'code') {
-      valueArray.push(
-        <div>
-          <h3>Custom HTML</h3>
-          <pre>
-            <code className="language-html">
-              {
-                Beautify(tagValues[value], {
-                  indent_size: 4,
-                  type: 'html',
-                })
-              }
-            </code>
-          </pre>
-        </div>,
-      );
+      valueArray.push(<CodeComponent code={tagValues[value]} type="html" key={value}/>);
     } else {
-      valueArray.push(<p>{text}</p>);
+      const valueName = value.replace(/([A-Z])/g, ' $1');
+      const valueContent = String(tagValues[value]);
+      const settingElement = (
+        <div className="tagSetting" key={valueName}>
+          <p>{`${valueName}:`}</p>
+          <p>{valueContent}</p>
+        </div>
+      );
+      valueArray.push(settingElement);
     }
   });
   return (
-    <div>
-      <p>{`Firing Option: ${firingOption}`}</p>
+    <div className="tagSettings">
+      <div className="tagSetting">
+        <p>Firing Option: </p>
+        <p>{firingOption}</p>
+      </div>
       {valueArray}
     </div>
   );
@@ -45,7 +41,7 @@ const triggerExpander = (triggerData) => {
       <div className="condition">
         <Input value={variable} />
         <div className="operator">{`${operator}:`}</div>
-        <Input value={value} disabled />
+        <Input disabled value={value} />
       </div>
     );
     valueArray.push(conditionElement);

@@ -5,12 +5,12 @@ import 'element-theme-chalk';
 
 import DataTable from './table-main';
 import './result.css';
-import LoadingIcon from '../images/ripple.svg';
 
 const Result = (props) => {
   const { parsedData } = props;
-  let resultElement;
+  let resultElement = <div />;
   if (parsedData) {
+    console.log('parsed: ', parsedData);
     resultElement = (
       <Tabs className="results">
         <Tabs.Pane label="Tags" name="1">
@@ -23,12 +23,6 @@ const Result = (props) => {
           <DataTable dataType="variables" data={parsedData.variables} />
         </Tabs.Pane>
       </Tabs>
-    );
-  } else {
-    resultElement = (
-      <div>
-        <LoadingIcon className="loading" />
-      </div>
     );
   }
 

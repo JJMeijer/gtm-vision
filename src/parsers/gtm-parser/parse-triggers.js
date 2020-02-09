@@ -3,13 +3,11 @@ import triggerDictionary from './dictionaries/triggers';
 
 const operatorList = operatorDictionary();
 
-const parsePredicate = function parsePredicate(predicate, type) {
-  const resultObject = {};
-  resultObject.variable = predicate.arg0;
-  resultObject.operator = operatorList[predicate.function][type];
-  resultObject.value = predicate.arg1;
-  return resultObject;
-};
+const parsePredicate = (predicate, type) => ({
+  variable: predicate.arg0,
+  operator: operatorList[predicate.function][type],
+  value: predicate.arg1,
+});
 
 const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rules) {
   const parsedArray = [];

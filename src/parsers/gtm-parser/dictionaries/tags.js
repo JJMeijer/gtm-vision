@@ -295,6 +295,33 @@ const tagDictionary = () => ({
     fullName: 'Yieldify',
     counter: 0,
   },
+  __zone: {
+    fullName: 'GTM Zone',
+    counter: 0,
+  },
+  /**
+   * Tags with a fullname starting with 'inner_' will be filtered out later so use carefully.
+   */
+  __cl: {
+    fullName: 'inner_click',
+    counter: 0,
+  },
+  __lcl: {
+    fullName: 'inner_linkClick',
+    counter: 0,
+  },
+  __evl: {
+    fullName: 'inner_visibilityListener',
+    counter: 0,
+  },
+  __ytl: {
+    fullName: 'inner_youtubeListener',
+    counter: 0,
+  },
+  __paused: {
+    fullName: 'inner_paused',
+    counter: 0,
+  },
   unknown: 0,
 });
 
