@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Header from './header';
 import Result from './result';
 
-import './app.css';
-
 const useStyles = makeStyles({
   root: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    height: '9',
+    background: 'linear-gradient(45deg, #4C8BF5 30%, #5d8fe4 90%)',
+    fontFamily: ['Roboto', 'sans-serif'],
+    display: 'flex',
   },
 });
 
@@ -19,7 +20,8 @@ export default function App() {
   const [parsedData, pushTagManagerData] = useState(null);
 
   return (
-    <div className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
+      <CssBaseline />
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Header resultCallback={pushTagManagerData} />
@@ -28,6 +30,6 @@ export default function App() {
           <Result parsedData={parsedData} />
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 }

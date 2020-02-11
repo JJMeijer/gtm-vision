@@ -2,32 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import SearchBarTwo from './search-bar2';
+import SearchBar from './search-bar';
+import Title from './title';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    overflow: 'hidden',
+  header: {
     maxHeight: '40vh',
-  },
-  title: {
-    textAlign: 'center',
   },
 }))
 
-const Header = (props) => {
+export default function Header(props) {
   const classes = useStyles();
 
   const { resultCallback } = props;
   return (
-      <Container maxWidth="sm" className={classes.root}>
-        <h1 className= {classes.title} >GTM Insight</h1>
-        <SearchBarTwo resultCallback={resultCallback} />
+      <Container maxWidth="sm" className={classes.header}>
+        <Title titleText="GTM Insight" />
+        <SearchBar resultCallback={resultCallback} />
       </Container>
   );
-};
-
-Header.propTypes = {
-  resultCallback: PropTypes.func.isRequired,
-};
-
-export default Header;
+}
