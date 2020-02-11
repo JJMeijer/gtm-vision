@@ -1,150 +1,82 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
 
-class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
+const useStyles = makeStyles(theme => ({
+  searchbox: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: 500,
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  select: {
+    width: '25%',
+  },
+  iconButton: {
+    padding: 10,
+  },
+  divider: {
+    height: 28,
+    margin: 4,
+  },
+}))
 
-    this.state = {
-      type: 'GTM ID',
-      placeholder: 'GTM-NTQ25T',
-      value: '',
-      valid: true,
-      errorMessage: '',
-      options: [{
-        type: 'GTM ID',
-        placeholder: 'GTM-NTQ25T',
-        endpoint: '/api/gtm',
-        validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
-        validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
-      }, {
-        type: 'URL',
-        placeholder: 'https://www.digital-power.com',
-        endpoint: '/api/www',
-        validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
-        validateMessage: 'The URL you provided is not valid',
-      }],
-    };
-
-    this.handleValueChange = this.handleValueChange.bind(this);
-    this.handleTypeChange = this.handleTypeChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validate = this.validate.bind(this);
-  }
-
-  handleValueChange(change) {
-    this.setState({
-      value: change,
-      valid: true,
-      errorMessage: '',
-    });
-
-    const { resultCallback } = this.props;
-    resultCallback(null);
-  }
-
-  handleTypeChange(type) {
-    const { options } = this.state;
-    const [{ placeholder }] = options.filter(o => o.type === type);
-
-    this.setState({
-      type,
-      placeholder,
-      value: '',
-      valid: true,
-    });
-
-    const { resultCallback } = this.props;
-    resultCallback(null);
-  }
-
-  validate() {
-    const { value, type, options } = this.state;
-    const [{ validateValue, validateMessage }] = options.filter(x => x.type === type);
-
-    if (validateValue(value)) {
-      return true;
-    }
-
-    if (value === '') {
-      this.setState({
-        valid: false,
-        errorMessage: 'a value is required',
-      });
-    } else {
-      this.setState({
-        valid: false,
-        errorMessage: validateMessage,
-      });
-    }
-
-    return false;
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    if (this.validate()) {
-      const { value, type, options } = this.state;
-      const { resultCallback } = this.props;
-      const [{ endpoint }] = options.filter(x => x.type === type);
-      fetch(`${document.location.origin}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ value }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response;
-        })
-        .then(response => response.json())
-        .then(({ resource }) => resultCallback(resource))
-        .catch(error => console.log(error));
-    }
-  }
-
-  render() {
-    const {
-      value,
-      type,
-      placeholder,
-      valid,
-      errorMessage,
-      options,
-    } = this.state;
-
-    return (
-      <Form onSubmit={this.handleSubmit} className="searchbar">
-        <Tooltip visible={!valid} effect="light" content={errorMessage} placement="bottom" manual>
-          <Input
-            onChange={this.handleValueChange}
-            placeholder={placeholder}
-            autoComplete="on"
-            value={value}
-            append={
-              <Button nativeType="submit" type="primary" icon="search" size="large">Get</Button>
-            }
-            prepend={(
-              <Select className="searchtype" size="large" value={type} onChange={this.handleTypeChange}>
-                {
-                  options.map(option => <Select.Option key={option.type} value={option.type} />)
-                }
-              </Select>
-            )}
-          />
-        </Tooltip>
-      </Form>
-    );
+const inputOptions = {
+  GTMID: {
+    name: 'GTM ID',
+    placeholder: 'GTM-NTQ25T',
+    endpoint: '/api/gtm',
+    validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
+    validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
+  },
+  URL: {
+    name: 'URL',
+    placeholder: 'https://www.digital-power.com',
+    endpoint: '/api/www',
+    validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
+    validateMessage: 'The URL you provided is not valid',
   }
 }
 
-SearchBar.propTypes = {
-  resultCallback: PropTypes.func.isRequired,
-};
+export default function SearchBar(props) {
+  const [inputType, setInputType] = useState("GTMID")
+  const { placeholder } = inputOptions[inputType]
 
-export default SearchBar;
+  const handleTypeChange = event => {
+    setInputType(event.target.value);
+  }
+
+  const classes = useStyles();
+  return (
+    <Paper component="form" className={classes.searchbox}>
+      <Select
+          className={classes.select}
+          value={inputType}
+          onChange={handleTypeChange}
+          variant="standard"
+      >
+        <MenuItem value={"GTMID"}>GTM ID</MenuItem>
+        <MenuItem value={"URL"}>URL</MenuItem>
+      </Select>
+      <Divider className={classes.divider} orientation="vertical" />
+      <InputBase
+        className={classes.input}
+        placeholder={placeholder}
+      />
+
+      <IconButton type="submit" className={classes.iconButton}>
+        <SearchIcon />
+      </IconButton>
+    </Paper>
+  )
+}

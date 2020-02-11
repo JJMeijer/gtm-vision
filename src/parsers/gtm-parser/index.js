@@ -1,3 +1,1 @@
-import parseGtm from './parse-gtm';
-
-export default parseGtm;
+export { parseGtm } from './parse-gtm';
