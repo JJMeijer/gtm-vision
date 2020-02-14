@@ -6,7 +6,7 @@ export default function Result(props) {
   let resultElement = <div />;
   if (parsedData) {
     console.log('parsed: ', parsedData);
-    resultElement = <div>{JSON.stringify(parsedData)}</div>
+    resultElement = <code>{JSON.stringify(parsedData,0,4)}</code>
   }
 
   return resultElement;
