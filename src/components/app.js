@@ -20,18 +20,18 @@ export default function App() {
   const [parsedData, pushTagManagerData] = useState(null);
 
   return (
-  <React.Fragment>
-    <CssBaseline />
-    <Container maxWidth="xl" className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Header resultCallback={pushTagManagerData} />
+    <>
+      <CssBaseline />
+      <Container maxWidth="xl" className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Header resultCallback={pushTagManagerData} />
+          </Grid>
+          <Grid item xs={12}>
+            <Result parsedData={parsedData} />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Result parsedData={parsedData} />
-        </Grid>
-      </Grid>
-    </Container>
-  </React.Fragment>
+      </Container>
+    </>
   );
 }
