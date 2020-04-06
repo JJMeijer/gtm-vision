@@ -5,8 +5,7 @@ import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
 import removeInner from './remove-inner';
 
-const parseGtm = function parseGtmContainer(container) {
-  console.log(container);
+export default function parseGtm(container) {
   const {
     macros,
     predicates,
@@ -47,6 +46,4 @@ const parseGtm = function parseGtmContainer(container) {
   removeInner(parsedContainer);
 
   return parsedContainer;
-};
-
-export default parseGtm;
+}

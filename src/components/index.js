@@ -1,3 +1,3 @@
-export { App } from './app';
-export { Header } from './header';
-export { Result } from './result';
+export { default as App } from './app';
+export { default as Header } from './header';
+export { default as Result } from './result';

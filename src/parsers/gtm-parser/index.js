@@ -1,1 +1,1 @@
-export { parseGtm } from './parse-gtm';
+export { default } from './parse-gtm';
