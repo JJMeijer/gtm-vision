@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -32,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     height: 28,
     margin: 4,
   },
-}))
+}));
 
 const inputOptions = {
   GTMID: {
@@ -46,28 +47,33 @@ const inputOptions = {
     endpoint: '/api/www',
     validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
     validateMessage: 'The URL you provided is not valid',
-  }
-}
+  },
+};
 
 export default function SearchBar(props) {
   const { resultCallback } = props;
-  const [inputValue, setInputValue] = useState('');
-  const [inputType, setInputType] = useState("GTMID");
+  const [inputValue, setInputValue] = useState('GTM-NTQ25T');
+  const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
-  const { placeholder, endpoint, validateValue, validateMessage } = inputOptions[inputType];
+  const {
+    placeholder,
+    endpoint,
+    validateValue,
+    validateMessage,
+  } = inputOptions[inputType];
 
-  const handleTypeChange = event => {
+  const handleTypeChange = (event) => {
     setInputType(event.target.value);
     setInputValue('');
     setInputValid(true);
     resultCallback(null);
-  }
+  };
 
-  const handleValueChange = event => {
+  const handleValueChange = (event) => {
     setInputValue(event.target.value);
     setInputValid(true);
     resultCallback(null);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -82,7 +88,7 @@ export default function SearchBar(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          value: inputValue
+          value: inputValue,
         }),
       })
         .then((response) => {
@@ -95,19 +101,19 @@ export default function SearchBar(props) {
         .then(({ resource }) => resultCallback(resource))
         .catch(error => console.log(error));
     }
-  }
+  };
 
   const classes = useStyles();
   return (
     <Paper dp="20" component="form" className={classes.root} onSubmit={handleSubmit}>
       <Select
-          className={classes.select}
-          value={inputType}
-          onChange={handleTypeChange}
-          disableUnderline
+        className={classes.select}
+        value={inputType}
+        onChange={handleTypeChange}
+        disableUnderline
       >
-        <MenuItem value={"GTMID"}>GTM ID</MenuItem>
-        <MenuItem value={"URL"}>URL</MenuItem>
+        <MenuItem value="GTMID">GTM ID</MenuItem>
+        <MenuItem value="URL">URL</MenuItem>
       </Select>
 
       <Divider className={classes.divider} orientation="vertical" />
@@ -127,7 +133,7 @@ export default function SearchBar(props) {
           onChange={handleValueChange}
           value={inputValue}
           InputProps={{
-            disableUnderline: true
+            disableUnderline: true,
           }}
         />
       </Tooltip>
@@ -136,5 +142,9 @@ export default function SearchBar(props) {
         <SearchIcon />
       </IconButton>
     </Paper>
-  )
+  );
 }
+
+SearchBar.propTypes = {
+  resultCallback: PropTypes.func.isRequired,
+};

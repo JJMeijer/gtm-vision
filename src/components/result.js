@@ -1,14 +1,17 @@
 import React from 'react';
+import ResultTabs from './result-tabs';
+import parseGtm from '../parsers/gtm-parser';
 
 export default function Result(props) {
-  const { parsedData } = props;
-
+  const { data } = props;
   let resultElement = <div />;
-  if (parsedData) {
-    console.log('parsed: ', parsedData);
-    resultElement = <code>{JSON.stringify(parsedData,0,4)}</code>
+
+  if (data) {
+    console.log('raw data: ', data);
+    const parsedData = parseGtm(data);
+    console.log('parsed data: ', parsedData);
+    resultElement = <ResultTabs parsedData={parsedData} />;
   }
 
   return resultElement;
 }
-

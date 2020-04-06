@@ -9,7 +9,6 @@ import Result from './result';
 
 const useStyles = makeStyles({
   root: {
-    background: 'linear-gradient(45deg, #4C8BF5 30%, #5d8fe4 90%)',
     fontFamily: ['Roboto', 'sans-serif'],
     display: 'flex',
   },
@@ -17,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
-  const [parsedData, pushTagManagerData] = useState(null);
+  const [data, pushTagManagerData] = useState(null);
 
   return (
     <>
@@ -28,7 +27,7 @@ export default function App() {
             <Header resultCallback={pushTagManagerData} />
           </Grid>
           <Grid item xs={12}>
-            <Result parsedData={parsedData} />
+            <Result data={data} />
           </Grid>
         </Grid>
       </Container>

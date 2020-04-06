@@ -6,7 +6,8 @@ import SearchBar from './search-bar';
 import Title from './title';
 
 const useStyles = makeStyles(() => ({
-  header: {
+  root: {
+    background: 'linear-gradient(45deg, #4C8BF5 30%, #5d8fe4 90%)',
     maxHeight: '40vh',
   },
 }));
@@ -16,7 +17,7 @@ export default function Header(props) {
 
   const { resultCallback } = props;
   return (
-    <Grid container className={classes.header} spacing={3} direction='column' alignItems='center' justify='center'>
+    <Grid container className={classes.root} spacing={3} direction="column" alignItems="center" justify="center">
       <Grid item xs={12}>
         <Title titleText="GTM Insight" />
       </Grid>
