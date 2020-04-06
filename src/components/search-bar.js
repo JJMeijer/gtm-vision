@@ -8,9 +8,10 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 
 const useStyles = makeStyles(theme => ({
-  searchbox: {
+  root: {
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
@@ -31,9 +32,6 @@ const useStyles = makeStyles(theme => ({
     height: 28,
     margin: 4,
   },
-  tooltip: {
-    fontSize: '5em',
-  }
 }))
 
 const inputOptions = {
@@ -73,9 +71,11 @@ export default function SearchBar(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setInputValid(validateValue(inputValue));
 
-    if (inputValid) {
+    const isInputValid = validateValue(inputValue);
+    setInputValid(isInputValid);
+
+    if (isInputValid) {
       fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
         headers: {
@@ -99,7 +99,7 @@ export default function SearchBar(props) {
 
   const classes = useStyles();
   return (
-    <Paper dp="20" component="form" className={classes.searchbox} onSubmit={handleSubmit}>
+    <Paper dp="20" component="form" className={classes.root} onSubmit={handleSubmit}>
       <Select
           className={classes.select}
           value={inputType}
@@ -115,6 +115,7 @@ export default function SearchBar(props) {
       <Tooltip
         title={validateMessage}
         open={!inputValid}
+        TransitionComponent={Zoom}
         arrow
         disableFocusListener
         disableHoverListener

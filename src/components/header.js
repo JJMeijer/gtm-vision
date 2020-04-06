@@ -1,23 +1,32 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from './search-bar';
 import Title from './title';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   header: {
     maxHeight: '40vh',
   },
-}))
+}));
 
 export default function Header(props) {
   const classes = useStyles();
 
   const { resultCallback } = props;
   return (
-      <Container maxWidth="sm" className={classes.header}>
+    <Grid container className={classes.header} spacing={3} direction='column' alignItems='center' justify='center'>
+      <Grid item xs={12}>
         <Title titleText="GTM Insight" />
+      </Grid>
+      <Grid item xs={12}>
         <SearchBar resultCallback={resultCallback} />
-      </Container>
+      </Grid>
+    </Grid>
   );
 }
+
+Header.propTypes = {
+  resultCallback: PropTypes.func.isRequired,
+};
