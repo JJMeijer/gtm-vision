@@ -1,8 +1,8 @@
 import React from 'react';
-import ResultTabs from './result-tabs';
+import ContainerTabs from './container-tabs';
 import parseGtm from '../parsers/gtm-parser';
 
-export default function Result(props) {
+export default function Container(props) {
   const { data } = props;
   let resultElement = <div />;
 
@@ -10,7 +10,7 @@ export default function Result(props) {
     console.log('raw data: ', data);
     const parsedData = parseGtm(data);
     console.log('parsed data: ', parsedData);
-    resultElement = <ResultTabs parsedData={parsedData} />;
+    resultElement = <ContainerTabs parsedData={parsedData} />;
   }
 
   return resultElement;

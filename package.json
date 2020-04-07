@@ -33,6 +33,7 @@
     "express": "^4.17.1",
     "js-beautify": "^1.11.0",
     "morgan": "^1.10.0",
+    "node-cache": "^5.1.0",
     "parcel-bundler": "^1.12.4",
     "prop-types": "^15.7.2",
     "puppeteer": "^2.1.1",
