@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Header from './header';
-import Result from './result';
+import ContainerResult from './container';
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +27,7 @@ export default function App() {
             <Header resultCallback={pushTagManagerData} />
           </Grid>
           <Grid item xs={12}>
-            <Result data={data} />
+            <ContainerResult data={data} />
           </Grid>
         </Grid>
       </Container>

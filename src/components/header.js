@@ -5,9 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from './search-bar';
 import Title from './title';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    background: 'linear-gradient(45deg, #4C8BF5 30%, #5d8fe4 90%)',
+    backgroundColor: theme.palette.primary.main,
     maxHeight: '40vh',
   },
 }));
