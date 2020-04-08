@@ -36,8 +36,10 @@ const parseTags = function parseTags(tagsArray) {
 
       // Parse Tag firing Rules
       if (key.match(/^unlimited$|^once_per.+/)) {
+        const tagValues = parsedTag.tagValues || {};
         const firingOption = key.replace(/_/g, ' ').replace('load', 'page');
-        parsedTag.firingOption = firingOption.charAt(0).toUpperCase() + firingOption.slice(1);
+        tagValues.firingOption = firingOption.charAt(0).toUpperCase() + firingOption.slice(1);
+        parsedTag.tagValues = tagValues;
       }
 
       // Parse tag sequencing keys
@@ -52,8 +54,11 @@ const parseTags = function parseTags(tagsArray) {
         ];
 
         tagSequencing[sequencingType] = {};
-        [, [, tagSequencing[sequencingType].tag, tagSequencing[sequencingType].option]] = tag[key];
-        tagSequencing[sequencingType].optionText = optionText[tagSequencing[sequencingType].option];
+
+        tagSequencing[sequencingType].tag = tag[key][1].slice(0, 2);
+        const option = tag[key][1].slice(2);
+        tagSequencing[sequencingType].optionText = optionText[option];
+
         parsedTag.tagSequencing = tagSequencing;
       }
 
@@ -85,6 +90,7 @@ const parseTags = function parseTags(tagsArray) {
       }
 
       parsedTag.reference = `${parsedTag.reference} - ${description}`;
+      parsedTag.tagValues.trackType = description;
     }
 
     // Push parsed macro to the new array.

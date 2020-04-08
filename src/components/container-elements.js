@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+import ContainerElementContent from './container-element-content';
+
 const useStyles = makeStyles(theme => ({
   rows: {
     height: 500,
@@ -55,6 +57,7 @@ export default function ContainerElements(props) {
         </Grid>
         <Grid item xs={9}>
           <Paper className={classes.content}>
+            <ContainerElementContent data={tabContent[rowValues[tabInd]]} />
             <pre>{JSON.stringify(tabContent[rowValues[tabInd]], 0, 4)}</pre>
           </Paper>
         </Grid>
