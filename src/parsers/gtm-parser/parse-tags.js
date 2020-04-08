@@ -8,6 +8,7 @@ const parseTags = function parseTags(tagsArray) {
     const parsedTag = {};
 
     parsedTag.category = 'tag';
+
     Object.keys(tag).forEach((key) => {
       if (key === 'function') {
         if (tagNames[tag[key]]) {

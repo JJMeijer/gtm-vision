@@ -21,8 +21,9 @@ export default function TagSettings(props) {
 
   return (
     <>
+      <Typography variant="h6">Tag Settings:</Typography>
       {Object.keys(tagValues).map(key => (
-        <Grid container spacing={1}>
+        <Grid container spacing={1} key={key}>
           <Grid item xs={3} className={classes.tagValueKey}>
             <Typography variant="subtitle1">{`${convertCamelCase(key)}:`}</Typography>
           </Grid>
@@ -36,5 +37,8 @@ export default function TagSettings(props) {
 }
 
 TagSettings.propTypes = {
-  tagValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  tagValues: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ])).isRequired,
 };

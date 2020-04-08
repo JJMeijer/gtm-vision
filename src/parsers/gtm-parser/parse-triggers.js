@@ -17,6 +17,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
     ruleObj.occurrences = 0;
     ruleObj.category = 'trigger';
     ruleObj.reference = `Trigger(${index})`;
+    ruleObj.index = index;
     rule.forEach((rulePart) => {
       const rulePartType = rulePart[0];
 

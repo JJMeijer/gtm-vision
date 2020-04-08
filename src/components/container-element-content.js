@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function ContainerElementContent(props) {
   const classes = useStyles();
-  const { data } = props;
+  const { data, navigation } = props;
   const { category, type, reference } = data;
 
   let contentElement = <div>{`${category} - ${type}`}</div>;
   if (category === 'tag') {
-    contentElement = (<Tag data={data} />);
+    contentElement = (<Tag data={data} navigation={navigation} />);
   }
 
   return (
@@ -45,4 +45,5 @@ ContainerElementContent.propTypes = {
     type: PropTypes.string.isRequired,
     reference: PropTypes.string.isRequired,
   }).isRequired,
+  navigation: PropTypes.func.isRequired,
 };

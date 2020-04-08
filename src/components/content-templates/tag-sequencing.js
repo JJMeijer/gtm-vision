@@ -18,19 +18,29 @@ const useStyles = makeStyles(theme => ({
 
 export default function TagSequencing(props) {
   const classes = useStyles();
-  const { tagSequencingData, reference } = props;
+  const { tagSequencingData, reference, navigation } = props;
 
   return (
     <>
+      <Typography variant="h6">Tag Sequencing:</Typography>
       {Object.keys(tagSequencingData).map((key) => {
         const sequenceText = `Fire ${key === 'setup' ? 'before' : 'after'} ${reference} fires:`;
+        const referencedTag = tagSequencingData[key].tag.replace(/{|}/g, '');
+
         return (
-          <Grid container spacing={1}>
+          <Grid key={`${key}-${reference}`} container spacing={1}>
             <Grid item xs={4} className={classes.sequenceText}>
               <Typography variant="subtitle1">{sequenceText}</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Button variant="contained" color="secondary" className={classes.tagButton}>{tagSequencingData[key].tag}</Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.tagButton}
+                onClick={() => navigation(0, referencedTag)}
+              >
+                {referencedTag}
+              </Button>
             </Grid>
           </Grid>
         );
@@ -51,4 +61,5 @@ TagSequencing.propTypes = {
     }),
   }).isRequired,
   reference: PropTypes.string.isRequired,
+  navigation: PropTypes.func.isRequired,
 };
