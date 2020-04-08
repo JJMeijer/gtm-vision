@@ -12,20 +12,39 @@ const useStyles = makeStyles(theme => ({
 
 export default function TagConnections(props) {
   const classes = useStyles();
-  const { triggers, tags } = props;
+  const { triggers, tags, navigation } = props;
 
   return (
     <>
       {triggers && (
       <>
         <Typography variant="h6">Triggers:</Typography>
-        {triggers.map(item => (<Button variant="contained" color="primary" className={classes.button}>{item.reference}</Button>))}
+        {triggers.map(item => (
+          <Button
+            key={`button-${item.reference}`}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => navigation(1, item.index)}
+          >
+            {item.reference}
+          </Button>
+        ))}
       </>
       )}
       {tags && (
       <>
         <Typography variant="h6">Used for Tags:</Typography>
-        {tags.map(item => (<Button variant="contained" color="secondary" className={classes.button}>{item.reference}</Button>))}
+        {tags.map(item => (
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            onClick={() => navigation(0, item.index)}
+          >
+            {item.reference}
+          </Button>
+        ))}
       </>
       )}
     </>
@@ -35,8 +54,15 @@ export default function TagConnections(props) {
 TagConnections.propTypes = {
   triggers: PropTypes.arrayOf(PropTypes.shape({
     reference: PropTypes.string.isRequired,
-  })).isRequired,
+    index: PropTypes.number.isRequired,
+  })),
   tags: PropTypes.arrayOf(PropTypes.shape({
     reference: PropTypes.string.isRequired,
-  })).isRequired,
+  })),
+  navigation: PropTypes.func.isRequired,
+};
+
+TagConnections.defaultProps = {
+  triggers: [],
+  tags: [],
 };

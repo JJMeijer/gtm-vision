@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 import TagSettings from './tag-settings';
 import TagConnections from './tag-connections';
@@ -9,7 +8,7 @@ import TagSequencing from './tag-sequencing';
 import CodeBlock from './code-block';
 
 export default function Tag(props) {
-  const { data } = props;
+  const { data, navigation } = props;
   const {
     tagValues,
     usedIn,
@@ -27,16 +26,18 @@ export default function Tag(props) {
         </Grid>
       )}
       <Grid item xs={12}>
-        <Typography variant="h6">Tag Settings:</Typography>
         <TagSettings tagValues={tagValues} />
       </Grid>
       <Grid item xs={12}>
-        <TagConnections triggers={triggers} tags={tags} />
+        <TagConnections triggers={triggers} tags={tags} navigation={navigation} />
       </Grid>
       {tagSequencing && (
         <Grid item xs={12}>
-          <Typography variant="h6">Tag Sequencing:</Typography>
-          <TagSequencing tagSequencingData={tagSequencing} reference={reference} />
+          <TagSequencing
+            tagSequencingData={tagSequencing}
+            reference={reference}
+            navigation={navigation}
+          />
         </Grid>
       )}
     </Grid>
@@ -62,4 +63,5 @@ Tag.propTypes = {
     })),
     reference: PropTypes.string.isRequired,
   }).isRequired,
+  navigation: PropTypes.func.isRequired,
 };

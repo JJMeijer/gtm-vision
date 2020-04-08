@@ -16,6 +16,11 @@ export default function ContainerTabs(props) {
     setTabIndex(newTab);
   };
 
+  const getIndexFromReference = (tab, reference) => {
+    const items = parsedData[tabTypes[tab]];
+    return items.findIndex(item => item.reference === reference);
+  };
+
   return (
     <>
       <Grid
@@ -37,6 +42,8 @@ export default function ContainerTabs(props) {
           <ContainerElements
             tabInd={currentTab}
             tabContent={parsedData[tabTypes[currentTab]]}
+            tabNavigation={setTabIndex}
+            getIndexFromReference={getIndexFromReference}
           />
         </Grid>
       </Grid>

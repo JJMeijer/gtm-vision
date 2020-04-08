@@ -3,7 +3,6 @@ import parseTags from './parse-tags';
 import { parseTriggers, parseTriggerNames } from './parse-triggers';
 import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
-import removeInner from './remove-inner';
 
 export default function parseGtm(container) {
   const {
@@ -31,19 +30,29 @@ export default function parseGtm(container) {
   /**
    * Use the resolved references to define meaningful trigger names
    */
-  parsedContainer.triggers.map(parseTriggerNames);
+  parsedContainer.triggers = parsedContainer.triggers.map(parseTriggerNames);
 
   /**
    * Parse the variable references in code elements of both tags and variables
    */
-  parsedContainer.tags.map(parseCode);
-  parsedContainer.variables.map(parseCode);
+  parsedContainer.tags = parsedContainer.tags.map(parseCode);
+  parsedContainer.variables = parsedContainer.variables.map(parseCode);
 
   /**
    * Filter out tags & triggers that are used by GTM internally
    * and not defined by the user in the UI
    */
-  removeInner(parsedContainer);
+  parsedContainer.tags = parsedContainer.tags.filter(item => !item.type.match('inner_'));
+  parsedContainer.triggers = parsedContainer.triggers.filter(item => !item.type.match('inner_'));
+
+  /**
+   * Re-Index Tags array. This index is used during navigation of the container
+   */
+  parsedContainer.tags = parsedContainer.tags.map((tag, index) => {
+    const _ = tag;
+    _.index = index;
+    return _;
+  });
 
   return parsedContainer;
 }

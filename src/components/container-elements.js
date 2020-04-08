@@ -24,7 +24,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function ContainerElements(props) {
   const classes = useStyles();
-  const { tabContent, tabInd } = props;
+  const {
+    tabContent,
+    tabInd,
+    tabNavigation,
+    getIndexFromReference,
+  } = props;
   const [rowValues, setRowValues] = useState([0, 0, 0]);
 
   const handleRowChange = (event, newRowValue) => {
@@ -32,11 +37,19 @@ export default function ContainerElements(props) {
     setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tabInd ? newRowValue : oldRowValue)));
   };
 
+  const containerElementNavigation = (tab, row) => {
+    tabNavigation(tab);
+
+    const rowIndex = typeof row === 'number' ? row : getIndexFromReference(tab, row);
+    // eslint-disable-next-line max-len
+    setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tab ? rowIndex : oldRowValue)));
+  };
+
   const tabs = tabContent.map(item => (
     <Tab
+      key={item.reference}
       className={classes.row}
       label={item.reference}
-      id={item.reference}
     />
   ));
 
@@ -57,7 +70,10 @@ export default function ContainerElements(props) {
         </Grid>
         <Grid item xs={9}>
           <Paper className={classes.content}>
-            <ContainerElementContent data={tabContent[rowValues[tabInd]]} />
+            <ContainerElementContent
+              data={tabContent[rowValues[tabInd]]}
+              navigation={containerElementNavigation}
+            />
             <pre>{JSON.stringify(tabContent[rowValues[tabInd]], 0, 4)}</pre>
           </Paper>
         </Grid>
@@ -73,4 +89,6 @@ ContainerElements.propTypes = {
     }),
   ).isRequired,
   tabInd: PropTypes.number.isRequired,
+  tabNavigation: PropTypes.func.isRequired,
+  getIndexFromReference: PropTypes.func.isRequired,
 };
