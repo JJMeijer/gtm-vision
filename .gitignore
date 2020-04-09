@@ -1,5 +1,6 @@
 # Ignored maps/files
 node_modules/
+.VSCodeCounter/
 .env
 .cache/
 public/
