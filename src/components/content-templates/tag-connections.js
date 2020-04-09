@@ -37,6 +37,7 @@ export default function TagConnections(props) {
         <Typography variant="h6">Used for Tags:</Typography>
         {tags.map(item => (
           <Button
+            key={`button-${item.reference}`}
             variant="contained"
             color="secondary"
             className={classes.button}
@@ -63,6 +64,6 @@ TagConnections.propTypes = {
 };
 
 TagConnections.defaultProps = {
-  triggers: [],
-  tags: [],
+  triggers: undefined,
+  tags: undefined,
 };

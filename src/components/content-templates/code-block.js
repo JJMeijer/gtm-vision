@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Prism from 'prismjs';
 import { js, html } from 'js-beautify';
 
+import VariableLink from './variable-link';
+
 const beautifierOptions = {
   indent_size: 4,
   indent_char: ' ',
@@ -11,8 +13,22 @@ const beautifierOptions = {
 };
 
 export default function CodeBlock(props) {
-  const { codeString, codeType } = props;
+  const { codeString, codeType, navigation } = props;
   let beautifiedCode = codeString;
+  const variableLinks = [];
+
+  // Find Variable Names in Code & Create Links
+  codeString.split(/({{[^{]+}})/).forEach((codePart) => {
+    const variableMatch = codePart.match(/{{(.+)}}/);
+    if (variableMatch) {
+      variableLinks.push(
+        <VariableLink
+          navigation={navigation}
+          variableName={variableMatch[1]}
+        />,
+      );
+    }
+  });
 
   if (codeType === 'html') {
     beautifiedCode = html(codeString, beautifierOptions);
@@ -32,6 +48,12 @@ export default function CodeBlock(props) {
           {beautifiedCode}
         </code>
       </pre>
+      {variableLinks.length > 0 && (
+        <Typography variant="subtitle1">
+          {'Variables in Code: '}
+          {variableLinks}
+        </Typography>
+      )}
     </>
   );
 }
@@ -39,4 +61,5 @@ export default function CodeBlock(props) {
 CodeBlock.propTypes = {
   codeString: PropTypes.string.isRequired,
   codeType: PropTypes.string.isRequired,
+  navigation: PropTypes.func.isRequired,
 };
