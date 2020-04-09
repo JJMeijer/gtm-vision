@@ -22,11 +22,11 @@ export default function Tag(props) {
     <Grid container spacing={3}>
       {code && (
         <Grid item xs={12}>
-          <CodeBlock codeString={code} codeType="html" />
+          <CodeBlock codeString={code} codeType="html" navigation={navigation} />
         </Grid>
       )}
       <Grid item xs={12}>
-        <TagSettings tagValues={tagValues} />
+        <TagSettings tagValues={tagValues} navigation={navigation} />
       </Grid>
       <Grid item xs={12}>
         <TagConnections triggers={triggers} tags={tags} navigation={navigation} />
