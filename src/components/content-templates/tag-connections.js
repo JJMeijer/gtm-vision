@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -12,14 +13,37 @@ const useStyles = makeStyles(theme => ({
 
 export default function TagConnections(props) {
   const classes = useStyles();
-  const { triggers, tags, navigation } = props;
+  const {
+    reference,
+    triggers,
+    tags,
+    navigation,
+  } = props;
+
+  /**
+   * Exceptions (reverse triggers) are originally located within the triggers array
+   * So they need to be extracted first to display seperately from the triggers.
+   * This is done by looking into the trigger Object and finding out if in the
+   * optional exception array the current tag (reference) is mentioned.
+   */
+  const realTriggers = [];
+  const exceptionTriggers = [];
+  if (triggers) {
+    triggers.forEach((trigger) => {
+      if (trigger.exceptions && trigger.exceptions.indexOf(`{{${reference}}}`) !== -1) {
+        exceptionTriggers.push(trigger);
+      } else {
+        realTriggers.push(trigger);
+      }
+    });
+  }
 
   return (
     <>
-      {triggers && (
-      <>
+      {realTriggers.length > 0 && (
+      <Grid container direction="row" justify="flex-start" alignItems="center">
         <Typography variant="h6">Triggers:</Typography>
-        {triggers.map(item => (
+        {realTriggers.map(item => (
           <Button
             key={`button-${item.reference}`}
             variant="contained"
@@ -30,10 +54,26 @@ export default function TagConnections(props) {
             {item.reference}
           </Button>
         ))}
-      </>
+      </Grid>
       )}
-      {tags && (
-      <>
+      {exceptionTriggers.length > 0 && (
+        <Grid container direction="row" justify="flex-start" alignItems="center">
+          <Typography variant="h6">Exceptions:</Typography>
+          {exceptionTriggers.map(item => (
+            <Button
+              key={`button-${item.reference}`}
+              variant="contained"
+              color="warning"
+              className={classes.button}
+              onClick={() => navigation(1, item.index)}
+            >
+              {item.reference}
+            </Button>
+          ))}
+        </Grid>
+      )}
+      {tags.length > 0 && (
+      <Grid container direction="row" justify="flex-start" alignItems="center">
         <Typography variant="h6">Used for Tags:</Typography>
         {tags.map(item => (
           <Button
@@ -46,7 +86,7 @@ export default function TagConnections(props) {
             {item.reference}
           </Button>
         ))}
-      </>
+      </Grid>
       )}
     </>
   );
@@ -61,9 +101,10 @@ TagConnections.propTypes = {
     reference: PropTypes.string.isRequired,
   })),
   navigation: PropTypes.func.isRequired,
+  reference: PropTypes.string.isRequired,
 };
 
 TagConnections.defaultProps = {
-  triggers: undefined,
-  tags: undefined,
+  triggers: [],
+  tags: [],
 };

@@ -23,9 +23,11 @@ export default function CodeBlock(props) {
     if (variableMatch) {
       variableLinks.push(
         <VariableLink
+          key={variableMatch}
           navigation={navigation}
           variableName={variableMatch[1]}
         />,
+        ' ',
       );
     }
   });

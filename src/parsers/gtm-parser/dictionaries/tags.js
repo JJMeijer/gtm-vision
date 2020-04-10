@@ -11,6 +11,14 @@ const tagDictionary = () => ({
     fullName: 'Google Remarketing',
     counter: 0,
   },
+  __gaawc: {
+    fullName: 'GA App + Web Configuration',
+    counter: 0,
+  },
+  __gaawe: {
+    fullName: 'GA App + Web Event',
+    counter: 0,
+  },
   __flc: {
     fullName: 'Floodlight Counter',
     counter: 0,
@@ -320,6 +328,10 @@ const tagDictionary = () => ({
   },
   __paused: {
     fullName: 'inner_paused',
+    counter: 0,
+  },
+  template: {
+    fullName: 'Custom Template',
     counter: 0,
   },
   unknown: 0,

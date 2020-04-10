@@ -37,7 +37,7 @@ export default function ContainerElements(props) {
     setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tabInd ? newRowValue : oldRowValue)));
   };
 
-  const containerElementNavigation = (tab, row) => {
+  const navigation = (tab, row) => {
     tabNavigation(tab);
 
     const rowIndex = typeof row === 'number' ? row : getIndexFromReference(tab, row);
@@ -72,7 +72,7 @@ export default function ContainerElements(props) {
           <Paper className={classes.content}>
             <ContainerElementContent
               data={tabContent[rowValues[tabInd]]}
-              navigation={containerElementNavigation}
+              navigation={navigation}
             />
             <pre>{JSON.stringify(tabContent[rowValues[tabInd]], 0, 4)}</pre>
           </Paper>
