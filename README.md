@@ -4,7 +4,7 @@ a Web App to analyze GTM containers.
 
 ## Setup
 
-Make sure you have the package manager [npm](https://www.npmjs.com/get-npm) installed.
+Make sure the package manager [npm](https://www.npmjs.com/get-npm) is installed.
 Run below command to install the dependencies.
 
 ```bash
