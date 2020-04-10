@@ -17,7 +17,6 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
     ruleObj.occurrences = 0;
     ruleObj.category = 'trigger';
     ruleObj.reference = `Trigger(${index})`;
-    ruleObj.index = index;
     rule.forEach((rulePart) => {
       const rulePartType = rulePart[0];
 
@@ -62,7 +61,6 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 
 const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) {
   const triggerList = triggerDictionary();
-
   const trigger = _trigger;
   const triggerType = trigger.conditions.filter(cond => cond.variable.match('Event'))[0].value;
 

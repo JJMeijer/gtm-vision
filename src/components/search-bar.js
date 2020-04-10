@@ -52,7 +52,7 @@ const inputOptions = {
 
 export default function SearchBar(props) {
   const { resultCallback } = props;
-  const [inputValue, setInputValue] = useState('GTM-NTQ25T'); // GTM-NTQ25T
+  const [inputValue, setInputValue] = useState(''); // GTM-NTQ25T
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
   const {

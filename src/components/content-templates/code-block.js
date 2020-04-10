@@ -40,7 +40,7 @@ export default function CodeBlock(props) {
     beautifiedCode = js(codeString, beautifierOptions);
   }
 
-  useEffect(() => () => Prism.highlightAll(), [props]);
+  useEffect(() => Prism.highlightAll());
 
   return (
     <>

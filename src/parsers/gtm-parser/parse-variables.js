@@ -88,6 +88,12 @@ const parseVariables = function parseVariables(macrosArray) {
       parsedMacro.reference = `${parsedMacro.reference} ${variableValues.selectorType}: ${variableValues.elementId || variableValues.elementSelector}`;
     }
 
+    if (type === 'Event') {
+      parsedMacro.variableValues = {
+        description: 'Datalayer Event name',
+      };
+    }
+
     // Push parsed macro to the new array.
     parsedArray.push(parsedMacro);
   });

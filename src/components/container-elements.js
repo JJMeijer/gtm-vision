@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: 'auto',
     textAlign: 'left',
   },
+  rowWrapper: {
+    alignItems: 'baseline',
+  },
   content: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
@@ -50,6 +53,7 @@ export default function ContainerElements(props) {
       key={item.reference}
       className={classes.row}
       label={item.reference}
+      classes={{ wrapper: classes.rowWrapper }}
     />
   ));
 
@@ -74,7 +78,6 @@ export default function ContainerElements(props) {
               data={tabContent[rowValues[tabInd]]}
               navigation={navigation}
             />
-            <pre>{JSON.stringify(tabContent[rowValues[tabInd]], 0, 4)}</pre>
           </Paper>
         </Grid>
       </Grid>

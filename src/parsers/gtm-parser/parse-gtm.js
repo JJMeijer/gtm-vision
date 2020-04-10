@@ -58,14 +58,5 @@ export default function parseGtm(container) {
   parsedContainer.triggers = parsedContainer.triggers.map(filterFromTriggers);
   parsedContainer.tags = parsedContainer.tags.map(filterFromTagSeqeuncing);
 
-  /**
-   * Re-Index Tags array. This index is used during navigation of the container
-   */
-  parsedContainer.tags = parsedContainer.tags.map((tag, index) => {
-    const tagObj = tag;
-    tagObj.index = index;
-    return tagObj;
-  });
-
   return parsedContainer;
 }
