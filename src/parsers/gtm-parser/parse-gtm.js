@@ -4,6 +4,7 @@ import { parseTriggers, parseTriggerNames } from './parse-triggers';
 import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
 import parseTemplate from './parse-template';
+import { filterFromTriggers, filterFromTagSeqeuncing } from './filter-inner';
 
 export default function parseGtm(container) {
   const {
@@ -46,19 +47,24 @@ export default function parseGtm(container) {
   parsedContainer.tags = parsedContainer.tags.map(parseTemplate);
 
   /**
-   * Filter out tags & triggers that are used by GTM internally
-   * and not defined by the user in the UI
+   * Filter out tags that are used by GTM internally
+   * and not defined by the user in the UI.
+   * This is done in 3 places.
+   * - The tags array itself
+   * - the list of related tags within a trigger object
+   * - the tags within the tagSequencing object in a tag object
    */
   parsedContainer.tags = parsedContainer.tags.filter(item => !item.type.match('inner_'));
-  parsedContainer.triggers = parsedContainer.triggers.filter(item => !item.type.match('inner_'));
+  parsedContainer.triggers = parsedContainer.triggers.map(filterFromTriggers);
+  parsedContainer.tags = parsedContainer.tags.map(filterFromTagSeqeuncing);
 
   /**
    * Re-Index Tags array. This index is used during navigation of the container
    */
   parsedContainer.tags = parsedContainer.tags.map((tag, index) => {
-    const _ = tag;
-    _.index = index;
-    return _;
+    const tagObj = tag;
+    tagObj.index = index;
+    return tagObj;
   });
 
   return parsedContainer;
