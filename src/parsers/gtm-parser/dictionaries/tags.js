@@ -307,6 +307,10 @@ const tagDictionary = () => ({
     fullName: 'GTM Zone',
     counter: 0,
   },
+  template: {
+    fullName: 'Custom Template',
+    counter: 0,
+  },
   /**
    * Tags with a fullname starting with 'inner_' will be filtered out later so use carefully.
    */
@@ -322,16 +326,20 @@ const tagDictionary = () => ({
     fullName: 'inner_visibilityListener',
     counter: 0,
   },
+  __hl: {
+    fullName: 'inner_historyListener',
+    counter: 0,
+  },
   __ytl: {
     fullName: 'inner_youtubeListener',
     counter: 0,
   },
-  __paused: {
-    fullName: 'inner_paused',
+  __fsl: {
+    fullName: 'inner_formSubmisionListener',
     counter: 0,
   },
-  template: {
-    fullName: 'Custom Template',
+  __paused: {
+    fullName: 'inner_paused',
     counter: 0,
   },
   unknown: 0,

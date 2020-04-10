@@ -10,7 +10,7 @@ export default function ContainerTabs(props) {
   const { parsedData } = props;
   const tabTypes = ['tags', 'triggers', 'variables'];
 
-  const [currentTab, setTabIndex] = useState(0);
+  const [currentTab, setTabIndex] = useState(2);
 
   const handleTabChange = (event, newTab) => {
     setTabIndex(newTab);
@@ -30,7 +30,7 @@ export default function ContainerTabs(props) {
         spacing={2}
       >
         <Grid item xs={12}>
-          <AppBar position="static">
+          <AppBar position="static" id="container-appbar">
             <Tabs value={currentTab} onChange={handleTabChange} variant="fullWidth">
               <Tab label="Tags" id="tags-tab" />
               <Tab label="Triggers" id="triggers-tab" />

@@ -42,50 +42,62 @@ export default function TagConnections(props) {
     <>
       {realTriggers.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Typography variant="h6">Triggers:</Typography>
-        {realTriggers.map(item => (
-          <Button
-            key={`button-${item.reference}`}
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => navigation(1, item.index)}
-          >
-            {item.reference}
-          </Button>
-        ))}
-      </Grid>
-      )}
-      {exceptionTriggers.length > 0 && (
-        <Grid container direction="row" justify="flex-start" alignItems="center">
-          <Typography variant="h6">Exceptions:</Typography>
-          {exceptionTriggers.map(item => (
+        <Grid item xs={1}>
+          <Typography variant="h6">Triggers:</Typography>
+        </Grid>
+        <Grid item xs={11}>
+          {realTriggers.map(item => (
             <Button
               key={`button-${item.reference}`}
               variant="contained"
-              color="warning"
+              color="primary"
               className={classes.button}
-              onClick={() => navigation(1, item.index)}
+              onClick={() => navigation(1, item.reference)}
             >
               {item.reference}
             </Button>
           ))}
         </Grid>
+      </Grid>
+      )}
+      {exceptionTriggers.length > 0 && (
+        <Grid container direction="row" justify="flex-start" alignItems="center">
+          <Grid item xs={1}>
+            <Typography variant="h6">Exceptions:</Typography>
+          </Grid>
+          <Grid item xs={11}>
+            {exceptionTriggers.map(item => (
+              <Button
+                key={`button-${item.reference}`}
+                variant="contained"
+                color="default"
+                className={classes.button}
+                onClick={() => navigation(1, item.reference)}
+              >
+                {item.reference}
+              </Button>
+            ))}
+          </Grid>
+        </Grid>
       )}
       {tags.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Typography variant="h6">Used for Tags:</Typography>
-        {tags.map(item => (
-          <Button
-            key={`button-${item.reference}`}
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            onClick={() => navigation(0, item.index)}
-          >
-            {item.reference}
-          </Button>
-        ))}
+        <Grid item xs={1}>
+          <Typography variant="h6">Used for Tags:</Typography>
+        </Grid>
+        <Grid item xs={11}>
+          {tags.map(item => (
+            <Button
+              key={`button-${item.reference}`}
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              onClick={() => navigation(0, item.reference)}
+            >
+              {item.reference}
+            </Button>
+          ))}
+        </Grid>
       </Grid>
       )}
     </>
@@ -95,7 +107,6 @@ export default function TagConnections(props) {
 TagConnections.propTypes = {
   triggers: PropTypes.arrayOf(PropTypes.shape({
     reference: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
   })),
   tags: PropTypes.arrayOf(PropTypes.shape({
     reference: PropTypes.string.isRequired,

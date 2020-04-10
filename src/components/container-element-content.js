@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import Tag from './content-templates/tag';
+import { Trigger, Tag, Variable } from './content-templates';
 
 const useStyles = makeStyles(theme => ({
   tagName: {
@@ -23,6 +23,12 @@ export default function ContainerElementContent(props) {
   let contentElement = <div>{`${category} - ${type}`}</div>;
   if (category === 'tag') {
     contentElement = (<Tag data={data} navigation={navigation} />);
+  }
+  if (category === 'trigger') {
+    contentElement = (<Trigger data={data} navigation={navigation} />);
+  }
+  if (category === 'variable') {
+    contentElement = (<Variable data={data} navigation={navigation} />);
   }
 
   return (

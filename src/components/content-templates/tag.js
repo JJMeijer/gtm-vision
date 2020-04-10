@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 
-import TagSettings from './tag-settings';
+import Settings from './settings';
 import TagConnections from './tag-connections';
 import TagSequencing from './tag-sequencing';
 import CodeBlock from './code-block';
@@ -26,7 +26,7 @@ export default function Tag(props) {
         </Grid>
       )}
       <Grid item xs={12}>
-        <TagSettings tagValues={tagValues} navigation={navigation} />
+        <Settings values={tagValues} navigation={navigation} />
       </Grid>
       <Grid item xs={12}>
         <TagConnections
