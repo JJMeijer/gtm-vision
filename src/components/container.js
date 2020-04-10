@@ -10,6 +10,7 @@ export default function Container(props) {
     console.log('raw data: ', data);
     const parsedData = parseGtm(data);
     console.log('parsed data: ', parsedData);
+
     resultElement = <ContainerTabs parsedData={parsedData} />;
   }
 

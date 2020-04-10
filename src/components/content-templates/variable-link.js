@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     textDecoration: 'none',
     margin: 0,
-    paddingRight: theme.spacing(1),
+    padding: 0,
     display: 'inline',
     '&:hover': {
       textDecoration: 'underline',
@@ -30,9 +30,6 @@ export default function VariableLink(props) {
 
   return (
     <ButtonBase
-      disableElevation
-      disableFocusRipple
-      disableRipple
       className={classes.buttonLink}
       onClick={() => navigation(2, variableName)}
     >

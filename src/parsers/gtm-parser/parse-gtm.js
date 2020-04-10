@@ -3,6 +3,7 @@ import parseTags from './parse-tags';
 import { parseTriggers, parseTriggerNames } from './parse-triggers';
 import resolveReferences from './resolve-references';
 import parseCode from './parse-code';
+import parseTemplate from './parse-template';
 
 export default function parseGtm(container) {
   const {
@@ -37,6 +38,12 @@ export default function parseGtm(container) {
    */
   parsedContainer.tags = parsedContainer.tags.map(parseCode);
   parsedContainer.variables = parsedContainer.variables.map(parseCode);
+
+  /**
+   * Parse the ['template', 'text1, {{variable name}}] format within tags to:
+   * 'text1 {{variable name}}'
+   */
+  parsedContainer.tags = parsedContainer.tags.map(parseTemplate);
 
   /**
    * Filter out tags & triggers that are used by GTM internally

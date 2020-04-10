@@ -29,7 +29,12 @@ export default function Tag(props) {
         <TagSettings tagValues={tagValues} navigation={navigation} />
       </Grid>
       <Grid item xs={12}>
-        <TagConnections triggers={triggers} tags={tags} navigation={navigation} />
+        <TagConnections
+          reference={reference}
+          triggers={triggers}
+          tags={tags}
+          navigation={navigation}
+        />
       </Grid>
       {tagSequencing && (
         <Grid item xs={12}>

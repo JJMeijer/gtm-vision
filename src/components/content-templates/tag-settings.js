@@ -35,7 +35,11 @@ export default function TagSettings(props) {
       if (stringItem.match(/{{.+}}/)) {
         const stringReference = stringItem.match(/{{(.+)}}/)[1];
         return (
-          <VariableLink navigation={navigation} variableName={stringReference} />
+          <VariableLink
+            key={stringReference}
+            navigation={navigation}
+            variableName={stringReference}
+          />
         );
       }
       return stringItem;
@@ -61,6 +65,7 @@ export default function TagSettings(props) {
             </Grid>
           );
         }
+        return (null);
       })}
     </>
   );

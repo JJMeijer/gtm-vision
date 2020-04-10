@@ -43,12 +43,10 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/node": "^7.8.7",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
-    "@svgr/parcel-plugin-svgr": "^4.3.3",
     "acorn": "^7.1.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-prismjs": "^2.0.1",

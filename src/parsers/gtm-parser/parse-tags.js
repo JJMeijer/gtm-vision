@@ -11,27 +11,38 @@ const parseTags = function parseTags(tagsArray) {
 
     Object.keys(tag).forEach((key) => {
       if (key === 'function') {
-        if (tagNames[tag[key]]) {
-          const tagName = tagNames[tag[key]].fullName;
-          tagNames[tag[key]].counter += 1;
-          const tagCounter = tagNames[tag[key]].counter;
+        const tagAbbreviation = tag[key];
+        if (tagNames[tagAbbreviation]) {
+          const tagName = tagNames[tagAbbreviation].fullName;
+          tagNames[tagAbbreviation].counter += 1;
+          const tagCounter = tagNames[tagAbbreviation].counter;
 
           parsedTag.type = tagName;
-          parsedTag.reference = `${tagName}(${tagCounter})`;
+          parsedTag.reference = `${tagName} (${tagCounter})`;
+        } else if (tagAbbreviation.match('__cvt_.+')) {
+          const tagName = tagNames.template.fullName;
+          tagNames.template.counter += 1;
+          const tagCounter = tagNames.template.counter;
+
+          parsedTag.type = tagName;
+          parsedTag.reference = `${tagName} (${tagCounter})`;
         } else {
           const tagName = 'Unknown';
           tagNames.unknown += 1;
           const tagCounter = tagNames.unknown;
 
           parsedTag.type = tagName;
-          parsedTag.reference = `${tagName}(${tagCounter}) - ${tag[key]}`;
+          parsedTag.reference = `${tagName} (${tagCounter}) - ${tag[key]}`;
         }
       }
 
-      // Parse all tag specific values in an object
+      /**
+       * Parse all tag specific values and place inside 'tagValues' object.
+       */
       if (key.match('vtp_')) {
         const tagValues = parsedTag.tagValues || {};
-        tagValues[key.replace('vtp_', '')] = tag[key];
+        const tagValue = tag[key];
+        tagValues[key.replace('vtp_', '')] = tagValue;
         parsedTag.tagValues = tagValues;
       }
 

@@ -10,9 +10,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
   sequenceText: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    paddingLeft: theme.spacing(0.75),
   },
 }));
 
@@ -24,24 +22,22 @@ export default function TagSequencing(props) {
     <>
       <Typography variant="h6">Tag Sequencing:</Typography>
       {Object.keys(tagSequencingData).map((key) => {
-        const sequenceText = `Fire ${key === 'setup' ? 'before' : 'after'} ${reference} fires:`;
+        const sequenceText = `Fired ${key === 'setup' ? 'before' : 'after'} ${reference} fires:`;
         const referencedTag = tagSequencingData[key].tag.replace(/{|}/g, '');
 
         return (
-          <Grid key={`${key}-${reference}`} container spacing={1}>
-            <Grid item xs={4} className={classes.sequenceText}>
-              <Typography variant="subtitle1">{sequenceText}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.tagButton}
-                onClick={() => navigation(0, referencedTag)}
-              >
-                {referencedTag}
-              </Button>
-            </Grid>
+          <Grid key={`${key}-${reference}`} container direction="row" alignItems="center" spacing={1}>
+            <Typography className={classes.sequenceText} variant="subtitle1">{sequenceText}</Typography>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.tagButton}
+              onClick={() => navigation(0, referencedTag)}
+            >
+              {referencedTag}
+            </Button>
+
           </Grid>
         );
       })}
