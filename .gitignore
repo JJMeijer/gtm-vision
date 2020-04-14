@@ -1,6 +1,7 @@
 # Ignored maps/files
 node_modules/
-.VSCodeCounter/
-.env
 .cache/
+dist/
 public/
+.editorconfig
+.eslintignore

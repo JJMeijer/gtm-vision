@@ -8,8 +8,9 @@ export default function Container(props) {
 
   if (data) {
     console.log('raw data: ', data);
+    const startTime = performance.now();
     const parsedData = parseGtm(data);
-    console.log('parsed data: ', parsedData);
+    console.log(`Parsed data: (${Math.round(performance.now() - startTime)}ms)`, parsedData);
 
     resultElement = <ContainerTabs parsedData={parsedData} />;
   }

@@ -75,4 +75,38 @@ const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) 
   return trigger;
 };
 
-export { parseTriggers, parseTriggerNames };
+const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_container) {
+  const container = _container;
+
+  container.triggers = container.triggers.map((_trigger) => {
+    const trigger = _trigger;
+
+    const specialTriggerTypes = ['Element Visibility', 'Youtube Video'];
+    /**
+     * Handle Element Visibility Triggers
+     */
+    if (specialTriggerTypes.indexOf(trigger.type) !== -1) {
+      const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
+      const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
+      // eslint-disable-next-line max-len
+      const correspondingTag = container.tags.filter(tag => tag.tagValues && (tag.tagValues.uniqueTriggerId === uniqueTriggerId))[0];
+
+      /**
+       * Transfer info from tag.tagValues to trigger.triggerValues
+       * Except for the uniqueTriggerId
+       */
+      trigger.triggerValues = {};
+      Object.keys(correspondingTag.tagValues).forEach((key) => {
+        if (key !== 'uniqueTriggerId') {
+          trigger.triggerValues[key] = correspondingTag.tagValues[key];
+        }
+      });
+    }
+
+    return trigger;
+  });
+
+  return container;
+};
+
+export { parseTriggers, parseTriggerNames, parseSpecialTriggers };

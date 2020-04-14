@@ -17,5 +17,5 @@ Use the below command to build the application. After building the application w
 be available at [localhost](http://localhost:3000)
 
 ```bash
-npm start
+npm run start-dev
 ```

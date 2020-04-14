@@ -4,9 +4,13 @@
   "description": "GTM Insight Application",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon --watch server --exec babel-node server/server.js --inspect",
-    "lint": "eslint . --ext .js,.jsx",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-dev": "nodemon --watch server --exec babel-node server/server.js --inspect",
+    "build-node": "babel server -d dist --minified --no-comments",
+    "build-public": "parcel build src/index.html --out-dir public",
+    "start": "node dist/server.js",
+    "gcp-build": "npm run build-node && npm run build-public",
+    "clean": "rm -r dist && rm -r public",
+    "deploy": "gcloud app deploy"
   },
   "repository": {
     "type": "git",
@@ -26,15 +30,14 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
-    "@material-ui/core": "^4.9.9",
+    "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
-    "@types/react": "^16.9.32",
+    "@types/react": "^16.9.34",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "js-beautify": "^1.11.0",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.0",
-    "parcel-bundler": "^1.12.4",
     "prismjs": "^1.20.0",
     "prop-types": "^15.7.2",
     "puppeteer": "^2.1.1",
@@ -43,10 +46,11 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/node": "^7.8.7",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "acorn": "^7.1.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-prismjs": "^2.0.1",
@@ -56,6 +60,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "nodemon": "^1.19.4",
+    "parcel-bundler": "^1.12.4",
     "react-hot-loader": "^4.12.20"
   }
 }

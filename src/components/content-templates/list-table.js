@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,43 +8,77 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles(theme => ({
+  columnHeader: {
+    fontWeight: 'bold',
+  },
+  showButton: {
+    color: theme.palette.primary.main,
+    fontSize: '1rem',
+    fontWeight: 400,
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'inline',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    '&:focus:': {
+      textDecoration: 'underline',
+    },
+  },
+}));
 
 export default function ListTable(props) {
+  const classes = useStyles();
   const { list, replaceReferenceWithLink } = props;
+  const [listVisibility, showList] = useState(false);
 
   const columnNames = list[1].filter((item, index) => index > 0 && index % 2 !== 0);
   const rows = list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0));
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            {columnNames.map(col => (
-              <TableCell width="50%" key={col}>{col}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={`row-${String(row)}`}>
-              {row.map(item => (
-                <TableCell width="50%" key={`item-${item}`}>
-                  {replaceReferenceWithLink(item)}
-                </TableCell>
+    <>
+      <Typography className={classes.showButton} onClick={() => showList(!listVisibility)}>{listVisibility ? 'Hide List' : 'Show List'}</Typography>
+      {listVisibility && (
+        <TableContainer component={Paper}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                {columnNames.map(col => (
+                  <TableCell width="50%" key={col}>
+                    <Typography variant="body1" className={classes.columnHeader}>{col}</Typography>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map(row => (
+                <TableRow key={`row-${String(row)}`}>
+                  {row.map(item => (
+                    <TableCell width="50%" key={`item-${item}`}>
+                      <Typography variant="body1">{replaceReferenceWithLink(item)}</Typography>
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </>
   );
 }
 
 ListTable.propTypes = {
-  list: PropTypes.arrayOf(PropTypes.oneOfType(
+  list: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string.isRequired,
     PropTypes.arrayOf(PropTypes.string).isRequired,
-  )).isRequired,
+  ])).isRequired,
   replaceReferenceWithLink: PropTypes.func.isRequired,
 };
