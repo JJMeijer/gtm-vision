@@ -26,7 +26,7 @@ export default function Tag(props) {
         </Grid>
       )}
       <Grid item xs={12}>
-        <Settings values={tagValues} navigation={navigation} />
+        <Settings reference={reference} values={tagValues} navigation={navigation} />
       </Grid>
       <Grid item xs={12}>
         <TagConnections

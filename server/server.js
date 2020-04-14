@@ -2,6 +2,8 @@
 import express from 'express';
 import compression from 'compression';
 import logger from 'morgan';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Bundler from 'parcel-bundler';
 
 import router from './routes';
@@ -46,7 +48,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// use parcel bundler
+// Check which environment for bundler options
 if (process.env.NODE_ENV !== 'production') {
   const bundler = new Bundler('./src/index.html', {
     outDir: appFolder,

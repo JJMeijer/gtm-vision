@@ -10,7 +10,7 @@ export default function ContainerTabs(props) {
   const { parsedData } = props;
   const tabTypes = ['tags', 'triggers', 'variables'];
 
-  const [currentTab, setTabIndex] = useState(2);
+  const [currentTab, setTabIndex] = useState(0);
 
   const handleTabChange = (event, newTab) => {
     setTabIndex(newTab);

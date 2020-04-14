@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Settings(props) {
   const classes = useStyles();
-  const { values, navigation } = props;
+  const { values, navigation, reference } = props;
 
   const replaceReferenceWithLink = (stringValue) => {
     const stringArray = stringValue.split(/({{[^{]+}})/).filter(x => x !== '');
@@ -49,7 +49,7 @@ export default function Settings(props) {
 
   return (
     <>
-      <Typography variant="h6">Settings</Typography>
+      <Typography variant="h6">Settings:</Typography>
       {Object.keys(values).map((key) => {
         if (key !== 'code') {
           const settingValue = values[key];
@@ -58,13 +58,13 @@ export default function Settings(props) {
           if (!Array.isArray(settingValue)) {
             const settingValueWithLinks = replaceReferenceWithLink(String(settingValue));
             settingValueElement = (
-              <Grid item xs={5} className={classes.settingValue}>
+              <Grid key={`${reference}-${key}`} item xs={5} className={classes.settingValue}>
                 <Typography variant="body1" className={classes.settingValueText}>{settingValueWithLinks}</Typography>
               </Grid>
             );
           } else {
             settingValueElement = (
-              <Grid item xs={5}>
+              <Grid key={`${reference}-${key}`} item xs={5} className={classes.settingValue}>
                 <ListTable
                   list={settingValue}
                   replaceReferenceWithLink={replaceReferenceWithLink}
@@ -96,4 +96,5 @@ Settings.propTypes = {
     PropTypes.array,
   ])).isRequired,
   navigation: PropTypes.func.isRequired,
+  reference: PropTypes.string.isRequired,
 };

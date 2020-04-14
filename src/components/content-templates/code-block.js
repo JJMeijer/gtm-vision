@@ -15,10 +15,18 @@ const beautifierOptions = {
 export default function CodeBlock(props) {
   const { codeString, codeType, navigation } = props;
   let beautifiedCode = codeString;
-  const variableLinks = [];
 
+  if (codeType === 'html') {
+    beautifiedCode = html(codeString, beautifierOptions);
+  }
+
+  if (codeType === 'javascript') {
+    beautifiedCode = js(codeString, beautifierOptions);
+  }
+
+  const variableLinks = [];
   // Find Variable Names in Code & Create Links
-  codeString.split(/({{[^{]+}})/).forEach((codePart) => {
+  beautifiedCode.split(/({{[^{]+}})/).forEach((codePart) => {
     const variableMatch = codePart.match(/{{(.+)}}/);
     if (variableMatch) {
       variableLinks.push(
@@ -31,14 +39,6 @@ export default function CodeBlock(props) {
       );
     }
   });
-
-  if (codeType === 'html') {
-    beautifiedCode = html(codeString, beautifierOptions);
-  }
-
-  if (codeType === 'javascript') {
-    beautifiedCode = js(codeString, beautifierOptions);
-  }
 
   useEffect(() => Prism.highlightAll());
 
