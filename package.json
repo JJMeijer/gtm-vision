@@ -4,9 +4,10 @@
   "description": "GTM Insight Application",
   "main": "server/server.js",
   "scripts": {
-    "start-dev": "nodemon --watch server --exec babel-node server/server.js --inspect",
+    "serve": "parcel watch src/index.html --out-dir public --log-level 4",
+    "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --minified --no-comments",
-    "build-public": "parcel build src/index.html --out-dir public",
+    "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",
     "clean": "rm -r dist && rm -r public",
@@ -30,10 +31,12 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
+    "@google-cloud/logging-winston": "^3.0.6",
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
     "@types/react": "^16.9.34",
     "compression": "^1.7.4",
+    "core-js": "^3.6.5",
     "express": "^4.17.1",
     "js-beautify": "^1.11.0",
     "morgan": "^1.10.0",
@@ -43,7 +46,8 @@
     "puppeteer": "^2.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

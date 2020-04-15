@@ -3,6 +3,8 @@ import request from 'request';
 import puppeteer from 'puppeteer';
 import NodeCache from 'node-cache';
 
+import logger from './logger';
+
 // Setup cache
 const containerCache = new NodeCache({
   stdTTL: 300,
@@ -17,7 +19,7 @@ router.post('/api/gtm', (req, res, next) => {
       const { value } = req.body;
       const cachedContainer = containerCache.get(value);
       if (cachedContainer) {
-        console.log(`cachedContainer Used for ${value}`);
+        logger.info(`cachedContainer Used for ${value}`);
         res.json(cachedContainer);
       } else {
         request(`https://www.googletagmanager.com/gtm.js?id=${value}`, (err, response, body) => {
@@ -52,7 +54,7 @@ router.post('/api/www', async (req, res, next) => {
       const cachedContainer = containerCache.get(valueUrl.href);
 
       if (cachedContainer) {
-        console.log(`cachedContainer Used for ${valueUrl}`);
+        logger.info(`cachedContainer Used for ${valueUrl}`);
         res.json(cachedContainer);
       } else {
         const browser = await puppeteer.launch();
@@ -60,7 +62,7 @@ router.post('/api/www', async (req, res, next) => {
         try {
           await page.goto(valueUrl, { waitUntil: 'domcontentloaded' });
         } catch (e) {
-          console.log(e);
+          logger.info(e);
           throw new Error('Website not found');
         }
 
