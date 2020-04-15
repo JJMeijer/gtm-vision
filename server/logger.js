@@ -4,19 +4,27 @@ import { LoggingWinston } from '@google-cloud/logging-winston';
 // Init Gcloud winston connection
 const loggingWinston = new LoggingWinston();
 
-// Initialize Logger
+// Set Logger Format
+const loggerFormat = winston.format.printf(({
+  level,
+  message,
+  timestamp,
+}) => `${timestamp} [${level}]: ${message}`);
+
+// Initialize Main Logger
 const logger = winston.createLogger({
   level: 'info',
-  transports: [
-    new winston.transports.Console({
-      level: 'info',
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple(),
-      ),
-    }),
-    loggingWinston,
-  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    loggerFormat,
+  ),
 });
+
+if (process.env.NODE_ENV === 'production') {
+  logger.add(loggingWinston);
+} else {
+  logger.add(new winston.transports.Console());
+}
 
 export default logger;

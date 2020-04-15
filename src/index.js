@@ -9,4 +9,6 @@ function renderApp() {
 
 renderApp();
 
-module.hot.accept();
+if (module.hot) {
+  module.hot.accept();
+}

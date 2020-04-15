@@ -4,7 +4,7 @@
   "description": "GTM Insight Application",
   "main": "server/server.js",
   "scripts": {
-    "serve": "parcel watch src/index.html --out-dir public --log-level 4",
+    "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --minified --no-comments",
     "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
