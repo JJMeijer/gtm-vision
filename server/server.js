@@ -19,9 +19,11 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Morgan logger
-const morganFormat = ':remote-addr :remote-user :method :url HTTP/:http-version :status :response-time ms ":user-agent"';
-app.use(morgan(morganFormat, { stream: { write: message => logger.info(message.trim()) } }));
+// Use morgan logger during dev
+if (process.env.NODE_ENV !== 'production') {
+  const morganFormat = ':method :url HTTP/:http-version :status :response-time ms ":user-agent"';
+  app.use(morgan(morganFormat, { stream: { write: message => logger.info(message.trim()) } }));
+}
 
 // serve static files
 app.use(express.static(appFolder));
@@ -36,7 +38,7 @@ app.use('/', router);
 
 // 404 Handling
 app.use((req, res, next) => {
-  const err = new Error('Path not Found');
+  const err = new Error('Could Not Resolve Request Path');
   err.status = 404;
   next(err);
 });
