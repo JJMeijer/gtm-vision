@@ -17,3 +17,6 @@
 # Node.js dependencies:
 node_modules/
 
+# Eslint config:
+.eslintrc
+
