@@ -20,7 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Morgan logger
-app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+const morganFormat = ':remote-addr :remote-user :method :url HTTP/:http-version :status :response-time ms ":user-agent"';
+app.use(morgan(morganFormat, { stream: { write: message => logger.info(message.trim()) } }));
 
 // serve static files
 app.use(express.static(appFolder));
