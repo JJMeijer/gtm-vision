@@ -2,10 +2,14 @@
 import express from 'express';
 import compression from 'compression';
 import morgan from 'morgan';
+import DebugAgent from '@google-cloud/debug-agent';
 
 import apiRouter from './api-router';
 import errorRouter from './error-router';
 import { serverLogger } from './loggers';
+
+// Init Google Cloud debugger agent
+DebugAgent.start();
 
 // initialize Express app
 const app = express();
