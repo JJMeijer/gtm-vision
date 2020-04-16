@@ -74,10 +74,12 @@ export default function ContainerElements(props) {
         </Grid>
         <Grid item xs={9}>
           <Paper className={classes.content}>
-            <ContainerElementContent
-              data={tabContent[rowValues[tabInd]]}
-              navigation={navigation}
-            />
+            {tabContent[rowValues[tabInd]] && (
+              <ContainerElementContent
+                data={tabContent[rowValues[tabInd]]}
+                navigation={navigation}
+              />
+            )}
           </Paper>
         </Grid>
       </Grid>

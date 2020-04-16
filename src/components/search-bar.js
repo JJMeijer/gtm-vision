@@ -106,7 +106,7 @@ export default function SearchBar(props) {
         })
         .then(response => response.json())
         .then(({ resource }) => resultCallback(resource))
-        .catch();
+        .catch(() => null);
     }
   };
 
