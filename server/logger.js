@@ -7,9 +7,10 @@ const loggingWinston = new LoggingWinston();
 // Set Logger Format
 const loggerFormat = winston.format.printf(({
   level,
+  category,
   message,
   timestamp,
-}) => `${timestamp} [${level}]: ${message}`);
+}) => `${category || 'server'} - ${timestamp} [${level}]: ${message}`);
 
 // Initialize Main Logger
 const logger = winston.createLogger({

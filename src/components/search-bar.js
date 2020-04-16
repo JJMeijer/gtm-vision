@@ -41,12 +41,14 @@ const inputOptions = {
     endpoint: '/api/gtm',
     validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
     validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
+    invalidResponseMessage: 'Could not find GTM container for provided ID',
   },
   URL: {
     placeholder: 'https://www.digital-power.com',
     endpoint: '/api/www',
     validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
     validateMessage: 'The URL you provided is not valid',
+    invalidResponseMessage: 'Could not find GTM container at provided URL',
   },
 };
 
@@ -55,23 +57,27 @@ export default function SearchBar(props) {
   const [inputValue, setInputValue] = useState('GTM-NTQ25T'); // GTM-NTQ25T
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
+  const [responseValid, setResponseValid] = useState(true);
   const {
     placeholder,
     endpoint,
     validateValue,
     validateMessage,
+    invalidResponseMessage,
   } = inputOptions[inputType];
 
   const handleTypeChange = (event) => {
     setInputType(event.target.value);
     setInputValue('');
     setInputValid(true);
+    setResponseValid(true);
     resultCallback(null);
   };
 
   const handleValueChange = (event) => {
     setInputValue(event.target.value);
     setInputValid(true);
+    setResponseValid(true);
     resultCallback(null);
   };
 
@@ -93,7 +99,8 @@ export default function SearchBar(props) {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(response.statusText);
+            setResponseValid(false);
+            throw new Error(response.statusText); // Feedback to user
           }
           return response;
         })
@@ -119,8 +126,8 @@ export default function SearchBar(props) {
       <Divider className={classes.divider} orientation="vertical" />
 
       <Tooltip
-        title={validateMessage}
-        open={!inputValid}
+        title={!inputValid ? validateMessage : invalidResponseMessage}
+        open={!inputValid || !responseValid}
         TransitionComponent={Zoom}
         arrow
         disableFocusListener
