@@ -25,7 +25,7 @@ export default function VariableConnections(props) {
       {tags.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Grid item xs={1}>
-          <Typography variant="h6">Tags:</Typography>
+          <Typography variant="button">Tags:</Typography>
         </Grid>
         <Grid item xs={11}>
           {tags.map(tagReference => (
@@ -45,7 +45,7 @@ export default function VariableConnections(props) {
       {triggers.length > 0 && (
         <Grid container direction="row" justify="flex-start" alignItems="center">
           <Grid item xs={1}>
-            <Typography variant="h6">Triggers:</Typography>
+            <Typography variant="button">Triggers:</Typography>
           </Grid>
           <Grid item xs={11}>
             {triggers.map((trigger) => {
@@ -68,7 +68,7 @@ export default function VariableConnections(props) {
       {variables.length > 0 && (
         <Grid container direction="row" justify="flex-start" alignItems="center">
           <Grid item xs={1}>
-            <Typography variant="h6">Variables:</Typography>
+            <Typography variant="button">Variables:</Typography>
           </Grid>
           <Grid item xs={11}>
             {variables.map(variableReference => (

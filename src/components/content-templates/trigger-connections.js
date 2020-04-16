@@ -23,7 +23,7 @@ export default function TriggerConnections(props) {
     <>
       {tags.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Typography variant="h6">Trigger for:</Typography>
+        <Typography variant="button">Trigger for:</Typography>
         {tags.map((tag) => {
           const tagReference = tag.match(/{{(.+)}}/)[1];
           return (
@@ -42,7 +42,7 @@ export default function TriggerConnections(props) {
       )}
       {exceptions.length > 0 && (
         <Grid container direction="row" justify="flex-start" alignItems="center">
-          <Typography variant="h6">Exception for:</Typography>
+          <Typography variant="button">Exception for:</Typography>
           {exceptions.map((exception) => {
             const exceptionReference = exception.match(/{{(.+)}}/)[1];
             return (
