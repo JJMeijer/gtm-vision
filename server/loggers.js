@@ -3,8 +3,6 @@ import { LoggingWinston } from '@google-cloud/logging-winston';
 
 // Init Gcloud winston connection
 const gcpLoggingServer = new LoggingWinston({
-  // projectId: 'gtm-insight',
-  // keyFilename: './GTM-insight-logger.json',
   prefix: 'server',
   labels: {
     component: 'server',
@@ -13,8 +11,6 @@ const gcpLoggingServer = new LoggingWinston({
 
 // Init Gcloud winston connection
 const gcpLoggingFrontend = new LoggingWinston({
-  // projectId: 'gtm-insight',
-  // keyFilename: './GTM-insight-logger.json',
   prefix: 'frontend',
   labels: {
     component: 'frontend',
@@ -57,8 +53,6 @@ if (process.env.NODE_ENV === 'production') {
       loggerFormat,
     ),
   }));
-  serverLogger.add(gcpLoggingServer);
-  frontendLogger.add(gcpLoggingFrontend);
 }
 
 export { serverLogger, frontendLogger };

@@ -52,13 +52,13 @@ app.use((req, res, next) => {
 
 // Main Error Handling
 app.use((err, req, res, next) => {
-  const { message, status = 500 } = err;
+  const { name, message, status = 500 } = err;
   res.status(status);
   res.json({
     message,
   });
 
-  serverLogger.error(err);
+  serverLogger.error(`${name}: `, err);
 
   next();
 });
