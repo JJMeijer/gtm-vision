@@ -93,7 +93,7 @@ router.post('/api/www', async (req, res, next) => {
           const container = await getGtmScript(gtmUrl);
 
           // Set value in Cache
-          containerCache.set(value, container);
+          containerCache.set(valueUrl.href, container);
 
           // Return to client.
           res.json(container);
