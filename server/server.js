@@ -5,13 +5,12 @@ import morgan from 'morgan';
 
 import apiRouter from './api-router';
 import errorRouter from './error-router';
-import logger from './logger';
+import { serverLogger } from './loggers';
 
 // initialize Express app
 const app = express();
 const port = process.env.PORT || 3000;
 const appFolder = 'public';
-
 
 // use compression
 app.use(compression());
@@ -23,7 +22,11 @@ app.use(express.urlencoded({ extended: false }));
 // Use morgan logger during dev
 if (process.env.NODE_ENV !== 'production') {
   const morganFormat = ':method :url HTTP/:http-version :status :response-time ms ":user-agent"';
-  app.use(morgan(morganFormat, { stream: { write: message => logger.info(message.trim()) } }));
+  app.use(morgan(morganFormat, {
+    stream: {
+      write: message => serverLogger.info(message.trim()),
+    },
+  }));
 }
 
 // serve static files
@@ -55,11 +58,14 @@ app.use((err, req, res, next) => {
     message,
   });
 
-  logger.error(err);
+  serverLogger.error(err);
 
   next();
 });
 
+// Log uncaught Exceptions
+process.on('uncaughtExceptionMonitor', err => serverLogger.error(err));
+
 // Start Express app
-logger.info(`GTM insight running on port: ${port}`);
+serverLogger.info(`GTM insight running on port: ${port}`);
 app.listen(port);

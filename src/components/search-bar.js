@@ -100,13 +100,13 @@ export default function SearchBar(props) {
         .then((response) => {
           if (!response.ok) {
             setResponseValid(false);
-            throw new Error(response.statusText); // Feedback to user
+            throw new Error(response.statusText);
           }
           return response;
         })
         .then(response => response.json())
         .then(({ resource }) => resultCallback(resource))
-        .catch(error => console.log(error));
+        .catch();
     }
   };
 

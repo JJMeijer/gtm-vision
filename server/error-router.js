@@ -1,6 +1,6 @@
 import express from 'express';
 
-import logger from './logger';
+import { frontendLogger } from './loggers';
 
 const errorRouter = express.Router();
 
@@ -17,10 +17,9 @@ errorRouter.post('/error', (req, res, next) => {
 
     error.name = name;
     error.stack = stack;
-    error.category = 'frontend';
 
-    logger.error(error);
-    res.status(200).send();
+    frontendLogger.error(`${name}: `, error);
+    res.send('OK');
   } catch (e) {
     next(e);
   }
