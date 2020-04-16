@@ -43,7 +43,7 @@ export default function TagConnections(props) {
       {realTriggers.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Grid item xs={1}>
-          <Typography variant="h6">Triggers:</Typography>
+          <Typography variant="button">Triggers:</Typography>
         </Grid>
         <Grid item xs={11}>
           {realTriggers.map(item => (
@@ -63,7 +63,7 @@ export default function TagConnections(props) {
       {exceptionTriggers.length > 0 && (
         <Grid container direction="row" justify="flex-start" alignItems="center">
           <Grid item xs={1}>
-            <Typography variant="h6">Exceptions:</Typography>
+            <Typography variant="button">Exceptions:</Typography>
           </Grid>
           <Grid item xs={11}>
             {exceptionTriggers.map(item => (
@@ -83,18 +83,18 @@ export default function TagConnections(props) {
       {tags.length > 0 && (
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Grid item xs={1}>
-          <Typography variant="h6">Used for Tags:</Typography>
+          <Typography variant="button">Used for Tags:</Typography>
         </Grid>
         <Grid item xs={11}>
-          {tags.map(item => (
+          {tags.map(tagReference => (
             <Button
-              key={`button-${item.reference}`}
+              key={`button-${tagReference}`}
               variant="contained"
               color="secondary"
               className={classes.button}
-              onClick={() => navigation(0, item.reference)}
+              onClick={() => navigation(0, tagReference)}
             >
-              {item.reference}
+              {tagReference}
             </Button>
           ))}
         </Grid>
