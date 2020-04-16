@@ -7,8 +7,10 @@ import apiRouter from './api-router';
 import errorRouter from './error-router';
 import { serverLogger } from './loggers';
 
-// Init Google Cloud debugger agent
-DebugStart();
+// Init Google Cloud debugger agent on Production
+if (process.env.NODE_ENV === 'production') {
+  DebugStart();
+}
 
 // initialize Express app
 const app = express();
