@@ -2,7 +2,7 @@ import express from 'express';
 import puppeteer from 'puppeteer';
 import NodeCache from 'node-cache';
 
-import logger from './logger';
+import { serverLogger } from './loggers';
 import getGtmScript from './get-gtm-script';
 
 // Setup cache
@@ -30,7 +30,7 @@ router.post('/api/gtm', async (req, res, next) => {
 
     // Return cached value if it exists.
     if (cachedContainer) {
-      logger.info(`cachedContainer Used for ${value}`);
+      serverLogger.info(`cachedContainer Used for ${value}`);
       res.json(cachedContainer);
     } else {
       const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
@@ -68,7 +68,7 @@ router.post('/api/www', async (req, res, next) => {
     // Return cached value if it exists.
     const cachedContainer = containerCache.get(valueUrl.href);
     if (cachedContainer) {
-      logger.info(`cachedContainer Used for ${valueUrl}`);
+      serverLogger.info(`cachedContainer Used for ${valueUrl}`);
       res.json(cachedContainer);
     } else {
       /**
