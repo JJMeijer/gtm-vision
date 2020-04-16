@@ -3,7 +3,8 @@ import express from 'express';
 import compression from 'compression';
 import morgan from 'morgan';
 
-import router from './routes';
+import apiRouter from './api-router';
+import errorRouter from './error-router';
 import logger from './logger';
 
 // initialize Express app
@@ -34,20 +35,28 @@ app.get('*', (req, res) => {
 });
 
 // Main routing
-app.use('/', router);
+app.use('/', apiRouter);
+
+// Front-end Error routing
+app.use('/', errorRouter);
 
 // 404 Handling
 app.use((req, res, next) => {
-  const err = new Error('Could Not Resolve Request Path');
+  const err = new Error(`Could not resolve request path: ${req.method} ${req.originalUrl}`);
   err.status = 404;
   next(err);
 });
 
 // Main Error Handling
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send(err.message);
+  const { message, status = 500 } = err;
+  res.status(status);
+  res.json({
+    message,
+  });
+
   logger.error(err);
+
   next();
 });
 

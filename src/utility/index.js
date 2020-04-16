@@ -16,4 +16,28 @@ const convertCamelCase = function convertCamelCaseToSentence(str) {
   return strWithSpaces.charAt(0).toUpperCase() + strWithSpaces.slice(1);
 };
 
-export { isObject, isEmpty, convertCamelCase };
+const errorTracking = function sendErrorsToServer() {
+  window.addEventListener('error', (error) => {
+    const { name, message, stack } = error.error;
+    fetch(`${document.location.origin}/error`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        message,
+        stack,
+      }),
+    });
+  });
+
+  return true;
+};
+
+export {
+  isObject,
+  isEmpty,
+  convertCamelCase,
+  errorTracking,
+};
