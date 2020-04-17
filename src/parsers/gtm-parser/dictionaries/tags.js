@@ -312,7 +312,7 @@ const tagDictionary = () => ({
     counter: 0,
   },
   /**
-   * Tags with a fullname starting with 'inner_' will be filtered out later so use carefully.
+   * Tags with a fullname starting with 'inner_' will be filtered out later
    */
   __cl: {
     fullName: 'inner_click',
@@ -348,6 +348,10 @@ const tagDictionary = () => ({
   },
   __jel: {
     fullName: 'inner_javascripErrorListener',
+    counter: 0,
+  },
+  __tg: {
+    fullName: 'inner_triggerGroupListener',
     counter: 0,
   },
   __paused: {

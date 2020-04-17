@@ -83,6 +83,11 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
   container.triggers = container.triggers.map((_trigger) => {
     const trigger = _trigger;
 
+    /**
+     * Handle Element Visibility, youtube video, scroll depth & timer triggers by
+     * getting the 'settings' info from the related tags. The related tag can be found
+     * through the ID that is in the 'gtm.triggers' condition.
+     */
     const specialTriggerTypes = ['Element Visibility', 'Youtube Video', 'Scroll Depth', 'Timer'];
     if (specialTriggerTypes.indexOf(trigger.type) !== -1) {
       const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
@@ -100,6 +105,51 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
           trigger.triggerValues[key] = correspondingTag.tagValues[key];
         }
       });
+    }
+
+    /**
+     * Handle Trigger Groups. Trigger groups info can be found in a related tag.
+     * this related tag can be found through the ID that is in the gtm.triggers condition.
+     * Within the related tag the other tags are referenced. Each of these tags
+     * represent a trigger in the group. within those tag the info in the 'usedIn'
+     * property is used to return the data about the trigger.
+     */
+    if (trigger.type === 'Trigger Group') {
+      const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
+      const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
+
+      const triggerGroupTag = container.tags.filter((tag) => {
+        if (tag.tagValues) {
+          if (tag.tagValues.uniqueTriggerId === uniqueTriggerId) {
+            return true;
+          }
+        }
+        return false;
+      })[0];
+
+      const { tagValues: { triggerIds } } = triggerGroupTag;
+
+      const triggersInGroup = triggerIds.slice(1).map((triggerId) => {
+        const triggerTag = container.tags.filter((tag) => {
+          if (tag.tagValues) {
+            if (tag.tagValues.firingId === triggerId) {
+              return true;
+            }
+          }
+          return false;
+        })[0];
+
+        return triggerTag.usedIn.trigger[0];
+      });
+
+      triggersInGroup.map((_triggerChild) => {
+        const triggerChild = _triggerChild;
+        triggerChild.triggerParent = trigger.reference;
+
+        return triggerChild;
+      });
+
+      trigger.triggerChildren = triggersInGroup;
     }
 
     return trigger;

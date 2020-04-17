@@ -14,6 +14,8 @@ export default function Trigger(props) {
     exceptions,
     triggerValues,
     reference,
+    triggerChildren,
+    triggerParent,
   } = data;
 
   return (
@@ -32,6 +34,8 @@ export default function Trigger(props) {
           exceptions={exceptions}
           navigation={navigation}
           reference={reference}
+          triggerParent={triggerParent}
+          triggerChildren={triggerChildren}
         />
       </Grid>
     </Grid>
@@ -49,6 +53,8 @@ Trigger.propTypes = {
       PropTypes.number,
       PropTypes.array,
     ])),
+    triggerParent: PropTypes.string,
+    triggerChildren: PropTypes.arrayOf(PropTypes.string),
     reference: PropTypes.string.isRequired,
   }).isRequired,
   navigation: PropTypes.func.isRequired,
