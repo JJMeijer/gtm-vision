@@ -15,14 +15,14 @@ const useStyles = makeStyles(theme => ({
 export default function Header(props) {
   const classes = useStyles();
 
-  const { resultCallback } = props;
+  const { resultCallback, loadingCallback } = props;
   return (
     <Grid container className={classes.root} spacing={3} direction="column" alignItems="center" justify="center">
       <Grid item xs={12}>
         <Title titleText="GTM Insight" />
       </Grid>
       <Grid item xs={12}>
-        <SearchBar resultCallback={resultCallback} />
+        <SearchBar resultCallback={resultCallback} loadingCallback={loadingCallback} />
       </Grid>
     </Grid>
   );
@@ -30,4 +30,5 @@ export default function Header(props) {
 
 Header.propTypes = {
   resultCallback: PropTypes.func.isRequired,
+  loadingCallback: PropTypes.func.isRequired,
 };

@@ -11,7 +11,8 @@
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",
     "clean": "rm -r dist && rm -r public",
-    "deploy": "gcloud app deploy -q"
+    "deploy": "eslint ./ && gcloud app deploy -q",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
