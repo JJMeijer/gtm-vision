@@ -53,7 +53,7 @@ const inputOptions = {
 };
 
 export default function SearchBar(props) {
-  const { resultCallback } = props;
+  const { resultCallback, loadingCallback } = props;
   const [inputValue, setInputValue] = useState('GTM-NTQ25T'); // GTM-NTQ25T
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
@@ -72,6 +72,7 @@ export default function SearchBar(props) {
     setInputValid(true);
     setResponseValid(true);
     resultCallback(null);
+    loadingCallback(false);
   };
 
   const handleValueChange = (event) => {
@@ -79,6 +80,7 @@ export default function SearchBar(props) {
     setInputValid(true);
     setResponseValid(true);
     resultCallback(null);
+    loadingCallback(false);
   };
 
   const handleSubmit = (event) => {
@@ -88,6 +90,7 @@ export default function SearchBar(props) {
     setInputValid(isInputValid);
 
     if (isInputValid) {
+      loadingCallback(true);
       fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
         headers: {
@@ -100,6 +103,7 @@ export default function SearchBar(props) {
         .then((response) => {
           if (!response.ok) {
             setResponseValid(false);
+            loadingCallback(false);
             throw new Error(response.statusText);
           }
           return response;
@@ -154,4 +158,5 @@ export default function SearchBar(props) {
 
 SearchBar.propTypes = {
   resultCallback: PropTypes.func.isRequired,
+  loadingCallback: PropTypes.func.isRequired,
 };

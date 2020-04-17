@@ -66,15 +66,5 @@ export default function parseGtm(container) {
   parsedContainer.tags = parsedContainer.tags.map(filterFromTagSeqeuncing);
   parsedContainer.variables = parsedContainer.variables.filter(item => !item.reference.match('gtm.triggers'));
 
-  /**
-   * Filter out un-used triggers
-   */
-  parsedContainer.triggers = parsedContainer.triggers.filter((trigger) => {
-    const triggerTags = trigger.tags || [];
-    const triggerExceptions = trigger.exceptions || [];
-
-    return triggerTags.length + triggerExceptions.length > 0;
-  });
-
   return parsedContainer;
 }
