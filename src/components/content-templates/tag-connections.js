@@ -1,18 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
+import ConnectionButtons from './connection-buttons';
 
 export default function TagConnections(props) {
-  const classes = useStyles();
   const {
     reference,
     triggers,
@@ -41,64 +32,34 @@ export default function TagConnections(props) {
   return (
     <>
       {realTriggers.length > 0 && (
-      <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Grid item xs={1}>
-          <Typography variant="button">Triggers:</Typography>
-        </Grid>
-        <Grid item xs={11}>
-          {realTriggers.map(item => (
-            <Button
-              key={`button-${item.reference}-from-${reference}`}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={() => navigation(1, item.reference)}
-            >
-              {item.reference}
-            </Button>
-          ))}
-        </Grid>
-      </Grid>
+        <ConnectionButtons
+          title="Triggers"
+          buttons={realTriggers.map(x => x.reference)}
+          parentReference={reference}
+          type="trigger"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
       {exceptionTriggers.length > 0 && (
-        <Grid container direction="row" justify="flex-start" alignItems="center">
-          <Grid item xs={1}>
-            <Typography variant="button">Exceptions:</Typography>
-          </Grid>
-          <Grid item xs={11}>
-            {exceptionTriggers.map(item => (
-              <Button
-                key={`button-${item.reference}-from-${reference}`}
-                variant="contained"
-                color="default"
-                className={classes.button}
-                onClick={() => navigation(1, item.reference)}
-              >
-                {item.reference}
-              </Button>
-            ))}
-          </Grid>
-        </Grid>
+        <ConnectionButtons
+          title="Exceptions"
+          buttons={exceptionTriggers.map(x => x.reference)}
+          parentReference={reference}
+          type="exception"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
       {tags.length > 0 && (
-      <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Grid item xs={1}>
-          <Typography variant="button">Used for Tags:</Typography>
-        </Grid>
-        <Grid item xs={11}>
-          {tags.map(tagReference => (
-            <Button
-              key={`button-${tagReference}-from-${reference}`}
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              onClick={() => navigation(0, tagReference)}
-            >
-              {tagReference}
-            </Button>
-          ))}
-        </Grid>
-      </Grid>
+        <ConnectionButtons
+          title="Used for Tags"
+          buttons={tags}
+          parentReference={reference}
+          type="tag"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
     </>
   );

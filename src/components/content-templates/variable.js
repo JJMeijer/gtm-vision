@@ -28,7 +28,7 @@ export default function Variable(props) {
     <Grid container spacing={3}>
       {code && (
         <Grid item xs={12}>
-          <CodeBlock codeString={code} codeType="javascript" navigation={navigation} />
+          <CodeBlock codeString={code} codeType="javascript" navigation={navigation} reference={reference} />
         </Grid>
       )}
       {showVariableValues(variableValues) && (
