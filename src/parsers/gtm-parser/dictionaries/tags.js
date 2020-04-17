@@ -338,6 +338,18 @@ const tagDictionary = () => ({
     fullName: 'inner_formSubmisionListener',
     counter: 0,
   },
+  __sdl: {
+    fullName: 'inner_scrollDepthListener',
+    counter: 0,
+  },
+  __tl: {
+    fullName: 'inner_timerListener',
+    counter: 0,
+  },
+  __jel: {
+    fullName: 'inner_javascripErrorListener',
+    counter: 0,
+  },
   __paused: {
     fullName: 'inner_paused',
     counter: 0,

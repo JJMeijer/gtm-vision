@@ -6,8 +6,9 @@ import { serverLogger } from './loggers';
 import getGtmScript from './get-gtm-script';
 
 // Setup cache
+const cachingTime = 600; // seconds
 const containerCache = new NodeCache({
-  stdTTL: 300,
+  stdTTL: cachingTime,
 });
 
 const router = express.Router();
@@ -31,6 +32,7 @@ router.post('/api/gtm', async (req, res, next) => {
     // Return cached value if it exists.
     if (cachedContainer) {
       serverLogger.info(`cachedContainer Used for ${value}`);
+      containerCache.ttl(value, cachingTime);
       res.json(cachedContainer);
     } else {
       const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
@@ -69,6 +71,7 @@ router.post('/api/www', async (req, res, next) => {
     const cachedContainer = containerCache.get(valueUrl.href);
     if (cachedContainer) {
       serverLogger.info(`cachedContainer Used for ${valueUrl}`);
+      containerCache.ttl(valueUrl.href, cachingTime);
       res.json(cachedContainer);
     } else {
       /**

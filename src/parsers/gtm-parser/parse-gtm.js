@@ -47,10 +47,12 @@ export default function parseGtm(container) {
   parsedContainer.variables = parsedContainer.variables.map(parseCode);
 
   /**
-   * Parse the ['template', 'text1, {{variable name}}] format within tags to:
-   * 'text1 {{variable name}}'
+   * Parse the ['template', 'text1, {{variable name}}] format to:
+   * 'text1 {{variable name}}'. This template element is present
+   * within tags & triggers.
    */
   parsedContainer.tags = parsedContainer.tags.map(parseTemplate);
+  parsedContainer.triggers = parsedContainer.triggers.map(parseTemplate);
 
   /**
    * Filter out tags that are used by GTM internally

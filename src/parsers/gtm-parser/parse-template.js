@@ -1,16 +1,18 @@
-const parseTemplate = function parseTemplateFormatInTagValues(tag) {
-  const tagObj = tag;
-  const { tagValues } = tagObj;
+const parseTemplate = function parseTemplateFormatInTagValuesOrTriggerValues(_element) {
+  const element = _element;
+  const { tagValues, triggerValues } = element;
+  const values = tagValues || triggerValues || undefined;
 
-  if (tagValues) {
-    Object.keys(tagValues).forEach((key) => {
-      const tagValue = tagValues[key];
-      if (Array.isArray(tagValue) && tagValue[0] === 'template') {
-        tagValues[key] = tagValue.slice(1).join('');
+  if (values) {
+    Object.keys(values).forEach((key) => {
+      const value = values[key];
+      if (Array.isArray(value) && value[0] === 'template') {
+        values[key] = value.slice(1).join('');
       }
     });
   }
-  return tagObj;
+
+  return element;
 };
 
 export default parseTemplate;

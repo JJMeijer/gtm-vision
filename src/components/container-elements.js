@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
   row: {
     marginRight: 'auto',
     textAlign: 'left',
+    maxWidth: '100%',
   },
   rowWrapper: {
     alignItems: 'baseline',

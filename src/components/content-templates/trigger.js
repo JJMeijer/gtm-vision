@@ -27,7 +27,12 @@ export default function Trigger(props) {
         </Grid>
       )}
       <Grid item xs={12}>
-        <TriggerConnections tags={tags} exceptions={exceptions} navigation={navigation} />
+        <TriggerConnections
+          tags={tags}
+          exceptions={exceptions}
+          navigation={navigation}
+          reference={reference}
+        />
       </Grid>
     </Grid>
   );

@@ -48,7 +48,7 @@ export default function TagConnections(props) {
         <Grid item xs={11}>
           {realTriggers.map(item => (
             <Button
-              key={`button-${item.reference}`}
+              key={`button-${item.reference}-from-${reference}`}
               variant="contained"
               color="primary"
               className={classes.button}
@@ -68,7 +68,7 @@ export default function TagConnections(props) {
           <Grid item xs={11}>
             {exceptionTriggers.map(item => (
               <Button
-                key={`button-${item.reference}`}
+                key={`button-${item.reference}-from-${reference}`}
                 variant="contained"
                 color="default"
                 className={classes.button}
@@ -88,7 +88,7 @@ export default function TagConnections(props) {
         <Grid item xs={11}>
           {tags.map(tagReference => (
             <Button
-              key={`button-${tagReference}`}
+              key={`button-${tagReference}-from-${reference}`}
               variant="contained"
               color="secondary"
               className={classes.button}
