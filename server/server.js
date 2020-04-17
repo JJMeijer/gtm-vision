@@ -1,6 +1,7 @@
 import express from 'express';
 import compression from 'compression';
 import morgan from 'morgan';
+import helmet from 'helmet';
 import { start as DebugStart } from '@google-cloud/debug-agent';
 
 import apiRouter from './api-router';
@@ -16,6 +17,9 @@ if (process.env.NODE_ENV === 'production') {
 const app = express();
 const port = process.env.PORT || 3000;
 const appFolder = 'public';
+
+// Use Helmet to enhance API Security
+app.use(helmet());
 
 // use compression
 app.use(compression());

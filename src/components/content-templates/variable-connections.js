@@ -1,18 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
+import ConnectionButtons from './connection-buttons';
 
 export default function VariableConnections(props) {
-  const classes = useStyles();
   const {
     tags,
     variables,
@@ -24,67 +15,34 @@ export default function VariableConnections(props) {
   return (
     <>
       {tags.length > 0 && (
-      <Grid container direction="row" justify="flex-start" alignItems="center">
-        <Grid item xs={1}>
-          <Typography variant="button">Tags:</Typography>
-        </Grid>
-        <Grid item xs={11}>
-          {tags.map(tagReference => (
-            <Button
-              key={`button-${tagReference}-from-${reference}`}
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              onClick={() => navigation(0, tagReference)}
-            >
-              {tagReference}
-            </Button>
-          ))}
-        </Grid>
-      </Grid>
+        <ConnectionButtons
+          title="Used in Tags"
+          buttons={tags}
+          parentReference={reference}
+          type="tag"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
       {triggers.length > 0 && (
-        <Grid container direction="row" justify="flex-start" alignItems="center">
-          <Grid item xs={1}>
-            <Typography variant="button">Triggers:</Typography>
-          </Grid>
-          <Grid item xs={11}>
-            {triggers.map((trigger) => {
-              const triggerReference = trigger.reference;
-              return (
-                <Button
-                  key={`button-${triggerReference}-from-${reference}`}
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => navigation(1, triggerReference)}
-                >
-                  {triggerReference}
-                </Button>
-              );
-            })}
-          </Grid>
-        </Grid>
+        <ConnectionButtons
+          title="Used in Triggers"
+          buttons={triggers.map(x => x.reference)}
+          parentReference={reference}
+          type="trigger"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
       {variables.length > 0 && (
-        <Grid container direction="row" justify="flex-start" alignItems="center">
-          <Grid item xs={1}>
-            <Typography variant="button">Variables:</Typography>
-          </Grid>
-          <Grid item xs={11}>
-            {variables.map(variableReference => (
-              <Button
-                key={`button-${variableReference}-from-${reference}`}
-                variant="contained"
-                color="default"
-                className={classes.button}
-                onClick={() => navigation(2, variableReference)}
-              >
-                {variableReference}
-              </Button>
-            ))}
-          </Grid>
-        </Grid>
+        <ConnectionButtons
+          title="Used in Variables"
+          buttons={variables}
+          parentReference={reference}
+          type="variable"
+          buttonStyle="contained"
+          navigation={navigation}
+        />
       )}
     </>
   );

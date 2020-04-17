@@ -22,7 +22,7 @@ export default function Tag(props) {
     <Grid container spacing={3}>
       {code && (
         <Grid item xs={12}>
-          <CodeBlock codeString={code} codeType="html" navigation={navigation} />
+          <CodeBlock codeString={code} codeType="html" navigation={navigation} reference={reference} />
         </Grid>
       )}
       <Grid item xs={12}>

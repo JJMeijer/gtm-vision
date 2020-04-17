@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Prism from 'prismjs';
 import { js, html } from 'js-beautify';
 
-import VariableLink from './variable-link';
+import ConnectionButtons from './connection-buttons';
 
 const beautifierOptions = {
   indent_size: 4,
@@ -13,9 +13,14 @@ const beautifierOptions = {
 };
 
 export default function CodeBlock(props) {
-  const { codeString, codeType, navigation } = props;
-  let beautifiedCode = codeString;
+  const {
+    codeString,
+    codeType,
+    navigation,
+    reference,
+  } = props;
 
+  let beautifiedCode = codeString;
   if (codeType === 'html') {
     beautifiedCode = html(codeString, beautifierOptions);
   }
@@ -24,7 +29,6 @@ export default function CodeBlock(props) {
     beautifiedCode = js(codeString, beautifierOptions);
   }
 
-  const variableLinks = [];
   const variableList = [];
   // Find Variable Names in Code & Create Links
   beautifiedCode.split(/({{[^{]+}})/).forEach((codePart) => {
@@ -32,14 +36,6 @@ export default function CodeBlock(props) {
     if (variableMatch && variableList.indexOf(variableMatch[1]) === -1) {
       const variableName = variableMatch[1];
       if (variableList.indexOf(variableName) === -1) {
-        variableLinks.push(
-          <VariableLink
-            key={variableMatch}
-            navigation={navigation}
-            variableName={variableName}
-          />,
-          ' ',
-        );
         variableList.push(variableName);
       }
     }
@@ -55,11 +51,15 @@ export default function CodeBlock(props) {
           {beautifiedCode}
         </code>
       </pre>
-      {variableLinks.length > 0 && (
-        <Typography variant="subtitle1">
-          {'Variables in Code: '}
-          {variableLinks}
-        </Typography>
+      {variableList.length > 0 && (
+        <ConnectionButtons
+          title="Variables in Code"
+          buttons={variableList}
+          parentReference={reference}
+          type="variable"
+          buttonStyle="outlined"
+          navigation={navigation}
+        />
       )}
     </>
   );
@@ -69,4 +69,5 @@ CodeBlock.propTypes = {
   codeString: PropTypes.string.isRequired,
   codeType: PropTypes.string.isRequired,
   navigation: PropTypes.func.isRequired,
+  reference: PropTypes.string.isRequired,
 };
