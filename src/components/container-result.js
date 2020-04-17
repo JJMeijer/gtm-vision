@@ -8,7 +8,7 @@ import parseGtm from '../parsers/gtm-parser';
 
 const useStyles = makeStyles(theme => ({
   loadingSpace: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
   },
 }));
 
@@ -22,7 +22,7 @@ export default function ContainerResult(props) {
   if (loading) {
     resultElement = (
       <Grid container spacing={3} direction="column" justify="center" alignItems="center" className={classes.loadingSpace}>
-        <CircularProgress />
+        <CircularProgress size={80} />
       </Grid>
     );
   }

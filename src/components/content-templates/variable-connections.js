@@ -18,6 +18,7 @@ export default function VariableConnections(props) {
     variables,
     triggers,
     navigation,
+    reference,
   } = props;
 
   return (
@@ -30,7 +31,7 @@ export default function VariableConnections(props) {
         <Grid item xs={11}>
           {tags.map(tagReference => (
             <Button
-              key={`button-${tagReference}`}
+              key={`button-${tagReference}-from-${reference}`}
               variant="contained"
               color="secondary"
               className={classes.button}
@@ -52,7 +53,7 @@ export default function VariableConnections(props) {
               const triggerReference = trigger.reference;
               return (
                 <Button
-                  key={`button-${triggerReference}`}
+                  key={`button-${triggerReference}-from-${reference}`}
                   variant="contained"
                   color="primary"
                   className={classes.button}
@@ -73,7 +74,7 @@ export default function VariableConnections(props) {
           <Grid item xs={11}>
             {variables.map(variableReference => (
               <Button
-                key={`button-${variableReference}`}
+                key={`button-${variableReference}-from-${reference}`}
                 variant="contained"
                 color="default"
                 className={classes.button}
@@ -96,6 +97,7 @@ VariableConnections.propTypes = {
     reference: PropTypes.string.isRequired,
   })),
   navigation: PropTypes.func.isRequired,
+  reference: PropTypes.string.isRequired,
 };
 
 VariableConnections.defaultProps = {

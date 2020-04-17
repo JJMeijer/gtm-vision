@@ -76,11 +76,17 @@ const parseTags = function parseTags(tagsArray) {
 
       // Parse other tag settings
       if (key === 'priority') {
-        parsedTag.tagPriority = tag[key];
+        const tagValues = parsedTag.tagValues || {};
+        tagValues.tagPriority = tag[key];
+
+        parsedTag.tagValues = tagValues;
       }
 
       if (key === 'live_only') {
-        parsedTag.onlyFireInPublishedContainers = tag[key];
+        const tagValues = parsedTag.tagValues || {};
+        tagValues.onlyFireInPublishedContainers = tag[key];
+
+        parsedTag.tagValues = tagValues;
       }
     });
 

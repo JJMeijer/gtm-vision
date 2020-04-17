@@ -17,6 +17,7 @@ export default function TriggerConnections(props) {
     tags,
     exceptions,
     navigation,
+    reference,
   } = props;
 
   return (
@@ -28,7 +29,7 @@ export default function TriggerConnections(props) {
           const tagReference = tag.match(/{{(.+)}}/)[1];
           return (
             <Button
-              key={`button-${tagReference}`}
+              key={`button-${tagReference}-from-${reference}`}
               variant="contained"
               color="secondary"
               className={classes.button}
@@ -47,7 +48,7 @@ export default function TriggerConnections(props) {
             const exceptionReference = exception.match(/{{(.+)}}/)[1];
             return (
               <Button
-                key={`button-${exceptionReference}`}
+                key={`button-${exceptionReference}-from-${reference}`}
                 variant="contained"
                 color="default"
                 className={classes.button}
@@ -67,6 +68,7 @@ TriggerConnections.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   exceptions: PropTypes.arrayOf(PropTypes.string),
   navigation: PropTypes.func.isRequired,
+  reference: PropTypes.string.isRequired,
 };
 
 TriggerConnections.defaultProps = {

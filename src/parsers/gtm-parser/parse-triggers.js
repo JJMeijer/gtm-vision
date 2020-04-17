@@ -68,7 +68,9 @@ const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) 
     trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
     trigger.type = triggerList[triggerType];
   } else {
-    trigger.reference = `${trigger.reference} - Event: ${triggerType}`;
+    const nameCutoffLength = 25;
+    const concatName = triggerType.length > nameCutoffLength;
+    trigger.reference = `${trigger.reference} - Event: ${triggerType.substr(0, nameCutoffLength)}${concatName ? '...' : ''}`;
     trigger.type = 'event';
   }
 
@@ -81,10 +83,7 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
   container.triggers = container.triggers.map((_trigger) => {
     const trigger = _trigger;
 
-    const specialTriggerTypes = ['Element Visibility', 'Youtube Video'];
-    /**
-     * Handle Element Visibility Triggers
-     */
+    const specialTriggerTypes = ['Element Visibility', 'Youtube Video', 'Scroll Depth', 'Timer'];
     if (specialTriggerTypes.indexOf(trigger.type) !== -1) {
       const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
       const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];

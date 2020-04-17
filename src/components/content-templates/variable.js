@@ -42,6 +42,7 @@ export default function Variable(props) {
           triggers={triggers}
           variables={variables}
           navigation={navigation}
+          reference={reference}
         />
       </Grid>
     </Grid>

@@ -11,6 +11,7 @@ const triggerDictionary = () => ({
   'gtm.scrollDepth': 'Scroll Depth',
   'gtm.timer': 'Timer',
   'gtm.pageError': 'JS Error',
+  'gtm.triggerGroup': 'Trigger Group',
 });
 
 export default triggerDictionary;

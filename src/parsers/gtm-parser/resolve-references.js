@@ -58,7 +58,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
          * references if we push the whole object.
          */
         if (cat === 'tag' || cat === 'variable') {
-          if (usedInArray.filter(x => x === item.reference)) {
+          if (usedInArray.filter(x => x === item.reference).length === 0) {
             usedInArray.push(item.reference);
           }
         }

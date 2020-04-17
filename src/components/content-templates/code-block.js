@@ -25,18 +25,23 @@ export default function CodeBlock(props) {
   }
 
   const variableLinks = [];
+  const variableList = [];
   // Find Variable Names in Code & Create Links
   beautifiedCode.split(/({{[^{]+}})/).forEach((codePart) => {
     const variableMatch = codePart.match(/{{(.+)}}/);
-    if (variableMatch) {
-      variableLinks.push(
-        <VariableLink
-          key={variableMatch}
-          navigation={navigation}
-          variableName={variableMatch[1]}
-        />,
-        ' ',
-      );
+    if (variableMatch && variableList.indexOf(variableMatch[1]) === -1) {
+      const variableName = variableMatch[1];
+      if (variableList.indexOf(variableName) === -1) {
+        variableLinks.push(
+          <VariableLink
+            key={variableMatch}
+            navigation={navigation}
+            variableName={variableName}
+          />,
+          ' ',
+        );
+        variableList.push(variableName);
+      }
     }
   });
 
