@@ -58,13 +58,13 @@ export default function Settings(props) {
           if (!Array.isArray(settingValue)) {
             const settingValueWithLinks = replaceReferenceWithLink(String(settingValue));
             settingValueElement = (
-              <Grid key={`${reference}-${key}`} item xs={5} className={classes.settingValue}>
+              <Grid key={`${reference}-${key}`} item xs={6} className={classes.settingValue}>
                 <Typography variant="body1" className={classes.settingValueText}>{settingValueWithLinks}</Typography>
               </Grid>
             );
           } else {
             settingValueElement = (
-              <Grid key={`${reference}-${key}`} item xs={5} className={classes.settingValue}>
+              <Grid key={`${reference}-${key}`} item xs={6} className={classes.settingValue}>
                 <ListTable
                   list={settingValue}
                   replaceReferenceWithLink={replaceReferenceWithLink}

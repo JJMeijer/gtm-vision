@@ -14,7 +14,6 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
   rules.forEach((rule, index) => {
     const ruleObj = {};
 
-    ruleObj.occurrences = 0;
     ruleObj.category = 'trigger';
     ruleObj.reference = `Trigger(${index})`;
     rule.forEach((rulePart) => {
@@ -36,9 +35,10 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 
         const exceptionArray = rulePart.slice(1);
         exceptionArray.forEach((tag) => {
-          resultArray.push(['tag', tag]);
+          if (resultArray.filter(x => x[1] === tag).length === 0) {
+            resultArray.push(['tag', tag]);
+          }
         });
-        ruleObj.occurrences += resultArray.length;
         ruleObj.exceptions = resultArray;
       }
 
@@ -47,9 +47,10 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 
         const tagArray = rulePart.slice(1);
         tagArray.forEach((tag) => {
-          resultArray.push(['tag', tag]);
+          if (resultArray.filter(x => x[1] === tag).length === 0) {
+            resultArray.push(['tag', tag]);
+          }
         });
-        ruleObj.occurrences += resultArray.length;
         ruleObj.tags = resultArray;
       }
     });
@@ -68,7 +69,7 @@ const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) 
     trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
     trigger.type = triggerList[triggerType];
   } else {
-    const nameCutoffLength = 25;
+    const nameCutoffLength = 22;
     const concatName = triggerType.length > nameCutoffLength;
     trigger.reference = `${trigger.reference} - Event: ${triggerType.substr(0, nameCutoffLength)}${concatName ? '...' : ''}`;
     trigger.type = 'event';
