@@ -12,4 +12,6 @@ const validateRequestBody = (req, values) => {
 export { serverLogger, frontendLogger } from './loggers';
 export { default as getGtmScript } from './get-gtm-script';
 export { default as containerCache } from './container-cache';
+export { websiteDatabase } from './firestore';
+export { default as scrapeWebsite } from './scrape-website';
 export { validateRequestBody };

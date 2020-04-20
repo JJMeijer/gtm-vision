@@ -1,6 +1,5 @@
 import {
   validateRequestBody,
-  containerCache,
   serverLogger,
   getGtmScript,
 } from '../utility';
@@ -15,38 +14,27 @@ export default async function routeApiGtm(req, res, next) {
     validateRequestBody(req, ['value']);
 
     const { value } = req.body;
-    const cachedContainer = containerCache.get(value);
+    const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
 
-    // Return cached value if it exists.
-    if (cachedContainer) {
-      serverLogger.info(`cachedContainer Used for ${value}`);
-      containerCache.ttl(value, 600);
-      res.json(cachedContainer);
-    } else {
-      const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
+    // Get container at URL
+    const { container, errorMessage } = await getGtmScript(gtmUrl);
 
-      // Get container at URL
-      const { container, errorMessage } = await getGtmScript(gtmUrl);
+    if (!container && !errorMessage) {
+      throw new Error('Unexpected Error');
+    }
 
-      if (!container && !errorMessage) {
-        throw new Error('Unexpected Error');
-      }
+    if (container) {
+      // Return container to client.
+      res.json({ container });
+    }
 
-      if (container) {
-        // Set value in Cache
-        containerCache.set(value, container);
-        // Return container to client.
-        res.json({ container });
-      }
+    if (errorMessage) {
+      serverLogger.info(errorMessage, {
+        gtmUrl,
+      });
 
-      if (errorMessage) {
-        serverLogger.info(errorMessage, {
-          gtmUrl,
-        });
-
-        // Return Error to client.
-        res.json({ errorMessage });
-      }
+      // Return Error to client.
+      res.json({ errorMessage });
     }
   } catch (e) {
     next(e);
