@@ -1,78 +1,92 @@
-import puppeteer from 'puppeteer';
-
 import {
   validateRequestBody,
-  containerCache,
   serverLogger,
   getGtmScript,
+  websiteDatabase,
+  scrapeWebsite,
 } from '../utility';
 
 /**
  * POST method to get the GTM container for a given URL
  * The URL is expected in the 'value' property of the
- * request body.
+ * request body. There are 3 possible flows
+ * - Get GTM url from the database & use the cached response for that GTM url
+ * - Get GTM url from the database & get the script from googletagmanager servers
+ * - Scrape URL to find GTM url and get the script from googletagmanager servers
  */
 export default async function routeApiWww(req, res, next) {
   try {
     validateRequestBody(req, ['value']);
 
     const { value } = req.body;
+
+    // Parse Url
     const valueUrl = new URL(!value.match('^http') ? `http://${value}` : value);
 
-    // Return cached value if it exists.
-    const cachedContainer = containerCache.get(valueUrl.href);
-    if (cachedContainer) {
-      serverLogger.info(`cachedContainer Used for ${valueUrl}`);
-      containerCache.ttl(valueUrl.href, 600);
-      res.json(cachedContainer);
-    } else {
-      /**
-       * a Puppeteer browser is created where the given
-       * URL is visited. When the page is loaded a search is done for
-       * GTM scripts on that page. A request is done for the first GTM script
-       * that is found.
-       */
-      const browser = await puppeteer.launch();
-      // Init new try...catch block so we can close the browser instance on error
-      try {
-        const page = await browser.newPage();
-        await page.goto(valueUrl, { waitUntil: 'networkidle2' });
+    // Database reference
+    const databaseReference = websiteDatabase.doc(valueUrl.hostname);
 
-        const gtmUrl = await page.evaluate(() => {
-          const scripts = Array.prototype.slice.call(document.querySelectorAll('script[src*="googletagmanager.com/gtm.js?id=GTM-"]'));
-          return scripts.map(x => x.src)[0];
-        });
-
-        if (gtmUrl) {
-          // Get container at  the URL
-          const { container, errorMessage } = await getGtmScript(gtmUrl);
-
-          if (!container && !errorMessage) {
-            throw new Error('Unexpected Error');
-          }
-
-          if (container) {
-            // Set value in Cache
-            containerCache.set(valueUrl.href, container);
-
-            // Return to client.
-            res.json(container);
-          }
-
-          if (errorMessage) {
-            serverLogger.info(`Client Error Message: ${errorMessage}`);
-
-            // Return Error to client.
-            res.json({ errorMessage });
-          }
+    // Get Database Data
+    const databaseData = await databaseReference.get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return false;
         }
-      } catch (e) {
-        await browser.close();
-        next(e);
+        return doc.data();
+      })
+      .catch(err => serverLogger.error(err));
+
+    if (databaseData) {
+      const { gtmUrl } = databaseData;
+
+      // Get Container for GTM URL
+      const { container, errorMessage } = await getGtmScript(gtmUrl);
+
+      if (!container && !errorMessage) {
+        throw new Error('Unexpected Error');
       }
 
-      // Close the browser.
-      await browser.close();
+      if (container) {
+        // Return to client.
+        res.json({ container });
+      }
+
+      if (errorMessage) {
+        serverLogger.info(`Client Error Message: ${errorMessage}`);
+
+        // Return Error to client.
+        res.json({ errorMessage });
+      }
+    } else {
+      const gtmUrl = await scrapeWebsite(valueUrl.href, next);
+
+      if (gtmUrl) {
+        // Get container at  the URL
+        const { container, errorMessage } = await getGtmScript(gtmUrl);
+
+        if (!container && !errorMessage) {
+          throw new Error('Unexpected Error');
+        }
+
+        if (container) {
+          // Set GTM URL in database so we don't have to scrape next time
+          const reference = websiteDatabase.doc(valueUrl.hostname);
+          const setData = reference.set({
+            gtmUrl,
+          });
+          serverLogger.info('GTM URL stored in websites database', setData);
+
+          // Return to client.
+          res.json(container);
+        }
+
+        if (errorMessage) {
+          serverLogger.info(`Client Error Message: ${errorMessage}`);
+
+          // Return Error to client.
+          res.json({ errorMessage });
+        }
+      }
     }
   } catch (e) {
     next(e);
