@@ -63,11 +63,13 @@ const parseVariables = function parseVariables(macrosArray) {
     }
 
     if (type.match(/Datalayer|Cookie/)) {
-      parsedMacro.reference = `${parsedMacro.reference}: ${variableValues.name}`;
+      const nameAppendix = Array.isArray(variableValues.name) ? 'Concatenated value' : variableValues.name;
+      parsedMacro.reference = `${parsedMacro.reference}: ${nameAppendix}`;
     }
 
     if (type === 'Constant') {
-      parsedMacro.reference = `${parsedMacro.reference}: ${variableValues.value}`;
+      const nameAppendix = Array.isArray(variableValues.value) ? 'Concatenated value' : variableValues.value;
+      parsedMacro.reference = `${parsedMacro.reference}: ${nameAppendix}`;
     }
 
     if (type === 'Auto event variable') {
@@ -92,6 +94,10 @@ const parseVariables = function parseVariables(macrosArray) {
       parsedMacro.variableValues = {
         description: 'Datalayer Event name',
       };
+    }
+
+    if (parsedMacro.reference.length > 40) {
+      parsedMacro.reference = `${parsedMacro.reference.substr(0, 38)}...`;
     }
 
     // Push parsed macro to the new array.

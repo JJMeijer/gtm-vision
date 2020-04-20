@@ -53,6 +53,7 @@ export default function parseGtm(container) {
    */
   parsedContainer.tags = parsedContainer.tags.map(parseTemplate);
   parsedContainer.triggers = parsedContainer.triggers.map(parseTemplate);
+  parsedContainer.variables = parsedContainer.variables.map(parseTemplate);
 
   /**
    * Filter out tags that are used by GTM internally

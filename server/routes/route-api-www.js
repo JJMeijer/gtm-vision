@@ -24,7 +24,8 @@ export default async function routeApiWww(req, res, next) {
     const valueUrl = new URL(!value.match('^http') ? `http://${value}` : value);
 
     // Database reference
-    const databaseReference = websiteDatabase.doc(valueUrl.hostname);
+    const { hostname } = valueUrl;
+    const databaseReference = websiteDatabase.doc(hostname);
 
     // Get Database Data
     const databaseData = await databaseReference.get()
@@ -38,6 +39,7 @@ export default async function routeApiWww(req, res, next) {
 
     if (databaseData) {
       const { gtmUrl } = databaseData;
+      serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
 
       // Get Container for GTM URL
       const { container, errorMessage } = await getGtmScript(gtmUrl);
