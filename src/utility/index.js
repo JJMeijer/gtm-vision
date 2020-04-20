@@ -18,8 +18,8 @@ const convertCamelCase = function convertCamelCaseToSentence(str) {
 
 const errorTracking = function sendErrorsToServer() {
   window.addEventListener('error', (error) => {
-    const { name, message, stack } = error.error;
-    fetch(`${document.location.origin}/error`, {
+    const { name = 'Error', message = 'default error', stack = 'Stack missing' } = error.error;
+    fetch(`${document.location.origin}/api/error`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

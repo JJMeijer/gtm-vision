@@ -3,9 +3,8 @@ import compression from 'compression';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
-import apiRouter from './api-router';
-import errorRouter from './error-router';
-import { serverLogger } from './loggers';
+import Router from './router';
+import { serverLogger } from './utility/loggers';
 
 // initialize Express app
 const app = express();
@@ -41,10 +40,7 @@ app.get('*', (req, res) => {
 });
 
 // Main routing
-app.use('/', apiRouter);
-
-// Front-end Error routing
-app.use('/', errorRouter);
+app.use('/', Router);
 
 // 404 Handling
 app.use((req, res, next) => {
