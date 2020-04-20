@@ -32,7 +32,7 @@ const frontendLogger = winston.createLogger({
   },
 });
 
-// Set Console Logger Format
+// Set Console Logger
 const loggerFormat = winston.format.printf(info => `${info.component} - ${info.timestamp} [${info.level}]: ${info.message}`);
 
 if (process.env.NODE_ENV === 'production') {

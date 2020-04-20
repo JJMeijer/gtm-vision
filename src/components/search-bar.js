@@ -109,7 +109,17 @@ export default function SearchBar(props) {
           return response;
         })
         .then(response => response.json())
-        .then(({ resource }) => resultCallback(resource))
+        .then(({ container, errorMessage }) => {
+          if (container) {
+            const { resource } = container;
+            resultCallback(resource);
+          }
+
+          if (errorMessage) {
+            setResponseValid(false);
+            loadingCallback(false);
+          }
+        })
         .catch(() => null);
     }
   };

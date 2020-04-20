@@ -32,7 +32,6 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
-    "@google-cloud/debug-agent": "^4.2.2",
     "@google-cloud/logging-winston": "^3.0.6",
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",
