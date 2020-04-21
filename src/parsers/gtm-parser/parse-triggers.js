@@ -1,5 +1,4 @@
-import operatorDictionary from './dictionaries/operators';
-import triggerDictionary from './dictionaries/triggers';
+import { operatorDictionary, triggerDictionary } from './dictionaries';
 
 const operatorList = operatorDictionary();
 

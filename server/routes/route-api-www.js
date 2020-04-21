@@ -75,11 +75,10 @@ export default async function routeApiWww(req, res, next) {
 
         if (container) {
           // Set GTM URL in database so we don't have to scrape next time
-          const reference = websiteDatabase.doc(valueUrl.hostname);
-          const setData = reference.set({
-            gtmUrl,
-          });
-          serverLogger.info('GTM URL stored in websites database', setData);
+          const reference = websiteDatabase.doc(hostname);
+
+          reference.set({ gtmUrl });
+          serverLogger.info('GTM URL stored in websites database', { gtmUrl, hostname });
 
           // Return to client.
           res.json({ container });
