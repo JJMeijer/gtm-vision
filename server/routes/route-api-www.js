@@ -35,7 +35,10 @@ export default async function routeApiWww(req, res, next) {
         }
         return doc.data();
       })
-      .catch(err => serverLogger.error(err));
+      .catch((err) => {
+        serverLogger.error(err);
+        return false;
+      });
 
     if (databaseData) {
       const { gtmUrl } = databaseData;
@@ -79,7 +82,7 @@ export default async function routeApiWww(req, res, next) {
           serverLogger.info('GTM URL stored in websites database', setData);
 
           // Return to client.
-          res.json(container);
+          res.json({ container });
         }
 
         if (errorMessage) {
@@ -88,6 +91,13 @@ export default async function routeApiWww(req, res, next) {
           // Return Error to client.
           res.json({ errorMessage });
         }
+      } else {
+        // Scraper returned nothing
+        const errorMessage = 'Could not find GTM container at provided URL';
+        serverLogger.info(`Client Error Message: ${errorMessage}`);
+
+        // Return Error to client.
+        res.json({ errorMessage });
       }
     }
   } catch (e) {

@@ -55,7 +55,7 @@ const parseVariables = function parseVariables(macrosArray) {
      * Add Specific info to the reference name based on the variable type.
      * this is to make the reference as informative as possible.
      */
-    const { type, variableValues } = parsedMacro;
+    const { type, variableValues = {} } = parsedMacro;
     if (type.match('URL')) {
       const { component } = variableValues;
       const description = component === 'URL' ? 'Full URL' : component;
@@ -81,8 +81,10 @@ const parseVariables = function parseVariables(macrosArray) {
 
       if (variableValues.varType === 'URL') {
         const { component } = variableValues;
-        const description = component === 'URL' ? 'Full URL' : component.toLowerCase();
-        parsedMacro.reference = `${parsedMacro.reference} - ${description}`;
+        if (component) {
+          const description = component === 'URL' ? 'Full URL' : component.toLowerCase();
+          parsedMacro.reference = `${parsedMacro.reference} - ${description}`;
+        }
       }
     }
 

@@ -8,11 +8,11 @@
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --minified --no-comments",
     "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
+    "build": "npm run build-node && npm run build-public",
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",
-    "clean": "rm -r dist && rm -r public",
-    "deploy": "eslint ./ && gcloud app deploy -q",
-    "lint": "eslint ./"
+    "firestore-emulator": "gcloud beta emulators firestore start",
+    "deploy": "eslint ./ && gcloud app deploy -q"
   },
   "repository": {
     "type": "git",
