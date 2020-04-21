@@ -30,6 +30,13 @@ export default function Settings(props) {
   const classes = useStyles();
   const { values, navigation, reference } = props;
 
+  const replaceEmptyValues = (stringValue) => {
+    if (stringValue === '') {
+      return '""';
+    }
+    return stringValue;
+  };
+
   const replaceReferenceWithLink = (stringValue) => {
     const stringArray = stringValue.split(/({{[^{]+}})/).filter(x => x !== '');
     return stringArray.map((stringItem) => {
@@ -56,10 +63,14 @@ export default function Settings(props) {
 
           let settingValueElement;
           if (!Array.isArray(settingValue)) {
-            const settingValueWithLinks = replaceReferenceWithLink(String(settingValue));
+            // Replace Empty Strings with literal empty string to make it more clear -> '""'
+            let settingValueString = replaceEmptyValues(String(settingValue));
+
+            // Replace References {{Custom Javascript(1)}} with Link Elements
+            settingValueString = replaceReferenceWithLink(String(settingValueString));
             settingValueElement = (
               <Grid key={`${reference}-${key}`} item xs={6} className={classes.settingValue}>
-                <Typography variant="body1" className={classes.settingValueText}>{settingValueWithLinks}</Typography>
+                <Typography variant="body1" className={classes.settingValueText}>{settingValueString}</Typography>
               </Grid>
             );
           } else {

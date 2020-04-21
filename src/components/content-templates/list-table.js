@@ -39,8 +39,12 @@ export default function ListTable(props) {
   const { list, replaceReferenceWithLink } = props;
   const [listVisibility, showList] = useState(false);
 
-  const columnNames = list[1].filter((item, index) => index > 0 && index % 2 !== 0);
-  const rows = list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0));
+  let columnNames = ['list'];
+  let rows = list.slice(1).map(x => [x]);
+  if (Array.isArray(list[1])) {
+    columnNames = list[1].filter((item, index) => index > 0 && index % 2 !== 0);
+    rows = list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0));
+  }
 
   return (
     <>
@@ -51,7 +55,7 @@ export default function ListTable(props) {
             <TableHead>
               <TableRow>
                 {columnNames.map(col => (
-                  <TableCell width="50%" key={col}>
+                  <TableCell width={`${100 / columnNames.length}%`} key={col}>
                     <Typography variant="body1" className={classes.columnHeader}>{col}</Typography>
                   </TableCell>
                 ))}
