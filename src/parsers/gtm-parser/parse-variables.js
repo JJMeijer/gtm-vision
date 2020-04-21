@@ -1,4 +1,4 @@
-import macroDictionary from './dictionaries/macros';
+import { macroDictionary } from './dictionaries';
 
 const parseVariables = function parseVariables(macrosArray) {
   const parsedArray = [];

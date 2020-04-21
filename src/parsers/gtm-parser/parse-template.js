@@ -1,3 +1,12 @@
+const parseEscape = function parseEscapeArraysWithinTemplateArrays(array) {
+  return array.map((item) => {
+    if (Array.isArray(item) && item[0] === 'escape') {
+      return item[1];
+    }
+    return item;
+  });
+};
+
 const parseTemplate = function parseTemplateFormatInTagValuesOrTriggerValues(_element) {
   const element = _element;
   const { tagValues, triggerValues, variableValues } = element;
@@ -9,7 +18,7 @@ const parseTemplate = function parseTemplateFormatInTagValuesOrTriggerValues(_el
       if (Array.isArray(value)) {
         // Handle Template arrays
         if (value[0] === 'template') {
-          values[key] = value.slice(1).join('');
+          values[key] = parseEscape(value.slice(1)).join('');
         }
 
         // Handle template arrays inside list arrays

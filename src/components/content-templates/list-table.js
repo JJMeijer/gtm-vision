@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+import { operatorDictionary } from '../../parsers/gtm-parser/dictionaries';
+
 const useStyles = makeStyles(theme => ({
   columnHeader: {
     fontWeight: 'bold',
@@ -34,17 +36,47 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const createColumnsAndRows = (list) => {
+  if (list[0] === 'list' && !Array.isArray(list[1])) {
+    return {
+      columnNames: ['list'],
+      rows: list.slice(1).map(x => [x]),
+    };
+  }
+
+  if (list[0] === 'list' && Array.isArray(list[1]) && list[1][0] === 'map') {
+    return {
+      columnNames: list[1].filter((item, index) => index > 0 && index % 2 !== 0),
+      rows: list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0)),
+    };
+  }
+
+  if (list[0] === 'list' && Array.isArray(list[1]) && list[1][0] === 'zb') {
+    const operators = operatorDictionary();
+    return {
+      columnNames: ['Variable', 'Operator', 'Value'],
+      rows: list.slice(1).map((row) => {
+        const variable = row[2];
+        const operator = operators[row[1]][row[4] ? 'negative' : 'positive'];
+        const value = row[3];
+
+        return [variable, operator, value];
+      }),
+    };
+  }
+
+  return {
+    columnNames: ['Unknown List Type'],
+    rows: [['Unknown List Type']],
+  };
+};
+
 export default function ListTable(props) {
   const classes = useStyles();
   const { list, replaceReferenceWithLink } = props;
   const [listVisibility, showList] = useState(false);
 
-  let columnNames = ['list'];
-  let rows = list.slice(1).map(x => [x]);
-  if (Array.isArray(list[1])) {
-    columnNames = list[1].filter((item, index) => index > 0 && index % 2 !== 0);
-    rows = list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0));
-  }
+  const { columnNames, rows } = createColumnsAndRows(list);
 
   return (
     <>

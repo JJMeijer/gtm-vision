@@ -1,4 +1,4 @@
-import tagDictionary from './dictionaries/tags';
+import { tagDictionary } from './dictionaries';
 
 const parseTags = function parseTags(tagsArray) {
   const parsedArray = [];
