@@ -85,6 +85,7 @@ export default function SearchBar(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setResponseValid(true);
 
     const isInputValid = validateValue(inputValue);
     setInputValid(isInputValid);
@@ -112,6 +113,7 @@ export default function SearchBar(props) {
         .then(({ container, errorMessage }) => {
           if (container) {
             const { resource } = container;
+            setResponseValid(true);
             resultCallback(resource);
           }
 

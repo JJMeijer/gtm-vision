@@ -94,7 +94,7 @@ export default async function routeApiWww(req, res, next) {
       } else {
         // Scraper returned nothing
         const errorMessage = 'Could not find GTM container at provided URL';
-        serverLogger.info(`Client Error Message: ${errorMessage}`);
+        serverLogger.info(`Client Error Message: ${errorMessage}`, { url: valueUrl.href });
 
         // Return Error to client.
         res.json({ errorMessage });

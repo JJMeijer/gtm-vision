@@ -1,4 +1,7 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+puppeteer.use(StealthPlugin());
 
 /**
  * a Puppeteer browser is created where the given
@@ -6,7 +9,7 @@ import puppeteer from 'puppeteer';
  * GTM scripts on that page. The first found GTM script is returned
  */
 export default async function scrapeWebsite(href, next) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: true });
   try {
     const page = await browser.newPage();
 
