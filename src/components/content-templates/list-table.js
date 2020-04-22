@@ -33,6 +33,12 @@ const useStyles = makeStyles(theme => ({
     '&:focus:': {
       textDecoration: 'underline',
     },
+    borderBottomColor: theme.palette.divider,
+    borderBottomStyle: 'dotted',
+    borderBottomWidth: '1px',
+  },
+  table: {
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -82,12 +88,13 @@ export default function ListTable(props) {
     <>
       <Typography className={classes.showButton} onClick={() => showList(!listVisibility)}>{listVisibility ? 'Hide List' : 'Show List'}</Typography>
       {listVisibility && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.table}>
           <Table size="small">
             <TableHead>
               <TableRow>
                 {columnNames.map(col => (
-                  <TableCell width={`${100 / columnNames.length}%`} key={col}>
+                  // width={index === 0 ? '30%' : `${70 / (columnNames.length - 1)}%`}
+                  <TableCell style={{ width: '50%' }} key={col}>
                     <Typography variant="body1" className={classes.columnHeader}>{col}</Typography>
                   </TableCell>
                 ))}
@@ -97,7 +104,7 @@ export default function ListTable(props) {
               {rows.map(row => (
                 <TableRow key={`row-${String(row)}`}>
                   {row.map(item => (
-                    <TableCell width="50%" key={`item-${item}`}>
+                    <TableCell style={{ width: '50%' }} key={`item-${item}`}>
                       <Typography variant="body1">{replaceReferenceWithLink(item)}</Typography>
                     </TableCell>
                   ))}

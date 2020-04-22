@@ -122,7 +122,10 @@ export default function SearchBar(props) {
             loadingCallback(false);
           }
         })
-        .catch(() => null);
+        .catch(() => {
+          setResponseValid(false);
+          return null;
+        });
     }
   };
 

@@ -7,12 +7,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
 import ContainerResult from './container-result';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   root: {
     fontFamily: ['Roboto', 'sans-serif'],
     display: 'flex',
   },
-});
+  resultItem: {
+    marginTop: -100,
+  },
+}));
 
 export default function App() {
   const classes = useStyles();
@@ -23,11 +26,11 @@ export default function App() {
     <>
       <CssBaseline />
       <Container maxWidth="xl" className={classes.root}>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={12}>
             <Header resultCallback={pushTagManagerData} loadingCallback={setLoadingState} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.resultItem}>
             <ContainerResult data={data} loading={loading} />
           </Grid>
         </Grid>
