@@ -17,7 +17,7 @@ export default async function routeApiGtm(req, res, next) {
     const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
 
     // Get container at URL
-    const { container, errorMessage } = await getGtmScript(gtmUrl);
+    const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
 
     if (!container && !errorMessage) {
       throw new Error('Unexpected Error');
@@ -25,7 +25,7 @@ export default async function routeApiGtm(req, res, next) {
 
     if (container) {
       // Return container to client.
-      res.json({ container });
+      res.json({ container, gtmId });
     }
 
     if (errorMessage) {

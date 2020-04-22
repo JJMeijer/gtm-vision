@@ -26,7 +26,10 @@ export default function Header(props) {
         <Title />
       </Grid>
       <Grid item xs={12}>
-        <SearchBar resultCallback={resultCallback} loadingCallback={loadingCallback} />
+        <SearchBar
+          resultCallback={resultCallback}
+          loadingCallback={loadingCallback}
+        />
       </Grid>
     </Grid>
   );

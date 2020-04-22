@@ -6,7 +6,7 @@ import parseGtm from '../parsers/gtm-parser';
 import LoadingSpinner from './content-templates/loading-spinner';
 
 export default function ContainerResult(props) {
-  const { data, loading } = props;
+  const { response, loading } = props;
   let resultElement = <div />;
 
   // Loading Spinner
@@ -14,7 +14,8 @@ export default function ContainerResult(props) {
     resultElement = <LoadingSpinner />;
   }
 
-  if (data) {
+  if (response) {
+    const { resource: data = {}, gtmId } = response;
     window.dataStore = {
       data,
     };
@@ -24,7 +25,12 @@ export default function ContainerResult(props) {
     const parsedData = parseGtm(data);
 
     const parsingTime = Math.round(performance.now() - parsingStart);
-    window.dataStore = { ...window.dataStore, parsedData, parsingTime };
+    window.dataStore = {
+      ...window.dataStore,
+      parsedData,
+      parsingTime,
+      gtmId,
+    };
 
     resultElement = <ContainerTabs parsedData={parsedData} />;
   }
@@ -33,13 +39,16 @@ export default function ContainerResult(props) {
 }
 
 ContainerResult.propTypes = {
-  data: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.bool,
-      PropTypes.number,
-      PropTypes.object,
-      PropTypes.array,
-    ]),
-  ),
+  response: PropTypes.shape({
+    resource: PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.number,
+        PropTypes.object,
+        PropTypes.array,
+      ]),
+    ),
+    gtmId: PropTypes.string,
+  }),
 };
