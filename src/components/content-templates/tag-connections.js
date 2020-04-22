@@ -69,9 +69,7 @@ TagConnections.propTypes = {
   triggers: PropTypes.arrayOf(PropTypes.shape({
     reference: PropTypes.string.isRequired,
   })),
-  tags: PropTypes.arrayOf(PropTypes.shape({
-    reference: PropTypes.string.isRequired,
-  })),
+  tags: PropTypes.arrayOf(PropTypes.string.isRequired),
   navigation: PropTypes.func.isRequired,
   reference: PropTypes.string.isRequired,
 };
