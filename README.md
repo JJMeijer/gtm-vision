@@ -20,6 +20,6 @@ be available at [localhost](http://localhost:3000)
 npm run build && npm start
 ```
 
-## Google Cloud Firestore database
+## Firestore database
 
 a Google Cloud Firestore database is used to store GTM ID's of scraped websites. This is to prevent websites to be scraped more than once. During development this database can be emulated using the instructions [here](https://cloud.google.com/sdk/gcloud/reference/beta/emulators/firestore). For this emulation the [Google Cloud SDK](https://cloud.google.com/sdk) needs to be installed.
