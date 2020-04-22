@@ -2,9 +2,14 @@ import express from 'express';
 import compression from 'compression';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import { start as startDebug } from '@google-cloud/debug-agent';
 
 import Router from './router';
 import { serverLogger } from './utility/loggers';
+
+if (process.env.NODE_ENV === 'production') {
+  startDebug({ allowExpressions: true });
+}
 
 // initialize Express app
 const app = express();

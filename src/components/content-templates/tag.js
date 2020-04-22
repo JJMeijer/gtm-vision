@@ -58,9 +58,7 @@ Tag.propTypes = {
       trigger: PropTypes.arrayOf(PropTypes.shape({
         reference: PropTypes.string.isRequired,
       })),
-      tag: PropTypes.arrayOf(PropTypes.shape({
-        reference: PropTypes.string.isRequired,
-      })),
+      tag: PropTypes.arrayOf(PropTypes.string.isRequired),
     }),
     tagSequencing: PropTypes.objectOf(PropTypes.shape({
       setup: PropTypes.objectOf(PropTypes.string),

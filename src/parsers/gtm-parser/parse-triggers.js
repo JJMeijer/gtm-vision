@@ -62,7 +62,11 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) {
   const triggerList = triggerDictionary();
   const trigger = _trigger;
-  const triggerType = trigger.conditions.filter(cond => cond.variable.match('Event'))[0].value;
+  const stockEventInTrigger = trigger.conditions.filter(cond => cond.variable.match(/Event\(1\)/)).length > 0;
+
+  const triggerType = stockEventInTrigger
+    ? trigger.conditions.filter(cond => cond.variable.match(/Event\(1\)/))[0].value
+    : trigger.conditions.filter(cond => cond.variable.match('Event'))[0].value;
 
   if (triggerList[triggerType]) {
     trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
@@ -91,20 +95,31 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
     const specialTriggerTypes = ['Element Visibility', 'Youtube Video', 'Scroll Depth', 'Timer'];
     if (specialTriggerTypes.indexOf(trigger.type) !== -1) {
       const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
-      const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
-      // eslint-disable-next-line max-len
-      const correspondingTag = container.tags.filter(tag => tag.tagValues && (tag.tagValues.uniqueTriggerId === uniqueTriggerId))[0];
 
-      /**
-       * Transfer info from tag.tagValues to trigger.triggerValues
-       * Except for the uniqueTriggerId
-       */
-      trigger.triggerValues = {};
-      Object.keys(correspondingTag.tagValues).forEach((key) => {
-        if (key !== 'uniqueTriggerId') {
-          trigger.triggerValues[key] = correspondingTag.tagValues[key];
-        }
-      });
+      if (uniqueTriggerCondition) {
+        const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
+
+        // Find Corresponding tag for the ID
+        const correspondingTag = container.tags.filter((tag) => {
+          if (tag.tagValues) {
+            if (tag.tagValues.uniqueTriggerId === uniqueTriggerId) {
+              return true;
+            }
+          }
+          return false;
+        })[0];
+
+        /**
+         * Transfer info from tag.tagValues to trigger.triggerValues
+         * Except for the uniqueTriggerId
+         */
+        trigger.triggerValues = {};
+        Object.keys(correspondingTag.tagValues).forEach((key) => {
+          if (key !== 'uniqueTriggerId') {
+            trigger.triggerValues[key] = correspondingTag.tagValues[key];
+          }
+        });
+      }
     }
 
     /**

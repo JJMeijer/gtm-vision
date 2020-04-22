@@ -6,7 +6,7 @@
   "scripts": {
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
-    "build-node": "babel server -d dist --minified --no-comments",
+    "build-node": "babel server -d dist --no-comments -s",
     "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
     "build": "npm run build-node && npm run build-public",
     "start": "node dist/server.js",
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/tserest/turbo-umbrella#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
+    "@google-cloud/debug-agent": "^4.2.2",
     "@google-cloud/firestore": "^3.7.4",
     "@google-cloud/logging-winston": "^3.0.6",
     "@material-ui/core": "^4.9.11",

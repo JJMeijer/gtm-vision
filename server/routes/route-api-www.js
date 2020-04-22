@@ -45,7 +45,7 @@ export default async function routeApiWww(req, res, next) {
       serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
 
       // Get Container for GTM URL
-      const { container, errorMessage } = await getGtmScript(gtmUrl);
+      const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
 
       if (!container && !errorMessage) {
         throw new Error('Unexpected Error');
@@ -53,7 +53,7 @@ export default async function routeApiWww(req, res, next) {
 
       if (container) {
         // Return to client.
-        res.json({ container });
+        res.json({ container, gtmId });
       }
 
       if (errorMessage) {
@@ -67,7 +67,7 @@ export default async function routeApiWww(req, res, next) {
 
       if (gtmUrl) {
         // Get container at  the URL
-        const { container, errorMessage } = await getGtmScript(gtmUrl);
+        const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
 
         if (!container && !errorMessage) {
           throw new Error('Unexpected Error');
@@ -81,7 +81,7 @@ export default async function routeApiWww(req, res, next) {
           serverLogger.info('GTM URL stored in websites database', { gtmUrl, hostname });
 
           // Return to client.
-          res.json({ container });
+          res.json({ container, gtmId });
         }
 
         if (errorMessage) {

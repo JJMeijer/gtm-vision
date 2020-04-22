@@ -19,7 +19,7 @@ const getGtmScript = async function getGtmScript(gtmUrl) {
   if (cachedContainer) {
     serverLogger.info('Cached Container Used', { gtmId });
     containerCache.ttl(gtmId, 600);
-    return { container: cachedContainer };
+    return { container: cachedContainer, gtmId };
   }
 
   let body;
@@ -36,7 +36,7 @@ const getGtmScript = async function getGtmScript(gtmUrl) {
     const containerText = body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
     const container = JSON.parse(unescape(containerText));
     containerCache.set(gtmId, container);
-    return { container };
+    return { container, gtmId };
   }
 
   const errorMessage = 'Could not find expected content in GTM script';

@@ -10,7 +10,7 @@ import ContainerElementContent from './container-element-content';
 
 const useStyles = makeStyles(theme => ({
   rows: {
-    height: 500,
+    height: 600,
   },
   row: {
     marginRight: 'auto',
@@ -41,12 +41,22 @@ export default function ContainerElements(props) {
     setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tabInd ? newRowValue : oldRowValue)));
   };
 
-  const navigation = (tab, row) => {
+  const navigation = (tab, reference) => {
+    const rowIndex = getIndexFromReference(tab, reference);
+
+    // Navigate to new Tab
     tabNavigation(tab);
 
-    const rowIndex = typeof row === 'number' ? row : getIndexFromReference(tab, row);
-    // eslint-disable-next-line max-len
-    setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tab ? rowIndex : oldRowValue)));
+    // Set correct row value in the new tab.
+    setRowValues((prevState) => {
+      const newState = prevState.map((oldRowIndex, index) => {
+        if (index === tab) {
+          return rowIndex;
+        }
+        return oldRowIndex;
+      });
+      return newState;
+    });
   };
 
   const tabs = tabContent.map(item => (
