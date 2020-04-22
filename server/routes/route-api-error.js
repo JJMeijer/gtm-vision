@@ -8,13 +8,19 @@ import { validateRequestBody, frontendLogger } from '../utility';
  */
 export default function routeApiError(req, res, next) {
   try {
-    validateRequestBody(req, ['message', 'name', 'stack']);
+    validateRequestBody(req, ['message', 'name', 'stack', 'gtmId']);
 
-    const { message, name, stack } = req.body;
+    const {
+      message,
+      name,
+      stack,
+      gtmId,
+    } = req.body;
     const error = new Error(message);
 
     error.name = name;
     error.stack = stack;
+    error.gtmId = gtmId;
 
     frontendLogger.error(`${name}: `, error);
     res.send('OK');

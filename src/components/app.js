@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 export default function App() {
   const classes = useStyles();
-  const [data, pushTagManagerData] = useState(null);
+  const [response, pushApiResponse] = useState(null);
   const [loading, setLoadingState] = useState(false);
 
   return (
@@ -28,10 +28,13 @@ export default function App() {
       <Container maxWidth="xl" className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
-            <Header resultCallback={pushTagManagerData} loadingCallback={setLoadingState} />
+            <Header
+              resultCallback={pushApiResponse}
+              loadingCallback={setLoadingState}
+            />
           </Grid>
           <Grid item xs={12} className={classes.resultItem}>
-            <ContainerResult data={data} loading={loading} />
+            <ContainerResult response={response} loading={loading} />
           </Grid>
         </Grid>
       </Container>

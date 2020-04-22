@@ -110,11 +110,11 @@ export default function SearchBar(props) {
           return response;
         })
         .then(response => response.json())
-        .then(({ container, errorMessage }) => {
+        .then(({ container, errorMessage, gtmId }) => {
           if (container) {
             const { resource } = container;
             setResponseValid(true);
-            resultCallback(resource);
+            resultCallback({ resource, gtmId });
           }
 
           if (errorMessage) {
