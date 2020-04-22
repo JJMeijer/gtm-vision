@@ -83,6 +83,7 @@ export default function ListTable(props) {
   const [listVisibility, showList] = useState(false);
 
   const { columnNames, rows } = createColumnsAndRows(list);
+  const columnWidth = `${100 / columnNames.length}%`;
 
   return (
     <>
@@ -93,8 +94,7 @@ export default function ListTable(props) {
             <TableHead>
               <TableRow>
                 {columnNames.map(col => (
-                  // width={index === 0 ? '30%' : `${70 / (columnNames.length - 1)}%`}
-                  <TableCell style={{ width: '50%' }} key={col}>
+                  <TableCell style={{ width: columnWidth }} key={col}>
                     <Typography variant="body1" className={classes.columnHeader}>{col}</Typography>
                   </TableCell>
                 ))}
@@ -104,7 +104,7 @@ export default function ListTable(props) {
               {rows.map(row => (
                 <TableRow key={`row-${String(row)}`}>
                   {row.map(item => (
-                    <TableCell style={{ width: '50%' }} key={`item-${item}`}>
+                    <TableCell style={{ width: columnWidth }} key={`item-${item}`}>
                       <Typography variant="body1">{replaceReferenceWithLink(item)}</Typography>
                     </TableCell>
                   ))}
@@ -120,8 +120,11 @@ export default function ListTable(props) {
 
 ListTable.propTypes = {
   list: PropTypes.arrayOf(PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.arrayOf(PropTypes.string).isRequired,
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+    ])),
   ])).isRequired,
   replaceReferenceWithLink: PropTypes.func.isRequired,
 };

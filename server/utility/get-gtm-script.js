@@ -34,7 +34,7 @@ const getGtmScript = async function getGtmScript(gtmUrl) {
 
   if (body && body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)) {
     const containerText = body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)[0].replace(/,\n"runtime"/, '}');
-    const container = JSON.parse(unescape(containerText));
+    const container = JSON.parse(containerText);
     containerCache.set(gtmId, container);
     return { container, gtmId };
   }
