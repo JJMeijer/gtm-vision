@@ -1,8 +1,7 @@
 import bent from 'bent';
 import { parse } from 'querystring';
 
-import containerCache from './container-cache';
-import { serverLogger } from './loggers';
+import { createClientFeedback, containerCache, serverLogger } from '.';
 
 /**
  * a Request is done for to find the GTM script for the given ID
@@ -28,8 +27,7 @@ const getGtmScript = async function getGtmScript(gtmUrl) {
     const getString = bent('string');
     body = await getString(gtmUrl);
   } catch (e) {
-    const errorMessage = 'Could not find Script for GTM container';
-    return { errorMessage };
+    return createClientFeedback('GTM_NOT_FOUND', { gtmUrl });
   }
 
   if (body && body.match(/{\n"resource":\s{[\s\S]*,\n"runtime"/g)) {
@@ -39,8 +37,7 @@ const getGtmScript = async function getGtmScript(gtmUrl) {
     return { container, gtmId };
   }
 
-  const errorMessage = 'Could not find expected content in GTM script';
-  return { errorMessage };
+  return createClientFeedback('GTM_PARSING_ERROR', { gtmUrl });
 };
 
 export default getGtmScript;

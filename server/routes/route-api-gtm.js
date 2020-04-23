@@ -17,9 +17,14 @@ export default async function routeApiGtm(req, res, next) {
     const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
 
     // Get container at URL
-    const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
+    const {
+      container,
+      gtmId,
+      clientFeedbackMessage,
+      clientFeedbackCode,
+    } = await getGtmScript(gtmUrl);
 
-    if (!container && !errorMessage) {
+    if (!container && !clientFeedbackMessage) {
       throw new Error('Unexpected Error');
     }
 
@@ -28,11 +33,11 @@ export default async function routeApiGtm(req, res, next) {
       res.json({ container, gtmId });
     }
 
-    if (errorMessage) {
-      serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
+    if (clientFeedbackMessage) {
+      serverLogger.info(`Client Error Message: ${clientFeedbackMessage}`, { gtmUrl, clientFeedbackCode });
 
       // Return Error to client.
-      res.json({ errorMessage });
+      res.json({ clientFeedbackMessage, clientFeedbackCode });
     }
   } catch (e) {
     next(e);

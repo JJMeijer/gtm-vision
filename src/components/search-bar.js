@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
     height: 28,
     margin: 4,
   },
+  tooltip: {
+    fontSize: '90%',
+  },
 }));
 
 const inputOptions = {
@@ -41,14 +44,12 @@ const inputOptions = {
     endpoint: '/api/gtm',
     validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
     validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
-    invalidResponseMessage: 'Could not find GTM container for provided ID',
   },
   URL: {
     placeholder: 'https://www.digital-power.com',
     endpoint: '/api/www',
     validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
     validateMessage: 'The URL you provided is not valid',
-    invalidResponseMessage: 'Could not find GTM container at provided URL',
   },
 };
 
@@ -58,12 +59,12 @@ export default function SearchBar(props) {
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
   const [responseValid, setResponseValid] = useState(true);
+  const [invalidResponseMessage, setInvalidResponseMessage] = useState('');
   const {
     placeholder,
     endpoint,
     validateValue,
     validateMessage,
-    invalidResponseMessage,
   } = inputOptions[inputType];
 
   const handleTypeChange = (event) => {
@@ -110,14 +111,15 @@ export default function SearchBar(props) {
           return response;
         })
         .then(response => response.json())
-        .then(({ container, errorMessage, gtmId }) => {
+        .then(({ container, gtmId, clientFeedbackMessage }) => {
           if (container) {
             const { resource } = container;
             setResponseValid(true);
             resultCallback({ resource, gtmId });
           }
 
-          if (errorMessage) {
+          if (clientFeedbackMessage) {
+            setInvalidResponseMessage(clientFeedbackMessage);
             setResponseValid(false);
             loadingCallback(false);
           }
@@ -145,6 +147,7 @@ export default function SearchBar(props) {
       <Divider className={classes.divider} orientation="vertical" />
 
       <Tooltip
+        classes={{ tooltip: classes.tooltip }}
         title={!inputValid ? validateMessage : invalidResponseMessage}
         open={!inputValid || !responseValid}
         TransitionComponent={Zoom}
