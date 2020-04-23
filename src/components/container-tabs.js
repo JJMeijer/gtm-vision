@@ -5,7 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import ContainerElements from './container-elements';
+
+import ContainerElementsList from './container-elements-list';
 
 const useStyles = makeStyles(theme => ({
   containerResult: {
@@ -34,9 +35,8 @@ export default function ContainerTabs(props) {
     return items.findIndex(item => item.reference === reference);
   };
 
-  const appBarId = 'container-appbar';
-
   // Scroll into view (only when data changes)
+  const appBarId = 'container-appbar';
   useEffect(() => document.getElementById(appBarId).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }), [parsedData]);
 
   return (
@@ -58,7 +58,7 @@ export default function ContainerTabs(props) {
           </AppBar>
         </Grid>
         <Grid item xs={12}>
-          <ContainerElements
+          <ContainerElementsList
             tabInd={currentTab}
             tabContent={parsedData[tabTypes[currentTab]]}
             tabNavigation={setTabIndex}

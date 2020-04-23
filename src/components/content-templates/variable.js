@@ -21,7 +21,7 @@ const showVariableValues = (variableValues) => {
 export default function Variable(props) {
   const { data, navigation } = props;
   const { variableValues = {}, usedIn = {}, reference } = data;
-  const { trigger: triggers, tag: tags, variable: variables } = usedIn;
+  const { triggers, tags, variables } = usedIn;
   const { code } = variableValues;
 
   return (
@@ -55,11 +55,11 @@ Variable.propTypes = {
       code: PropTypes.string,
     }),
     usedIn: PropTypes.shape({
-      trigger: PropTypes.arrayOf(PropTypes.shape({
+      triggers: PropTypes.arrayOf(PropTypes.shape({
         reference: PropTypes.string.isRequired,
       })),
-      tag: PropTypes.arrayOf(PropTypes.string.isRequired),
-      variable: PropTypes.arrayOf(PropTypes.string.isRequired),
+      tags: PropTypes.arrayOf(PropTypes.string.isRequired),
+      variables: PropTypes.arrayOf(PropTypes.string.isRequired),
     }),
     reference: PropTypes.string.isRequired,
   }).isRequired,

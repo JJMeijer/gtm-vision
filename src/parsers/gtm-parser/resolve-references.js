@@ -46,7 +46,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
          * because later we need to be able to make the distinction if a trigger is
          * used as a real trigger or as an exception.
          */
-        if (cat === 'trigger') {
+        if (cat === 'triggers') {
           if (usedInArray.filter(x => x.reference === item.reference).length === 0) {
             usedInArray.push(item);
           }
@@ -57,7 +57,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
          * The reference is needed and the overall object can become huge with circular
          * references if we push the whole object.
          */
-        if (cat === 'tag' || cat === 'variable') {
+        if (cat === 'tags' || cat === 'variables') {
           if (usedInArray.filter(x => x === item.reference).length === 0) {
             usedInArray.push(item.reference);
           }
