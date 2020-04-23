@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import VariableLink from './variable-link';
 import ListTable from './list-table';
-import { convertCamelCase } from '../../utility';
+import { convertCamelCase, replaceEmptyValues, sortObjectByKey } from '../../utility';
 
 const useStyles = makeStyles(theme => ({
   settingKey: {
@@ -26,16 +26,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const settingKeyBlacklist = [
+  'code',
+  'enableRecaptchaOption',
+  'enableUaRlsa',
+  'enableUseInternalVersion',
+  'trackTypeIs',
+  'trackTypeIsEvent',
+  'enableFirebaseCampaignData',
+  'enableEditJsMacroBehavior',
+  'enableIframeMode',
+];
+
 export default function Settings(props) {
   const classes = useStyles();
   const { values, navigation, reference } = props;
-
-  const replaceEmptyValues = (stringValue) => {
-    if (stringValue === '') {
-      return '""';
-    }
-    return stringValue;
-  };
 
   const replaceReferenceWithLink = (stringValue) => {
     const stringArray = stringValue.split(/({{[^{]+}})/).filter(x => x !== '');
@@ -54,11 +59,12 @@ export default function Settings(props) {
     });
   };
 
+  const sortedValues = sortObjectByKey(values);
   return (
     <>
       <Typography variant="h6">Settings:</Typography>
-      {Object.keys(values).map((key) => {
-        if (key !== 'code') {
+      {Object.keys(sortedValues).map((key) => {
+        if (settingKeyBlacklist.indexOf(key) === -1) {
           const settingValue = values[key];
 
           let settingValueElement;

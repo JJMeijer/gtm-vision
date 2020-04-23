@@ -5,15 +5,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Header from './header';
-import ContainerResult from './container-result';
+import Content from './content';
 
 const useStyles = makeStyles(() => ({
   root: {
     fontFamily: ['Roboto', 'sans-serif'],
-    display: 'flex',
-  },
-  resultItem: {
-    marginTop: -100,
   },
 }));
 
@@ -29,12 +25,12 @@ export default function App() {
         <Grid container>
           <Grid item xs={12}>
             <Header
-              resultCallback={pushApiResponse}
-              loadingCallback={setLoadingState}
+              pushApiResponse={pushApiResponse}
+              setLoadingState={setLoadingState}
             />
           </Grid>
-          <Grid item xs={12} className={classes.resultItem}>
-            <ContainerResult response={response} loading={loading} />
+          <Grid item xs={12}>
+            <Content response={response} loading={loading} />
           </Grid>
         </Grid>
       </Container>

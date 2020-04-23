@@ -6,18 +6,18 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import ContainerElementContent from './container-element-content';
+import ContainerElement from './container-element';
 
 const useStyles = makeStyles(theme => ({
-  rows: {
+  elementList: {
     height: 600,
   },
-  row: {
+  elementName: {
     marginRight: 'auto',
     textAlign: 'left',
     maxWidth: '100%',
   },
-  rowWrapper: {
+  elementNameWrapper: {
     alignItems: 'baseline',
   },
   content: {
@@ -26,46 +26,47 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ContainerElements(props) {
+export default function ContainerElementList(props) {
   const classes = useStyles();
   const {
     tabContent,
-    tabInd,
-    tabNavigation,
-    getIndexFromReference,
+    currentTabIndex,
+    setCurrentTabIndex,
+    getElementIndex,
   } = props;
-  const [rowValues, setRowValues] = useState([0, 0, 0]);
+
+  const [elementIndexes, setElementIndexes] = useState([0, 0, 0]);
 
   const listItems = useMemo(() => tabContent.map(item => (
     <Tab
       key={item.reference}
       label={item.reference}
-      className={classes.row}
-      classes={{ wrapper: classes.rowWrapper }}
+      className={classes.elementName}
+      classes={{ wrapper: classes.elementNameWrapper }}
     />
   )), [tabContent]);
 
-  const handleRowChange = (event, newRowValue) => {
-    // eslint-disable-next-line max-len
-    setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tabInd ? newRowValue : oldRowValue)));
+  const handleRowChange = (event, newElementIndex) => {
+    setElementIndexes(prevState => prevState.map((previousElementIndex, tabIndex) => {
+      if (tabIndex === currentTabIndex) {
+        return newElementIndex;
+      }
+      return previousElementIndex;
+    }));
   };
 
-  const navigation = (tab, reference) => {
-    const rowIndex = getIndexFromReference(tab, reference);
+  const navigation = (newTabIndex, elementReference) => {
+    const newElementIndex = getElementIndex(newTabIndex, elementReference);
 
     // Navigate to new Tab
-    tabNavigation(tab);
+    setCurrentTabIndex(newTabIndex);
 
-    // Set correct row value in the new tab.
-    setRowValues((prevState) => {
-      const newState = prevState.map((oldRowIndex, index) => {
-        if (index === tab) {
-          return rowIndex;
-        }
-        return oldRowIndex;
-      });
-      return newState;
-    });
+    setElementIndexes(prevState => (prevState.map((previousElementIndex, tabIndex) => {
+      if (tabIndex === newTabIndex) {
+        return newElementIndex;
+      }
+      return previousElementIndex;
+    })));
   };
 
   return (
@@ -74,11 +75,11 @@ export default function ContainerElements(props) {
         <Grid item xs={3}>
           <Paper>
             <Tabs
-              className={classes.rows}
+              className={classes.elementList}
               scrollButtons="on"
               orientation="vertical"
               variant="scrollable"
-              value={rowValues[tabInd]}
+              value={elementIndexes[currentTabIndex]}
               onChange={handleRowChange}
             >
               {listItems}
@@ -87,9 +88,9 @@ export default function ContainerElements(props) {
         </Grid>
         <Grid item xs={9}>
           <Paper className={classes.content}>
-            {tabContent[rowValues[tabInd]] && (
-              <ContainerElementContent
-                data={tabContent[rowValues[tabInd]]}
+            {tabContent[elementIndexes[currentTabIndex]] && (
+              <ContainerElement
+                data={tabContent[elementIndexes[currentTabIndex]]}
                 navigation={navigation}
               />
             )}
@@ -100,13 +101,13 @@ export default function ContainerElements(props) {
   );
 }
 
-ContainerElements.propTypes = {
+ContainerElementList.propTypes = {
   tabContent: PropTypes.arrayOf(
     PropTypes.shape({
       reference: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  tabInd: PropTypes.number.isRequired,
-  tabNavigation: PropTypes.func.isRequired,
-  getIndexFromReference: PropTypes.func.isRequired,
+  currentTabIndex: PropTypes.number.isRequired,
+  setCurrentTabIndex: PropTypes.func.isRequired,
+  getElementIndex: PropTypes.func.isRequired,
 };

@@ -10,7 +10,7 @@ import backGround from '../images/water_1.jpg';
 const cssBackgroundString = `-webkit-linear-gradient(rgba(63, 94, 251, 0.8), rgba(255, 70, 107, 0.8)), url(${backGround})`;
 
 const useStyles = makeStyles(() => ({
-  root: {
+  header: {
     background: cssBackgroundString,
     minHeight: '70vh',
   },
@@ -18,17 +18,17 @@ const useStyles = makeStyles(() => ({
 
 export default function Header(props) {
   const classes = useStyles();
+  const { pushApiResponse, setLoadingState } = props;
 
-  const { resultCallback, loadingCallback } = props;
   return (
-    <Grid container className={classes.root} spacing={6} direction="column" alignItems="center" justify="center">
+    <Grid container className={classes.header} spacing={6} direction="column" alignItems="center" justify="center">
       <Grid item xs={12}>
         <Title />
       </Grid>
       <Grid item xs={12}>
         <SearchBar
-          resultCallback={resultCallback}
-          loadingCallback={loadingCallback}
+          pushApiResponse={pushApiResponse}
+          setLoadingState={setLoadingState}
         />
       </Grid>
     </Grid>
@@ -36,6 +36,6 @@ export default function Header(props) {
 }
 
 Header.propTypes = {
-  resultCallback: PropTypes.func.isRequired,
-  loadingCallback: PropTypes.func.isRequired,
+  pushApiResponse: PropTypes.func.isRequired,
+  setLoadingState: PropTypes.func.isRequired,
 };
