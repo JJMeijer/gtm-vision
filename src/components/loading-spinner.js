@@ -6,6 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   loadingSpace: {
+    marginTop: '-10vh',
     padding: theme.spacing(0),
     color: theme.palette.background.paper,
   },

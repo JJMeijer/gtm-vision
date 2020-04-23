@@ -12,7 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  searchbar: {
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
@@ -55,8 +55,8 @@ const inputOptions = {
 
 export default function SearchBar(props) {
   const classes = useStyles();
-  const { resultCallback, loadingCallback } = props;
-  const [inputValue, setInputValue] = useState('');
+  const { pushApiResponse, setLoadingState } = props;
+  const [inputValue, setInputValue] = useState('GTM-NTQ25T');
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
   const [inputDisabled, setInputDisabled] = useState(false);
@@ -74,8 +74,8 @@ export default function SearchBar(props) {
     setInputValue('');
     setInputValid(true);
     setResponseValid(true);
-    resultCallback(null);
-    loadingCallback(false);
+    pushApiResponse(null);
+    setLoadingState(false);
   };
 
   const handleValueChange = (event) => {
@@ -84,8 +84,8 @@ export default function SearchBar(props) {
       setInputValue(trimmedValue);
       setInputValid(true);
       setResponseValid(true);
-      resultCallback(null);
-      loadingCallback(false);
+      pushApiResponse(null);
+      setLoadingState(false);
     }
   };
 
@@ -97,7 +97,7 @@ export default function SearchBar(props) {
     setInputValid(isInputValid);
 
     if (isInputValid) {
-      loadingCallback(true);
+      setLoadingState(true);
       setInputDisabled(true);
       fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
@@ -110,40 +110,37 @@ export default function SearchBar(props) {
       })
         .then((response) => {
           if (!response.ok) {
-            setResponseValid(false);
-            loadingCallback(false);
-            setInputDisabled(false);
             throw new Error(response.statusText);
           }
           return response;
         })
         .then(response => response.json())
-        .then(({ container, gtmId, clientFeedbackMessage }) => {
-          if (container) {
-            const { resource } = container;
+        .then(({ container: { resource: data } = {}, gtmId, clientFeedbackMessage }) => {
+          if (data) {
             setResponseValid(true);
-            resultCallback({ resource, gtmId });
+            pushApiResponse({ data, gtmId });
             setInputDisabled(false);
           }
 
           if (clientFeedbackMessage) {
-            setInvalidResponseMessage(clientFeedbackMessage);
             setResponseValid(false);
-            loadingCallback(false);
+            setLoadingState(false);
             setInputDisabled(false);
+            setInvalidResponseMessage(clientFeedbackMessage);
           }
         })
         .catch(() => {
-          setInvalidResponseMessage('Something went wrong :(');
           setResponseValid(false);
+          setLoadingState(false);
           setInputDisabled(false);
+          setInvalidResponseMessage('Something went wrong :(');
           return null;
         });
     }
   };
 
   return (
-    <Paper dp="20" component="form" className={classes.root} onSubmit={handleSubmit}>
+    <Paper dp="20" component="form" className={classes.searchbar} onSubmit={handleSubmit}>
       <Select
         className={classes.select}
         value={inputType}
@@ -172,7 +169,6 @@ export default function SearchBar(props) {
           onChange={handleValueChange}
           value={inputValue}
           InputProps={{
-            spellcheck: 'false',
             disableUnderline: true,
           }}
           // eslint-disable-next-line react/jsx-no-duplicate-props
@@ -188,6 +184,6 @@ export default function SearchBar(props) {
 }
 
 SearchBar.propTypes = {
-  resultCallback: PropTypes.func.isRequired,
-  loadingCallback: PropTypes.func.isRequired,
+  pushApiResponse: PropTypes.func.isRequired,
+  setLoadingState: PropTypes.func.isRequired,
 };

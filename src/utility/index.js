@@ -37,9 +37,28 @@ const errorTracking = function sendErrorsToServer() {
   return true;
 };
 
+const replaceEmptyValues = (stringValue) => {
+  if (stringValue === '') {
+    return '""';
+  }
+  return stringValue;
+};
+
+const sortObjectByKey = (obj) => {
+  const keys = Object.keys(obj);
+  const orderedObj = {};
+  keys.sort().forEach((key) => {
+    orderedObj[key] = obj[key];
+    return null;
+  });
+  return orderedObj;
+};
+
 export {
   isObject,
   isEmpty,
   convertCamelCase,
   errorTracking,
+  replaceEmptyValues,
+  sortObjectByKey,
 };

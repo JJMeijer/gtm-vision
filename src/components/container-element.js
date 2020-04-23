@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import { Trigger, Tag, Variable } from './content-templates';
+import { Trigger, Tag, Variable } from './container-element-components';
 
 const useStyles = makeStyles(theme => ({
-  tagName: {
+  elementName: {
     paddingBottom: theme.spacing(1),
     borderBottomColor: theme.palette.divider,
     borderBottomWidth: '1px',
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ContainerElementContent(props) {
+export default function ContainerElement(props) {
   const classes = useStyles();
   const { data, navigation } = props;
   const { category, reference } = data;
@@ -34,7 +34,7 @@ export default function ContainerElementContent(props) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Typography variant="h4" align="center" className={classes.tagName}>
+        <Typography variant="h4" align="center" className={classes.elementName}>
           {reference}
         </Typography>
       </Grid>
@@ -45,7 +45,7 @@ export default function ContainerElementContent(props) {
   );
 }
 
-ContainerElementContent.propTypes = {
+ContainerElement.propTypes = {
   data: PropTypes.shape({
     category: PropTypes.string.isRequired,
     reference: PropTypes.string.isRequired,

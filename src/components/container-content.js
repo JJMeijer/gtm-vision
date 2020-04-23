@@ -6,10 +6,11 @@ import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import ContainerElementsList from './container-elements-list';
+import ContainerElementsList from './container-element-list';
 
 const useStyles = makeStyles(theme => ({
   containerResult: {
+    marginTop: '-10vh',
     minHeight: '90vh',
     background: theme.palette.background.default,
     borderRadius: 4,
@@ -19,20 +20,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ContainerTabs(props) {
+export default function ContainerContent(props) {
   const classes = useStyles();
   const { parsedData } = props;
   const tabTypes = ['tags', 'triggers', 'variables'];
 
-  const [currentTab, setTabIndex] = useState(0);
+  const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   const handleTabChange = (event, newTab) => {
-    setTabIndex(newTab);
+    setCurrentTabIndex(newTab);
   };
 
-  const getIndexFromReference = (tab, reference) => {
-    const items = parsedData[tabTypes[tab]];
-    return items.findIndex(item => item.reference === reference);
+  const getElementIndex = (tabIndex, elementReference) => {
+    const items = parsedData[tabTypes[tabIndex]];
+    return items.findIndex(item => item.reference === elementReference);
   };
 
   // Scroll into view (only when data changes)
@@ -50,7 +51,7 @@ export default function ContainerTabs(props) {
       >
         <Grid item xs={12}>
           <AppBar position="static" id={appBarId} className={classes.resultTopBar}>
-            <Tabs value={currentTab} onChange={handleTabChange} variant="fullWidth">
+            <Tabs value={currentTabIndex} onChange={handleTabChange} variant="fullWidth">
               <Tab label="Tags" id="tags-tab" />
               <Tab label="Triggers" id="triggers-tab" />
               <Tab label="Variables" id="variables-tab" />
@@ -59,10 +60,10 @@ export default function ContainerTabs(props) {
         </Grid>
         <Grid item xs={12}>
           <ContainerElementsList
-            tabInd={currentTab}
-            tabContent={parsedData[tabTypes[currentTab]]}
-            tabNavigation={setTabIndex}
-            getIndexFromReference={getIndexFromReference}
+            tabContent={parsedData[tabTypes[currentTabIndex]]}
+            currentTabIndex={currentTabIndex}
+            setCurrentTabIndex={setCurrentTabIndex}
+            getElementIndex={getElementIndex}
           />
         </Grid>
       </Grid>
@@ -70,7 +71,7 @@ export default function ContainerTabs(props) {
   );
 }
 
-ContainerTabs.propTypes = {
+ContainerContent.propTypes = {
   parsedData: PropTypes.shape({
     tags: PropTypes.arrayOf(
       PropTypes.shape({
