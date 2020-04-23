@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import { start as startDebug } from '@google-cloud/debug-agent';
 
 import Router from './router';
-import { serverLogger } from './utility/loggers';
+import { serverLogger } from './utility';
 
 if (process.env.NODE_ENV === 'production') {
   startDebug({ allowExpressions: true });

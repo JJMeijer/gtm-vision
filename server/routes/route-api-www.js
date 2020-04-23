@@ -4,6 +4,7 @@ import {
   getGtmScript,
   websiteDatabase,
   scrapeWebsite,
+  createClientFeedback,
 } from '../utility';
 
 /**
@@ -44,16 +45,21 @@ export default async function routeApiWww(req, res, next) {
       const { gtmUrl } = databaseData;
       if (gtmUrl === 'unknown') {
         serverLogger.info('unknown value found in Firestore Database', { hostname });
-        const errorMessage = 'No GTM script was found the last time this URL was searched';
-        serverLogger.info(`Client Error Message: ${errorMessage}`, { hostname });
-        res.json({ errorMessage });
+
+        const { clientFeedbackMessage, clientFeedbackCode } = createClientFeedback('SCRIPT_NOT_FOUND_SECONDARY', { hostname });
+        res.json({ clientFeedbackMessage, clientFeedbackCode });
       } else {
         serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
 
         // Get Container for GTM URL
-        const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
+        const {
+          container,
+          gtmId,
+          clientFeedbackMessage,
+          clientFeedbackCode,
+        } = await getGtmScript(gtmUrl);
 
-        if (!container && !errorMessage) {
+        if (!container && !clientFeedbackMessage) {
           throw new Error('Unexpected Error');
         }
 
@@ -62,21 +68,28 @@ export default async function routeApiWww(req, res, next) {
           res.json({ container, gtmId });
         }
 
-        if (errorMessage) {
-          serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
-
+        if (clientFeedbackMessage) {
           // Return Error to client.
-          res.json({ errorMessage });
+          res.json({ clientFeedbackMessage, clientFeedbackCode });
         }
       }
     } else {
-      const gtmUrl = await scrapeWebsite(valueUrl.href, next);
+      const {
+        gtmUrl,
+        clientFeedbackMessage: scrapingErrorMessage,
+        clientFeedbackCode: scrapingErrorCode,
+      } = await scrapeWebsite(valueUrl.href);
 
       if (gtmUrl) {
         // Get container at  the URL
-        const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
+        const {
+          container,
+          gtmId,
+          clientFeedbackMessage,
+          clientFeedbackCode,
+        } = await getGtmScript(gtmUrl);
 
-        if (!container && !errorMessage) {
+        if (!container && !clientFeedbackMessage) {
           throw new Error('Unexpected Error');
         }
 
@@ -90,23 +103,27 @@ export default async function routeApiWww(req, res, next) {
           res.json({ container, gtmId });
         }
 
-        if (errorMessage) {
-          serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
-
+        if (clientFeedbackMessage) {
           // Return Error to client.
-          res.json({ errorMessage });
+          res.json({ clientFeedbackMessage, clientFeedbackCode });
         }
+      } else if (scrapingErrorMessage) {
+        // Error Occured during scraping
+        res.json({
+          clientFeedbackMessage: scrapingErrorMessage,
+          clientFeedbackCode: scrapingErrorCode,
+        });
       } else {
         // Scraper returned nothing
-        const errorMessage = 'Could not find GTM container at provided URL';
-        serverLogger.info(`Client Error Message: ${errorMessage}`, { url: valueUrl.href });
+        const { clientFeedbackMessage, clientFeedbackCode } = createClientFeedback('SCRIPT_NOT_FOUND_FIRST', { url: valueUrl.href });
 
+        // Store in database that the scraper returned nothing
         const reference = websiteDatabase.doc(hostname);
         reference.set({ gtmUrl: 'unknown' });
         serverLogger.info('unknown value stored in websites database', { hostname });
 
         // Return Error to client.
-        res.json({ errorMessage });
+        res.json({ clientFeedbackMessage, clientFeedbackCode });
       }
     }
   } catch (e) {

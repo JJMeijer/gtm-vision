@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -59,14 +59,15 @@ export default function ContainerElements(props) {
     });
   };
 
-  const tabs = tabContent.map(item => (
+  const tabs = useMemo(() => tabContent.map(item => (
     <Tab
       key={item.reference}
       className={classes.row}
       label={item.reference}
       classes={{ wrapper: classes.rowWrapper }}
     />
-  ));
+  )), [tabContent]);
+
 
   return (
     <>

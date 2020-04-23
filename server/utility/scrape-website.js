@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { serverLogger, createClientFeedback } from '.';
 
 puppeteer.use(StealthPlugin());
 
@@ -8,7 +9,7 @@ puppeteer.use(StealthPlugin());
  * URL is visited. When the page is loaded a search is done for
  * GTM scripts on that page. The first found GTM script is returned
  */
-export default async function scrapeWebsite(href, next) {
+export default async function scrapeWebsite(href) {
   const browser = await puppeteer.launch({ headless: true });
   try {
     const page = await browser.newPage();
@@ -26,11 +27,11 @@ export default async function scrapeWebsite(href, next) {
     });
 
     await browser.close();
-    return gtmUrl;
-  } catch (e) {
+    return { gtmUrl };
+  } catch (err) {
     await browser.close();
-    next(e);
+    const { name } = err;
+    serverLogger.error(`${name}: `, err);
+    return createClientFeedback('BROWSING_ERROR', { url: href });
   }
-
-  return (null);
 }
