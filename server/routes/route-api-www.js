@@ -42,25 +42,32 @@ export default async function routeApiWww(req, res, next) {
 
     if (databaseData) {
       const { gtmUrl } = databaseData;
-      serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
-
-      // Get Container for GTM URL
-      const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
-
-      if (!container && !errorMessage) {
-        throw new Error('Unexpected Error');
-      }
-
-      if (container) {
-        // Return to client.
-        res.json({ container, gtmId });
-      }
-
-      if (errorMessage) {
-        serverLogger.info(`Client Error Message: ${errorMessage}`);
-
-        // Return Error to client.
+      if (gtmUrl === 'unknown') {
+        serverLogger.info('unknown value found in Firestore Database', { hostname });
+        const errorMessage = 'No GTM script was found the last time this URL was searched';
+        serverLogger.info(`Client Error Message: ${errorMessage}`, { hostname });
         res.json({ errorMessage });
+      } else {
+        serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
+
+        // Get Container for GTM URL
+        const { container, errorMessage, gtmId } = await getGtmScript(gtmUrl);
+
+        if (!container && !errorMessage) {
+          throw new Error('Unexpected Error');
+        }
+
+        if (container) {
+          // Return to client.
+          res.json({ container, gtmId });
+        }
+
+        if (errorMessage) {
+          serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
+
+          // Return Error to client.
+          res.json({ errorMessage });
+        }
       }
     } else {
       const gtmUrl = await scrapeWebsite(valueUrl.href, next);
@@ -76,7 +83,6 @@ export default async function routeApiWww(req, res, next) {
         if (container) {
           // Set GTM URL in database so we don't have to scrape next time
           const reference = websiteDatabase.doc(hostname);
-
           reference.set({ gtmUrl });
           serverLogger.info('GTM URL stored in websites database', { gtmUrl, hostname });
 
@@ -85,7 +91,7 @@ export default async function routeApiWww(req, res, next) {
         }
 
         if (errorMessage) {
-          serverLogger.info(`Client Error Message: ${errorMessage}`);
+          serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
 
           // Return Error to client.
           res.json({ errorMessage });
@@ -94,6 +100,10 @@ export default async function routeApiWww(req, res, next) {
         // Scraper returned nothing
         const errorMessage = 'Could not find GTM container at provided URL';
         serverLogger.info(`Client Error Message: ${errorMessage}`, { url: valueUrl.href });
+
+        const reference = websiteDatabase.doc(hostname);
+        reference.set({ gtmUrl: 'unknown' });
+        serverLogger.info('unknown value stored in websites database', { hostname });
 
         // Return Error to client.
         res.json({ errorMessage });

@@ -29,9 +29,7 @@ export default async function routeApiGtm(req, res, next) {
     }
 
     if (errorMessage) {
-      serverLogger.info(errorMessage, {
-        gtmUrl,
-      });
+      serverLogger.info(`Client Error Message: ${errorMessage}`, { gtmUrl });
 
       // Return Error to client.
       res.json({ errorMessage });

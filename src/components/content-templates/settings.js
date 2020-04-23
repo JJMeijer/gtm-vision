@@ -69,13 +69,13 @@ export default function Settings(props) {
             // Replace References {{Custom Javascript(1)}} with Link Elements
             settingValueString = replaceReferenceWithLink(String(settingValueString));
             settingValueElement = (
-              <Grid key={`${reference}-${key}`} item xs={6} className={classes.settingValue}>
+              <Grid key={`${reference}-${key}`} item xs={7} className={classes.settingValue}>
                 <Typography variant="body1" className={classes.settingValueText}>{settingValueString}</Typography>
               </Grid>
             );
           } else {
             settingValueElement = (
-              <Grid key={`${reference}-${key}`} item xs={6} className={classes.settingValue}>
+              <Grid key={`${reference}-${key}`} item xs={7} className={classes.settingValue}>
                 <ListTable
                   list={settingValue}
                   replaceReferenceWithLink={replaceReferenceWithLink}
