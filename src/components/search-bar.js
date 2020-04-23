@@ -79,11 +79,14 @@ export default function SearchBar(props) {
   };
 
   const handleValueChange = (event) => {
-    setInputValue(event.target.value);
-    setInputValid(true);
-    setResponseValid(true);
-    resultCallback(null);
-    loadingCallback(false);
+    const trimmedValue = event.target.value.trim();
+    if (inputValue !== trimmedValue) {
+      setInputValue(trimmedValue);
+      setInputValid(true);
+      setResponseValid(true);
+      resultCallback(null);
+      loadingCallback(false);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -169,8 +172,11 @@ export default function SearchBar(props) {
           onChange={handleValueChange}
           value={inputValue}
           InputProps={{
+            spellcheck: 'false',
             disableUnderline: true,
           }}
+          // eslint-disable-next-line react/jsx-no-duplicate-props
+          inputProps={{ spellCheck: 'false' }}
         />
       </Tooltip>
 
