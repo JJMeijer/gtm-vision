@@ -37,14 +37,14 @@ const errorTracking = function sendErrorsToServer() {
   return true;
 };
 
-const replaceEmptyValues = (stringValue) => {
+const replaceEmptyValues = function replaceEmptyValueWithVisualEmptyString(stringValue) {
   if (stringValue === '') {
     return '""';
   }
   return stringValue;
 };
 
-const sortObjectByKey = (obj) => {
+const sortObjectByKey = function sortObjectAlphabeticallyByKey(obj) {
   const keys = Object.keys(obj);
   const orderedObj = {};
   keys.sort().forEach((key) => {
