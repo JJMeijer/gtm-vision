@@ -15,7 +15,7 @@ export default function Tag(props) {
     tagSequencing,
     reference,
   } = data;
-  const { trigger: triggers, tag: tags } = usedIn;
+  const { triggers, tags } = usedIn;
   const { code } = tagValues;
 
   return (
@@ -55,10 +55,10 @@ Tag.propTypes = {
       code: PropTypes.string,
     }),
     usedIn: PropTypes.shape({
-      trigger: PropTypes.arrayOf(PropTypes.shape({
+      triggers: PropTypes.arrayOf(PropTypes.shape({
         reference: PropTypes.string.isRequired,
       })),
-      tag: PropTypes.arrayOf(PropTypes.string.isRequired),
+      tags: PropTypes.arrayOf(PropTypes.string.isRequired),
     }),
     tagSequencing: PropTypes.objectOf(PropTypes.shape({
       setup: PropTypes.objectOf(PropTypes.string),

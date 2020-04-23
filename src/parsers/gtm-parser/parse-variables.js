@@ -7,7 +7,7 @@ const parseVariables = function parseVariables(macrosArray) {
   macrosArray.forEach((macro) => {
     const parsedMacro = {};
 
-    parsedMacro.category = 'variable';
+    parsedMacro.category = 'variables';
     Object.keys(macro).forEach((key) => {
       /**
        * Get a meaningful name from the variableName table based

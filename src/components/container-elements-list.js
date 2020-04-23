@@ -36,6 +36,15 @@ export default function ContainerElements(props) {
   } = props;
   const [rowValues, setRowValues] = useState([0, 0, 0]);
 
+  const listItems = useMemo(() => tabContent.map(item => (
+    <Tab
+      key={item.reference}
+      label={item.reference}
+      className={classes.row}
+      classes={{ wrapper: classes.rowWrapper }}
+    />
+  )), [tabContent]);
+
   const handleRowChange = (event, newRowValue) => {
     // eslint-disable-next-line max-len
     setRowValues(prevState => prevState.map((oldRowValue, index) => (index === tabInd ? newRowValue : oldRowValue)));
@@ -59,16 +68,6 @@ export default function ContainerElements(props) {
     });
   };
 
-  const tabs = useMemo(() => tabContent.map(item => (
-    <Tab
-      key={item.reference}
-      className={classes.row}
-      label={item.reference}
-      classes={{ wrapper: classes.rowWrapper }}
-    />
-  )), [tabContent]);
-
-
   return (
     <>
       <Grid container spacing={3}>
@@ -82,7 +81,7 @@ export default function ContainerElements(props) {
               value={rowValues[tabInd]}
               onChange={handleRowChange}
             >
-              {tabs}
+              {listItems}
             </Tabs>
           </Paper>
         </Grid>

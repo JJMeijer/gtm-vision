@@ -7,7 +7,7 @@ const parseTags = function parseTags(tagsArray) {
   tagsArray.forEach((tag) => {
     const parsedTag = {};
 
-    parsedTag.category = 'tag';
+    parsedTag.category = 'tags';
 
     Object.keys(tag).forEach((key) => {
       if (key === 'function') {

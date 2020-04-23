@@ -18,17 +18,17 @@ const useStyles = makeStyles(theme => ({
 export default function ContainerElementContent(props) {
   const classes = useStyles();
   const { data, navigation } = props;
-  const { category, type, reference } = data;
+  const { category, reference } = data;
 
-  let contentElement = <div>{`${category} - ${type}`}</div>;
-  if (category === 'tag') {
-    contentElement = (<Tag data={data} navigation={navigation} />);
+  let contentElement;
+  if (category === 'tags') {
+    contentElement = <Tag data={data} navigation={navigation} />;
   }
-  if (category === 'trigger') {
-    contentElement = (<Trigger data={data} navigation={navigation} />);
+  if (category === 'triggers') {
+    contentElement = <Trigger data={data} navigation={navigation} />;
   }
-  if (category === 'variable') {
-    contentElement = (<Variable data={data} navigation={navigation} />);
+  if (category === 'variables') {
+    contentElement = <Variable data={data} navigation={navigation} />;
   }
 
   return (
@@ -48,7 +48,6 @@ export default function ContainerElementContent(props) {
 ContainerElementContent.propTypes = {
   data: PropTypes.shape({
     category: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
     reference: PropTypes.string.isRequired,
   }).isRequired,
   navigation: PropTypes.func.isRequired,

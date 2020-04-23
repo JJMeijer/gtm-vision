@@ -3,7 +3,7 @@ const parseCode = function parseCodeArrays(containerElement) {
   const { category, type } = element;
 
   let code = [];
-  const destination = element[`${category}Values`];
+  const destination = category === 'tags' ? element.tagValues : element.variableValues;
   if (type === 'Custom javascript') {
     code = destination.javascript;
     delete destination.javascript;

@@ -13,7 +13,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
   rules.forEach((rule, index) => {
     const ruleObj = {};
 
-    ruleObj.category = 'trigger';
+    ruleObj.category = 'triggers';
     ruleObj.reference = `Trigger(${index})`;
     rule.forEach((rulePart) => {
       const rulePartType = rulePart[0];
@@ -154,7 +154,7 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
           return false;
         })[0];
 
-        return triggerTag.usedIn.trigger[0];
+        return triggerTag.usedIn.triggers[0];
       });
 
       triggersInGroup.map((_triggerChild) => {

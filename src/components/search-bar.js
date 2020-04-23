@@ -54,10 +54,12 @@ const inputOptions = {
 };
 
 export default function SearchBar(props) {
+  const classes = useStyles();
   const { resultCallback, loadingCallback } = props;
-  const [inputValue, setInputValue] = useState('GTM-NTQ25T'); // GTM-NTQ25T
+  const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
+  const [inputDisabled, setInputDisabled] = useState(false);
   const [responseValid, setResponseValid] = useState(true);
   const [invalidResponseMessage, setInvalidResponseMessage] = useState('');
   const {
@@ -93,6 +95,7 @@ export default function SearchBar(props) {
 
     if (isInputValid) {
       loadingCallback(true);
+      setInputDisabled(true);
       fetch(`${document.location.origin}${endpoint}`, {
         method: 'POST',
         headers: {
@@ -106,6 +109,7 @@ export default function SearchBar(props) {
           if (!response.ok) {
             setResponseValid(false);
             loadingCallback(false);
+            setInputDisabled(false);
             throw new Error(response.statusText);
           }
           return response;
@@ -116,22 +120,25 @@ export default function SearchBar(props) {
             const { resource } = container;
             setResponseValid(true);
             resultCallback({ resource, gtmId });
+            setInputDisabled(false);
           }
 
           if (clientFeedbackMessage) {
             setInvalidResponseMessage(clientFeedbackMessage);
             setResponseValid(false);
             loadingCallback(false);
+            setInputDisabled(false);
           }
         })
         .catch(() => {
+          setInvalidResponseMessage('Something went wrong :(');
           setResponseValid(false);
+          setInputDisabled(false);
           return null;
         });
     }
   };
 
-  const classes = useStyles();
   return (
     <Paper dp="20" component="form" className={classes.root} onSubmit={handleSubmit}>
       <Select
@@ -167,7 +174,7 @@ export default function SearchBar(props) {
         />
       </Tooltip>
 
-      <IconButton type="submit" className={classes.iconButton}>
+      <IconButton type="submit" className={classes.iconButton} disabled={inputDisabled}>
         <SearchIcon />
       </IconButton>
     </Paper>
