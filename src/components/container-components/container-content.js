@@ -43,7 +43,10 @@ export default function ContainerContent(props) {
     });
 
     pushNewTabName(newTabName);
-    pushNewElementIndex(newElementIndex);
+    setCurrentElementIndexes(previousElementIndexes => ({
+      ...previousElementIndexes,
+      [newTabName]: newElementIndex,
+    }));
   };
 
   // Scroll into view (only when data changes)

@@ -29,7 +29,7 @@ export default function ContainerNavigation(props) {
   };
 
   return (
-    <Grid container direction="column" spacing={1}>
+    <Grid container direction="column" spacing={0}>
       <Grid item xs={12}>
         <ContainerNavigationTabs tabInd={currentTabIndex} pushTabChange={pushTabChange} />
       </Grid>

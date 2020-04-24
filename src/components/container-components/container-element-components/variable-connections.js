@@ -19,7 +19,7 @@ export default function VariableConnections(props) {
           title="Used in Tags"
           buttons={tags}
           parentReference={reference}
-          type="tag"
+          type="tags"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -29,7 +29,7 @@ export default function VariableConnections(props) {
           title="Used in Triggers"
           buttons={triggers.map(x => x.reference)}
           parentReference={reference}
-          type="trigger"
+          type="triggers"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -39,7 +39,7 @@ export default function VariableConnections(props) {
           title="Used in Variables"
           buttons={variables}
           parentReference={reference}
-          type="variable"
+          type="variables"
           buttonStyle="contained"
           navigation={navigation}
         />

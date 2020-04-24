@@ -1,2 +1,1 @@
-// eslint-disable-next-line import/prefer-default-export
-export { default as ContainerContent } from './container-content';
+export { default } from './container-content';

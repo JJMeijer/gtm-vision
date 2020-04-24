@@ -37,7 +37,7 @@ export default function ContainerNavigationList(props) {
   )), [listElements]);
 
   return (
-    <Paper>
+    <Paper elevation={2}>
       <Tabs
         className={classes.elementList}
         orientation="vertical"

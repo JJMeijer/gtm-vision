@@ -18,12 +18,22 @@ const parseCode = function parseCodeArrays(containerElement) {
     const resultArray = [];
     if (Array.isArray(code)) {
       const codeArray = code.filter(part => part !== 'template');
-      codeArray.forEach((block) => {
+      codeArray.forEach((block, index) => {
         if (!Array.isArray(block)) {
           resultArray.push(block);
         } else {
-          const referenceName = block.filter(part => part.toString().match(/\{\{/));
-          resultArray.push(`"${referenceName}"`);
+          const referenceName = block.filter(part => part.toString().match(/(\{\{[^{]+\}\})/));
+          const previousBlock = codeArray[index - 1];
+          const nextBlock = codeArray[index + 1];
+          if (previousBlock && typeof previousBlock === 'string' && previousBlock.slice(-1) === '"') {
+            if (nextBlock && typeof nextBlock === 'string' && nextBlock[0] === '"') {
+              resultArray.push(`${referenceName}`);
+            } else {
+              resultArray.push(`"${referenceName}"`);
+            }
+          } else {
+            resultArray.push(`"${referenceName}"`);
+          }
         }
       });
     } else {

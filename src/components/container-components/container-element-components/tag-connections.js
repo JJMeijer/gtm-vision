@@ -36,7 +36,7 @@ export default function TagConnections(props) {
           title="Triggers"
           buttons={realTriggers.map(x => x.reference)}
           parentReference={reference}
-          type="trigger"
+          type="triggers"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -46,7 +46,7 @@ export default function TagConnections(props) {
           title="Exceptions"
           buttons={exceptionTriggers.map(x => x.reference)}
           parentReference={reference}
-          type="exception"
+          type="exceptions"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -56,7 +56,7 @@ export default function TagConnections(props) {
           title="Used for Tags"
           buttons={tags}
           parentReference={reference}
-          type="tag"
+          type="tags"
           buttonStyle="contained"
           navigation={navigation}
         />

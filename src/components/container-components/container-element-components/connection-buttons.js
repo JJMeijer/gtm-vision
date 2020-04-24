@@ -12,21 +12,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const buttonOptions = {
-  tag: {
+  tags: {
     color: 'secondary',
     tabName: 'tags',
   },
-  trigger: {
+  triggers: {
     color: 'primary',
     tabName: 'triggers',
   },
-  exception: {
+  exceptions: {
     color: 'default',
     tabName: 'triggers',
   },
-  variable: {
+  variables: {
     color: 'default',
-    tabName: 'variable',
+    tabName: 'variables',
   },
 };
 

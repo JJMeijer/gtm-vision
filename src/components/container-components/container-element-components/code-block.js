@@ -56,7 +56,7 @@ export default function CodeBlock(props) {
           title="Variables in Code"
           buttons={variableList}
           parentReference={reference}
-          type="variable"
+          type="variables"
           buttonStyle="outlined"
           navigation={navigation}
         />
