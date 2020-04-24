@@ -16,28 +16,30 @@ const convertCamelCase = function convertCamelCaseToSentence(str) {
   return strWithSpaces.charAt(0).toUpperCase() + strWithSpaces.slice(1);
 };
 
-const errorTracking = function sendErrorsToServer() {
-  const errorTrackingFunction = (error) => {
-    const { name = 'Error', message = 'default error', stack = 'Stack missing' } = error.error;
-    const gtmId = window.dataStore ? window.dataStore.gtmId || 'unknown' : 'No Data';
-    fetch(`${document.location.origin}/api/error`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        message,
-        stack,
-        gtmId,
-      }),
+const sendError = function sendErrorToServer(error) {
+  const { name = 'Error', message = 'default error', stack = 'Stack missing' } = error.error;
+  const gtmId = window.dataStore ? window.dataStore.gtmId || 'unknown' : 'No Data';
+
+  fetch(`${document.location.origin}/api/error`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      message,
+      stack,
+      gtmId,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+    })
+    .catch((e) => {
+      sendError(e);
     });
-
-    return false;
-  };
-
-  window.removeEventListener('error', errorTrackingFunction);
-  window.addEventListener('error', errorTrackingFunction);
 };
 
 const replaceEmptyValues = function replaceEmptyValueWithVisualEmptyString(stringValue) {
@@ -58,10 +60,10 @@ const sortObjectByKey = function sortObjectAlphabeticallyByKey(obj) {
 };
 
 export {
+  sendError,
   isObject,
   isEmpty,
   convertCamelCase,
-  errorTracking,
   replaceEmptyValues,
   sortObjectByKey,
 };

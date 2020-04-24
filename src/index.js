@@ -2,13 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import App from './components/app';
-import { errorTracking } from './utility';
+import { sendError } from './utility';
 
 function renderApp() {
   render(<App />, document.getElementById('app'));
 }
 
-errorTracking();
+window.removeEventListener('error', sendError);
+window.addEventListener('error', sendError);
+
 renderApp();
 
 if (module.hot) {
