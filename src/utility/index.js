@@ -17,7 +17,7 @@ const convertCamelCase = function convertCamelCaseToSentence(str) {
 };
 
 const errorTracking = function sendErrorsToServer() {
-  window.addEventListener('error', (error) => {
+  const errorTrackingFunction = (error) => {
     const { name = 'Error', message = 'default error', stack = 'Stack missing' } = error.error;
     const gtmId = window.dataStore ? window.dataStore.gtmId || 'unknown' : 'No Data';
     fetch(`${document.location.origin}/api/error`, {
@@ -32,9 +32,12 @@ const errorTracking = function sendErrorsToServer() {
         gtmId,
       }),
     });
-  });
 
-  return true;
+    return false;
+  };
+
+  window.removeEventListener('error', errorTrackingFunction);
+  window.addEventListener('error', errorTrackingFunction);
 };
 
 const replaceEmptyValues = function replaceEmptyValueWithVisualEmptyString(stringValue) {
