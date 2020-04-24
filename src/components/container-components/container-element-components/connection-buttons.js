@@ -14,19 +14,19 @@ const useStyles = makeStyles(theme => ({
 const buttonOptions = {
   tag: {
     color: 'secondary',
-    navigationIndex: 0,
+    tabName: 'tags',
   },
   trigger: {
     color: 'primary',
-    navigationIndex: 1,
+    tabName: 'triggers',
   },
   exception: {
     color: 'default',
-    navigationIndex: 1,
+    tabName: 'triggers',
   },
   variable: {
     color: 'default',
-    navigationIndex: 2,
+    tabName: 'variable',
   },
 };
 
@@ -41,8 +41,7 @@ export default function ConnectionButtons(props) {
     navigation,
   } = props;
 
-  const { color } = buttonOptions[type];
-  const { navigationIndex } = buttonOptions[type];
+  const { color, tabName } = buttonOptions[type];
 
   return (
     <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -56,7 +55,7 @@ export default function ConnectionButtons(props) {
             key={`button-${buttonReference}-${type}-${parentReference}`}
             variant={buttonStyle}
             color={color}
-            onClick={() => navigation(navigationIndex, buttonReference)}
+            onClick={() => navigation(tabName, buttonReference)}
           >
             {buttonReference}
           </Button>

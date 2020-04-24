@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ContainerTabs from './container-content';
+import ContainerContent from './container-components';
 import parseGtm from '../parsers/gtm-parser';
 import LoadingSpinner from './loading-spinner';
 
@@ -21,7 +21,7 @@ export default function Content(props) {
     };
 
     // Return Container
-    return <ContainerTabs parsedData={parsedData} />;
+    return <ContainerContent parsedData={parsedData} />;
   }
 
   // Loading Spinner

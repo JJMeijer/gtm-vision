@@ -32,7 +32,7 @@ export default function VariableLink(props) {
   return (
     <ButtonBase
       className={classes.buttonLink}
-      onClick={() => navigation(2, variableName)}
+      onClick={() => navigation('variables', variableName)}
     >
       {variableName}
     </ButtonBase>

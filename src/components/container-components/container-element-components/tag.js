@@ -8,13 +8,13 @@ import TagSequencing from './tag-sequencing';
 import CodeBlock from './code-block';
 
 export default function Tag(props) {
-  const { data, navigation } = props;
+  const { elementData, navigation } = props;
   const {
     tagValues,
     usedIn,
     tagSequencing,
     reference,
-  } = data;
+  } = elementData;
   const { triggers, tags } = usedIn;
   const { code } = tagValues;
 
@@ -50,7 +50,7 @@ export default function Tag(props) {
 }
 
 Tag.propTypes = {
-  data: PropTypes.shape({
+  elementData: PropTypes.shape({
     tagValues: PropTypes.shape({
       code: PropTypes.string,
     }),
