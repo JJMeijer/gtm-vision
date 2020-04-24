@@ -19,8 +19,8 @@ const showVariableValues = (variableValues) => {
 };
 
 export default function Variable(props) {
-  const { data, navigation } = props;
-  const { variableValues = {}, usedIn = {}, reference } = data;
+  const { elementData, navigation } = props;
+  const { variableValues = {}, usedIn = {}, reference } = elementData;
   const { triggers, tags, variables } = usedIn;
   const { code } = variableValues;
 
@@ -50,7 +50,7 @@ export default function Variable(props) {
 }
 
 Variable.propTypes = {
-  data: PropTypes.shape({
+  elementData: PropTypes.shape({
     variableValues: PropTypes.shape({
       code: PropTypes.string,
     }),

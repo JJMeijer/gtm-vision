@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import VariableLink from './variable-link';
 import ListTable from './list-table';
-import { convertCamelCase, replaceEmptyValues, sortObjectByKey } from '../../utility';
+import { convertCamelCase, replaceEmptyValues, sortObjectByKey } from '../../../utility';
 
 const useStyles = makeStyles(theme => ({
   settingKey: {

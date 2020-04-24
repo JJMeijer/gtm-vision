@@ -7,7 +7,7 @@ import TriggerConnections from './trigger-connections';
 import Settings from './settings';
 
 export default function Trigger(props) {
-  const { data, navigation } = props;
+  const { elementData, navigation } = props;
   const {
     conditions,
     tags,
@@ -16,7 +16,7 @@ export default function Trigger(props) {
     reference,
     triggerChildren,
     triggerParent,
-  } = data;
+  } = elementData;
 
   return (
     <Grid container spacing={3}>
@@ -43,7 +43,7 @@ export default function Trigger(props) {
 }
 
 Trigger.propTypes = {
-  data: PropTypes.shape({
+  elementData: PropTypes.shape({
     conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
     tags: PropTypes.arrayOf(PropTypes.string),
     exceptions: PropTypes.arrayOf(PropTypes.string),
