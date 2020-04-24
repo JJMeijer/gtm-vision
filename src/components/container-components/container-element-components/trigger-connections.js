@@ -20,7 +20,7 @@ export default function TriggerConnections(props) {
           title="Triggers"
           buttons={triggerChildren.map(x => x.reference)}
           parentReference={reference}
-          type="trigger"
+          type="triggers"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -30,7 +30,7 @@ export default function TriggerConnections(props) {
           title="Used in Group"
           buttons={[triggerParent]}
           parentReference={reference}
-          type="trigger"
+          type="triggers"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -40,7 +40,7 @@ export default function TriggerConnections(props) {
           title="Trigger for"
           buttons={tags.map(x => x.match(/{{(.+)}}/)[1])}
           parentReference={reference}
-          type="tag"
+          type="tags"
           buttonStyle="contained"
           navigation={navigation}
         />
@@ -50,7 +50,7 @@ export default function TriggerConnections(props) {
           title="Exception for"
           buttons={exceptions.map(x => x.match(/{{(.+)}}/)[1])}
           parentReference={reference}
-          type="tag"
+          type="tags"
           buttonStyle="contained"
           navigation={navigation}
         />

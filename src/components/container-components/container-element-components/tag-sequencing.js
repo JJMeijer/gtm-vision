@@ -20,7 +20,7 @@ export default function TagSequencing(props) {
             title={sequenceText}
             buttons={[referencedTag]}
             parentReference={reference}
-            type="tag"
+            type="tags"
             buttonStyle="contained"
             navigation={navigation}
           />
