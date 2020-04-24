@@ -11,6 +11,8 @@ import Divider from '@material-ui/core/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 
+import { sendError } from '../utility';
+
 const useStyles = makeStyles(theme => ({
   searchbar: {
     padding: '2px 4px',
@@ -129,11 +131,12 @@ export default function SearchBar(props) {
             setInvalidResponseMessage(clientFeedbackMessage);
           }
         })
-        .catch(() => {
+        .catch((e) => {
           setResponseValid(false);
           setLoadingState(false);
           setInputDisabled(false);
-          setInvalidResponseMessage('Something went wrong :(');
+          setInvalidResponseMessage('An unexpected error occured :(');
+          sendError(e);
           return null;
         });
     }
