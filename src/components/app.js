@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ErrorBoundary from './error-boundary';
 import Header from './header';
 import Content from './content';
 
@@ -24,13 +25,18 @@ export default function App() {
       <Container maxWidth="xl" className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
-            <Header
-              pushApiResponse={pushApiResponse}
-              setLoadingState={setLoadingState}
-            />
+            <ErrorBoundary>
+              <Header
+                pushApiResponse={pushApiResponse}
+                setLoadingState={setLoadingState}
+              />
+            </ErrorBoundary>
           </Grid>
           <Grid item xs={12}>
-            <Content response={response} loading={loading} />
+            <ErrorBoundary>
+              <Content response={response} loading={loading} />
+            </ErrorBoundary>
+
           </Grid>
         </Grid>
       </Container>
