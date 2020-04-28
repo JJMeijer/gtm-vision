@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Fade from '@material-ui/core/Fade';
 
 import ContainerNavigation from './container-navigation';
 import ContainerElement from './container-element';
 
 const useStyles = makeStyles(theme => ({
   containerContent: {
-    marginTop: '-10vh',
+    marginTop: '-17vh',
     minHeight: '90vh',
     background: theme.palette.background.default,
     borderRadius: 4,
@@ -54,23 +55,25 @@ export default function ContainerContent(props) {
   useEffect(() => document.getElementById(containerContentId).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }), [parsedData]);
 
   return (
-    <Grid className={classes.containerContent} id={containerContentId} container spacing={2}>
-      <Grid item xs={3}>
-        <ContainerNavigation
-          parsedData={parsedData}
-          currentTabName={currentTabName}
-          currentElementIndex={currentElementIndexes[currentTabName]}
-          pushNewTabName={pushNewTabName}
-          pushNewElementIndex={pushNewElementIndex}
-        />
+    <Fade in timeout={500}>
+      <Grid className={classes.containerContent} id={containerContentId} container spacing={3}>
+        <Grid item xs={3}>
+          <ContainerNavigation
+            parsedData={parsedData}
+            currentTabName={currentTabName}
+            currentElementIndex={currentElementIndexes[currentTabName]}
+            pushNewTabName={pushNewTabName}
+            pushNewElementIndex={pushNewElementIndex}
+          />
+        </Grid>
+        <Grid item xs={9}>
+          <ContainerElement
+            elementData={parsedData[currentTabName][currentElementIndexes[currentTabName]]}
+            navigation={navigation}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={9}>
-        <ContainerElement
-          elementData={parsedData[currentTabName][currentElementIndexes[currentTabName]]}
-          navigation={navigation}
-        />
-      </Grid>
-    </Grid>
+    </Fade>
   );
 }
 

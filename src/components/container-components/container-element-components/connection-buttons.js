@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -8,6 +8,27 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
+  },
+  showButton: {
+    color: theme.palette.primary.main,
+    fontSize: '1rem',
+    fontWeight: 400,
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    margin: 0,
+    padding: 0,
+    display: 'inline',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    '&:focus:': {
+      textDecoration: 'underline',
+    },
+    borderBottomColor: theme.palette.divider,
+    borderBottomStyle: 'dotted',
+    borderBottomWidth: '1px',
   },
 }));
 
@@ -43,13 +64,28 @@ export default function ConnectionButtons(props) {
 
   const { color, tabName } = buttonOptions[type];
 
+  const [showAll, changeShowAll] = useState(false);
+
+  const buttonLimit = 30;
+  const filteredButtons = showAll ? buttons : buttons.slice(0, buttonLimit);
+
+
   return (
     <Grid container direction="row" justify="flex-start" alignItems="center">
       <Grid item xs={2}>
         <Typography variant="button">{`${title}:`}</Typography>
+        {buttons.length > buttonLimit && (
+          <Typography
+            variant="subtitle1"
+            className={classes.showButton}
+            onClick={() => changeShowAll(!showAll)}
+          >
+            {` Show ${showAll ? 'Less' : 'All'}`}
+          </Typography>
+        )}
       </Grid>
       <Grid item xs={10}>
-        {buttons.map(buttonReference => (
+        {filteredButtons.map(buttonReference => (
           <Button
             className={classes.button}
             key={`button-${buttonReference}-${type}-${parentReference}`}

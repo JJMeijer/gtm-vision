@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import ContainerNavigationTabs from './container-navigation-tabs';
 import ContainerNavigationList from './container-navigation-list';
@@ -16,8 +17,8 @@ export default function ContainerNavigation(props) {
 
   const tabs = ['tags', 'triggers', 'variables'];
 
-  const currentTabIndex = tabs.indexOf(currentTabName);
   const listElements = parsedData[currentTabName];
+  const currentTabIndex = tabs.indexOf(currentTabName);
 
   const pushTabChange = (newTabIndex) => {
     const newTabName = tabs[newTabIndex];
@@ -29,18 +30,21 @@ export default function ContainerNavigation(props) {
   };
 
   return (
-    <Grid container direction="column" spacing={0}>
-      <Grid item xs={12}>
-        <ContainerNavigationTabs tabInd={currentTabIndex} pushTabChange={pushTabChange} />
+    <Paper elevation={4}>
+      <Grid container direction="column" spacing={0}>
+        <Grid item xs={12}>
+          <ContainerNavigationTabs tabInd={currentTabIndex} pushTabChange={pushTabChange} />
+        </Grid>
+        <Grid item xs={12}>
+          <ContainerNavigationList
+            currentElementIndex={currentElementIndex}
+            listElements={listElements}
+            pushElementIndexChange={pushElementIndexChange}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <ContainerNavigationList
-          elementIndex={currentElementIndex}
-          listElements={listElements}
-          pushElementIndexChange={pushElementIndexChange}
-        />
-      </Grid>
-    </Grid>
+    </Paper>
+
   );
 }
 

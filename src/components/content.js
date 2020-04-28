@@ -21,7 +21,7 @@ export default function Content(props) {
     };
 
     // Return Container
-    return <ContainerContent parsedData={parsedData} />;
+    return <ContainerContent parsedData={parsedData} gtmId={gtmId} />;
   }
 
   // Loading Spinner

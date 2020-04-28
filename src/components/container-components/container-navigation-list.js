@@ -1,53 +1,69 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import { FixedSizeList } from 'react-window';
+import Fab from '@material-ui/core/Fab';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-const useStyles = makeStyles(() => ({
-  elementList: {
-    height: 600,
+import ListItem from './container-navigation-list-item';
+
+const listRef = React.createRef();
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'relative',
+    minHeight: 600,
   },
-  elementName: {
-    marginRight: 'auto',
-    textAlign: 'left',
-    maxWidth: '100%',
+  list: {
+    '&::-webkit-scrollbar': {
+      width: theme.spacing(2),
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      borderRadius: '4px',
+      outline: '1px solid slategrey',
+    },
+    scrollbarColor: 'rgba(0,0,0,.1) transparent',
+    scrollbarWidth: 'auto',
   },
-  elementNameWrapper: {
-    alignItems: 'baseline',
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(1.5),
+    right: theme.spacing(3),
   },
 }));
 
 export default function ContainerNavigationList(props) {
   const classes = useStyles();
-  const { listElements, pushElementIndexChange, elementIndex } = props;
+  const {
+    listElements,
+    currentElementIndex,
+  } = props;
 
-  const handleElementChange = (event, newElementIndex) => {
-    pushElementIndexChange(newElementIndex);
-  };
-
-  const listElementsTabs = useMemo(() => listElements.map(item => (
-    <Tab
-      key={item.reference}
-      label={item.reference}
-      className={classes.elementName}
-      classes={{ wrapper: classes.elementNameWrapper }}
-    />
-  )), [listElements]);
+  useEffect(() => listRef.current.scrollToItem(currentElementIndex, 'smart'));
 
   return (
-    <Paper elevation={2}>
-      <Tabs
-        className={classes.elementList}
-        orientation="vertical"
-        variant="scrollable"
-        value={elementIndex}
-        onChange={handleElementChange}
+    <div className={classes.root}>
+      <FixedSizeList
+        className={classes.list}
+        ref={listRef}
+        height={600}
+        itemCount={listElements.length}
+        itemSize={45}
+        itemData={props}
+        width="100%"
+        initialScrollOffset={currentElementIndex}
       >
-        {listElementsTabs}
-      </Tabs>
-    </Paper>
+        {ListItem}
+      </FixedSizeList>
+      <Fab size="small" className={classes.fab} onClick={() => listRef.current.scrollTo(0)}>
+        <UpIcon />
+      </Fab>
+    </div>
   );
 }
 
@@ -55,8 +71,7 @@ ContainerNavigationList.propTypes = {
   listElements: PropTypes.arrayOf(
     PropTypes.shape({
       reference: PropTypes.string.isRequired,
-    }),
+    }).isRequired,
   ).isRequired,
-  pushElementIndexChange: PropTypes.func.isRequired,
-  elementIndex: PropTypes.number.isRequired,
+  currentElementIndex: PropTypes.number.isRequired,
 };

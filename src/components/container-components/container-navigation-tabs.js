@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 
 const useStyles = makeStyles(() => ({
   tabBar: {
-    borderRadius: 4,
+    borderRadius: '4px 4px 0px 0px',
   },
   tab: {
     minWidth: '33.333333%',
@@ -15,15 +15,15 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function ContainerNavigationTabs(props) {
+  const classes = useStyles();
   const { pushTabChange, tabInd } = props;
 
   const handleTabChange = (event, newTabIndex) => {
     pushTabChange(newTabIndex);
   };
 
-  const classes = useStyles();
   return (
-    <AppBar position="static" className={classes.tabBar}>
+    <AppBar position="static" className={classes.tabBar} elevation={0}>
       <Tabs value={tabInd} onChange={handleTabChange}>
         <Tab label="Tags" id="tags-tab" className={classes.tab} />
         <Tab label="Triggers" id="triggers-tab" className={classes.tab} />
