@@ -47,6 +47,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const createColumnsAndRows = (list) => {
+  // Empty List => ['list']
+  if (list[0] === 'list' && !list[1]) {
+    return {
+      columnNames: ['list'],
+      rows: ['""'],
+    };
+  }
+
+  // List with only 1 column => ['list', 'item1', 'item2', ...]
   if (list[0] === 'list' && !Array.isArray(list[1])) {
     return {
       columnNames: ['list'],
@@ -54,6 +63,8 @@ const createColumnsAndRows = (list) => {
     };
   }
 
+  // Mapping table => ['list', ['map', 'colName1', 'colValue1.1', 'colName2', 'colValue2.1'],
+  // ['map', 'colName1, 'colValue1.2', 'colName2', colValue2.2], ['map', ...]]
   if (list[0] === 'list' && Array.isArray(list[1]) && list[1][0] === 'map') {
     return {
       columnNames: list[1].filter((item, index) => index > 0 && index % 2 !== 0),
@@ -61,6 +72,8 @@ const createColumnsAndRows = (list) => {
     };
   }
 
+  // Zone boundary mapping => ['list', ['zb', 'operator', 'variable', 'condition',
+  // negative/positive boolean, uppercase sensitive boolean]]
   if (list[0] === 'list' && Array.isArray(list[1]) && list[1][0] === 'zb') {
     const operators = operatorDictionary();
     return {

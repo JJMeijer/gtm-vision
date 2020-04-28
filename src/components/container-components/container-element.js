@@ -37,7 +37,7 @@ export default function ContainerElement(props) {
   }
 
   return (
-    <Paper className={classes.content} elevation={2}>
+    <Paper className={classes.content} elevation={4}>
       {elementData && (
         <Grid container spacing={3}>
           <Grid item xs={12}>
