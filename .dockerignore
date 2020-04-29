@@ -5,3 +5,6 @@ dist/
 public/
 .vscode/
 parse-runtime.js
+.gcloudignore
+.eslintrc
+.eslintignore
