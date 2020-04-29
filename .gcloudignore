@@ -21,6 +21,7 @@ node_modules/
 .eslintrc
 .eslintignore
 
-# Editor config
-.editorconfig
+# Docker files
+Dockerfile
+.dockerignore
 
