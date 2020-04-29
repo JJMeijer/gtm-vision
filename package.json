@@ -1,7 +1,7 @@
 {
-  "name": "turbo-umbrella",
+  "name": "gtm-insight",
   "version": "1.0.0",
-  "description": "GTM Insight Application",
+  "description": "a Web App to analyze GTM containers",
   "main": "server/server.js",
   "scripts": {
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tserest/turbo-umbrella.git"
+    "url": "git+https://github.com/JJMeijer/gtm-insight.git"
   },
   "keywords": [
     "Google",
@@ -27,9 +27,9 @@
   "author": "Johan Meijer",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tserest/turbo-umbrella/issues"
+    "url": "https://github.com/jjmeijer/gtm-insight/issues"
   },
-  "homepage": "https://github.com/tserest/turbo-umbrella#readme",
+  "homepage": "https://github.com/jjmeijer/gtm-insight#readme",
   "browserList": "> 0.25%, not dead",
   "dependencies": {
     "@google-cloud/debug-agent": "^4.2.2",
