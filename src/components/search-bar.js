@@ -58,7 +58,7 @@ const inputOptions = {
 export default function SearchBar(props) {
   const classes = useStyles();
   const { pushApiResponse, setLoadingState } = props;
-  const [inputValue, setInputValue] = useState('GTM-P9Q4QS');
+  const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
   const [inputDisabled, setInputDisabled] = useState(false);
