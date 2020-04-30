@@ -5,7 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import { Trigger, Tag, Variable } from './container-element-components';
+import Tag from './tag';
+import Trigger from './trigger';
+import Variable from './variable';
 
 const useStyles = makeStyles(theme => ({
   elementName: {

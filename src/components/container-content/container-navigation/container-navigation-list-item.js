@@ -7,6 +7,7 @@ const useStyles = makeStyles(theme => ({
   elementName: {
     justifyContent: 'left',
     color: theme.palette.text.secondary,
+    textAlign: 'left',
   },
   activeElement: {
     fontWeight: 'bold',

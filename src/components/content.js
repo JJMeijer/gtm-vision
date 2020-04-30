@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ContainerContent from './container-components';
+import ContainerContent from './container-content';
 import parseGtm from '../parsers/gtm-parser';
 import LoadingSpinner from './loading-spinner';
 

@@ -27,7 +27,7 @@ export default function ContainerNavigationTabs(props) {
       <Tabs value={tabInd} onChange={handleTabChange}>
         <Tab label="Tags" id="tags-tab" className={classes.tab} />
         <Tab label="Triggers" id="triggers-tab" className={classes.tab} />
-        <Tab label="Variables" id="variables-tab" className={classes.tab} />
+        <Tab label="Variables" className={classes.tab} />
       </Tabs>
     </AppBar>
   );

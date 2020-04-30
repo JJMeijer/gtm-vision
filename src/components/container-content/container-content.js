@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Fade from '@material-ui/core/Fade';
+import Zoom from '@material-ui/core/Zoom';
 
 import ContainerNavigation from './container-navigation';
 import ContainerElement from './container-element';
@@ -55,7 +55,7 @@ export default function ContainerContent(props) {
   useEffect(() => document.getElementById(containerContentId).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }), [parsedData]);
 
   return (
-    <Fade in timeout={500}>
+    <Zoom in timeout={425}>
       <Grid className={classes.containerContent} id={containerContentId} container spacing={3}>
         <Grid item xs={3}>
           <ContainerNavigation
@@ -73,7 +73,7 @@ export default function ContainerContent(props) {
           />
         </Grid>
       </Grid>
-    </Fade>
+    </Zoom>
   );
 }
 
