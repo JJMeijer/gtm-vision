@@ -53,7 +53,7 @@ export default function ContainerNavigationList(props) {
         ref={listRef}
         height={600}
         itemCount={listElements.length}
-        itemSize={45}
+        itemSize={55}
         itemData={props}
         width="100%"
         initialScrollOffset={currentElementIndex}

@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'none',
-    textAlign: 'center',
+    textAlign: 'left',
     margin: 0,
     padding: 0,
     display: 'inline',

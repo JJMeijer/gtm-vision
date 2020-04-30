@@ -33,7 +33,10 @@ export default function ContainerNavigation(props) {
     <Paper elevation={4}>
       <Grid container direction="column" spacing={0}>
         <Grid item xs={12}>
-          <ContainerNavigationTabs tabInd={currentTabIndex} pushTabChange={pushTabChange} />
+          <ContainerNavigationTabs
+            tabInd={currentTabIndex}
+            pushTabChange={pushTabChange}
+          />
         </Grid>
         <Grid item xs={12}>
           <ContainerNavigationList
