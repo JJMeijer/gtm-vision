@@ -1,5 +1,5 @@
 {
-  "name": "gtm-insight",
+  "name": "gtm-vision",
   "version": "1.0.0",
   "description": "a Web App to analyze GTM containers",
   "main": "server/server.js",
@@ -7,7 +7,7 @@
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --no-comments -s",
-    "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
+    "build-public": "parcel build src/index.html --out-dir public --no-source-maps --no-minify",
     "build": "npm run build-node && npm run build-public",
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",
@@ -16,21 +16,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JJMeijer/gtm-insight.git"
+    "url": "git+https://github.com/JJMeijer/gtm-vision.git"
   },
   "keywords": [
     "Google",
     "Tag",
     "Manager",
-    "GTM"
+    "GTM",
+    "Analysis"
   ],
   "author": "Johan Meijer",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jjmeijer/gtm-insight/issues"
+    "url": "https://github.com/jjmeijer/gtm-vision/issues"
   },
-  "homepage": "https://github.com/jjmeijer/gtm-insight#readme",
-  "browserList": "> 0.25%, not dead",
+  "homepage": "https://github.com/jjmeijer/gtm-vision#readme",
+  "browserList": [
+    "last 3 versions",
+    "ie9"
+  ],
   "dependencies": {
     "@google-cloud/debug-agent": "^4.2.2",
     "@google-cloud/firestore": "^3.7.4",
