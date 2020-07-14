@@ -16,7 +16,7 @@ export default function Title() {
     <Grid container direction="column" justify="center" alignItems="center" className={classes.title} spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h3" align="center">
-          GTM Insight
+          GTM Vision
         </Typography>
       </Grid>
       <Grid item xs={12}>
