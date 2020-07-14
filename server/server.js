@@ -71,5 +71,5 @@ app.use((err, req, res, next) => {
 process.on('uncaughtExceptionMonitor', err => serverLogger.error(err));
 
 // Start Express app
-serverLogger.info(`GTM insight running on port: ${port}`);
+serverLogger.info(`GTM Vision running on port: ${port}`);
 app.listen(port);
