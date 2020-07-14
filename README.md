@@ -1,4 +1,4 @@
-# GTM Insight
+# GTM Vision
 
 a Web App to analyze GTM containers.
 
