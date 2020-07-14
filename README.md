@@ -1,3 +1,5 @@
+![CI](https://github.com/JJMeijer/gtm-vision/workflows/CI/badge.svg)
+
 # GTM Vision
 
 a Web App to analyze GTM containers.
