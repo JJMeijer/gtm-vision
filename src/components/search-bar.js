@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
+import {
+  Paper,
+  TextField,
+  IconButton,
+  Select,
+  MenuItem,
+  Divider,
+  Tooltip,
+  Zoom,
+} from '@material-ui/core';
+import { SearchIcon } from '@material-ui/icons';
 
 import { sendError } from '../utility';
 

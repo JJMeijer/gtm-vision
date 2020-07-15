@@ -7,7 +7,7 @@
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --no-comments -s",
-    "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
+    "build-public": "parcel build src/index.html --out-dir public --no-source-maps --experimental-scope-hoisting",
     "build": "npm run build-node && npm run build-public",
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",
@@ -78,6 +78,7 @@
     "eslint-plugin-react": "^7.20.3",
     "nodemon": "^1.19.4",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "react-hot-loader": "^4.12.21"
   }
 }

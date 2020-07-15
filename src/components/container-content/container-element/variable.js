@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
+import { Grid } from '@material-ui/core';
 
 import CodeBlock from './code-block';
 import VariableConnections from './variable-connections';
