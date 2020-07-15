@@ -7,7 +7,7 @@
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
     "serve-node": "nodemon --watch server --exec babel-node server/server.js --inspect",
     "build-node": "babel server -d dist --no-comments -s",
-    "build-public": "parcel build src/index.html --out-dir public --no-source-maps --experimental-scope-hoisting",
+    "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
     "build": "npm run build-node && npm run build-public",
     "start": "node dist/server.js",
     "gcp-build": "npm run build-node && npm run build-public",

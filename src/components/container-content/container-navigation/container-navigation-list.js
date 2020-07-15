@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { FixedSizeList } from 'react-window';
 import { Fab } from '@material-ui/core';
-import { UpIcon } from '@material-ui/icons';
+import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import ListItem from './container-navigation-list-item';
 

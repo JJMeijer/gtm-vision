@@ -11,7 +11,7 @@ import {
   Tooltip,
   Zoom,
 } from '@material-ui/core';
-import { SearchIcon } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { sendError } from '../utility';
 
