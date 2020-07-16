@@ -3,17 +3,12 @@
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "usage",
-        "corejs": {
-          "version": 3,
-          "proposal": true
-        }
+        "useBuiltIns": "usage"
       }
     ]
   ],
   "plugins": [
     "react-hot-loader/babel",
-    "@babel/plugin-proposal-export-default-from",
     ["prismjs", {
       "languages": ["javascript", "html"],
       "plugins": ["line-numbers", "show-language"],

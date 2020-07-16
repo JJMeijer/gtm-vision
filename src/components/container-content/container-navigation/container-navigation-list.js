@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { FixedSizeList } from 'react-window';
-import { Fab } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import ListItem from './container-navigation-list-item';

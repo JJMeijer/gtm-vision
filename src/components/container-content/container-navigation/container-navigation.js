@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Paper } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import ContainerNavigationTabs from './container-navigation-tabs';
 import ContainerNavigationList from './container-navigation-list';

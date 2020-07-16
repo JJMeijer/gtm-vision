@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { ButtonBase } from '@material-ui/core';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 const useStyles = makeStyles(theme => ({
   buttonLink: {
