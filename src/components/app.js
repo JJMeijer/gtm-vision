@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,6 +23,12 @@ export default function App() {
   return (
     <>
       <CssBaseline />
+      <Helmet>
+        <title>GTM Vision</title>
+        <meta charset="UTF-8" />
+        <meta name="description" content="a Web App to analyze Google Tag Manager containers." />
+        <link rel="canonical" href="https://www.gtm-vision.com/" />
+      </Helmet>
       <Container maxWidth="xl" className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
