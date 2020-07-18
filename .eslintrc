@@ -6,6 +6,9 @@
     "node": true
   },
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "no-restricted-imports": ["error", {
+        "patterns": ["@material-ui/*/*/*", "!@material-ui/core/test-utils/*"]
+    }]
   }
 }

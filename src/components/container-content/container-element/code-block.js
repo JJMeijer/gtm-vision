@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import Prism from 'prismjs';
 import { js, html } from 'js-beautify';
-
 import ConnectionButtons from './connection-buttons';
 
 const useStyles = makeStyles(() => ({

@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import Tag from './tag';
 import Trigger from './trigger';
 import Variable from './variable';
+
 
 const useStyles = makeStyles(theme => ({
   elementName: {

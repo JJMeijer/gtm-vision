@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import SearchBar from './search-bar';
 import Title from './title';
-
 import backGround from '../images/water_1.webp';
 
 const cssBackgroundString = `-webkit-linear-gradient(rgba(63, 94, 251, 0.8), rgba(255, 70, 107, 0.8)), url(${backGround})`;

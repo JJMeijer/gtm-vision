@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-import Zoom from '@material-ui/core/Zoom';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Zoom } from '@material-ui/core';
 
 import ContainerNavigation from './container-navigation';
 import ContainerElement from './container-element';
