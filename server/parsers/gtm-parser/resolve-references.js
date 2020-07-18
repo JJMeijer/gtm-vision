@@ -1,4 +1,4 @@
-import { isObject, isEmpty } from '../../utility';
+import { isObject, objectIsEmpty } from '../../utility';
 
 const resolveReferences = function resolveInnerReferencesInContainer(container) {
   const result = container;
@@ -67,13 +67,13 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
        * If another object is found the search will continue
        * recursively within that deeper object.
        */
-      } else if (isObject(obj[key]) && !isEmpty(obj[key])) {
+      } else if (isObject(obj[key]) && !objectIsEmpty(obj[key])) {
         getMacroReferences(obj[key]);
       }
     });
   }
 
-  if (isObject(result) && !isEmpty(result)) {
+  if (isObject(result) && !objectIsEmpty(result)) {
     getMacroReferences(result);
   }
 

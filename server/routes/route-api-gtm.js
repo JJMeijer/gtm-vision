@@ -4,6 +4,8 @@ import {
   getGtmScript,
 } from '../utility';
 
+import parseGtm from '../parsers/gtm-parser';
+
 /**
  * POST method to get the GTM container for a gtm ID
  * GTM ID is expected in the 'value' property of the
@@ -29,8 +31,10 @@ export default async function routeApiGtm(req, res, next) {
     }
 
     if (container) {
-      // Return container to client.
-      res.json({ container, gtmId });
+      // Parse Ccontainer & Return
+      const { resource } = container;
+      const parsedContainer = parseGtm(resource);
+      res.json({ parsedContainer, gtmId });
     }
 
     if (clientFeedbackMessage) {

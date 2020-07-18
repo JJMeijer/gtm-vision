@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ContainerContent(props) {
   const classes = useStyles();
-  const { parsedData } = props;
+  const { parsedContainer } = props;
 
   const [currentTabName, pushNewTabName] = useState('tags');
   const [currentElementIndexes, setCurrentElementIndexes] = useState({
@@ -36,7 +36,7 @@ export default function ContainerContent(props) {
   };
 
   const navigation = (newTabName, newElementReference) => {
-    const newElementIndex = parsedData[newTabName].findIndex((item) => {
+    const newElementIndex = parsedContainer[newTabName].findIndex((item) => {
       if (item.reference === newElementReference) {
         return true;
       }
@@ -52,14 +52,14 @@ export default function ContainerContent(props) {
 
   // Scroll into view (only when data changes)
   const containerContentId = 'container-content';
-  useEffect(() => document.getElementById(containerContentId).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }), [parsedData]);
+  useEffect(() => document.getElementById(containerContentId).scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }), [parsedContainer]);
 
   return (
     <Zoom in timeout={425}>
       <Grid className={classes.containerContent} id={containerContentId} container spacing={3}>
         <Grid item xs={3}>
           <ContainerNavigation
-            parsedData={parsedData}
+            parsedContainer={parsedContainer}
             currentTabName={currentTabName}
             currentElementIndex={currentElementIndexes[currentTabName]}
             pushNewTabName={pushNewTabName}
@@ -68,7 +68,7 @@ export default function ContainerContent(props) {
         </Grid>
         <Grid item xs={9}>
           <ContainerElement
-            elementData={parsedData[currentTabName][currentElementIndexes[currentTabName]]}
+            elementData={parsedContainer[currentTabName][currentElementIndexes[currentTabName]]}
             navigation={navigation}
           />
         </Grid>
@@ -78,7 +78,7 @@ export default function ContainerContent(props) {
 }
 
 ContainerContent.propTypes = {
-  parsedData: PropTypes.shape({
+  parsedContainer: PropTypes.shape({
     tags: PropTypes.arrayOf(
       PropTypes.shape({
         reference: PropTypes.string.isRequired,

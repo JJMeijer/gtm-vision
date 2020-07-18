@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import { operatorDictionary } from '../../../parsers/gtm-parser/dictionaries';
+import { operatorDictionary } from '../../../../server/parsers/gtm-parser/dictionaries';
 
 const useStyles = makeStyles(theme => ({
   columnHeader: {

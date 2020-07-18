@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "serve-public": "parcel watch src/index.html --out-dir public --log-level 4",
-    "serve-node": "nodemon --watch server --exec npx babel-node server/server.js --inspect",
+    "serve-node": "nodemon --watch server --exec babel-node --inspect server/server.js",
     "build-node": "babel server -d dist --no-comments -s",
     "build-public": "parcel build src/index.html --out-dir public --no-source-maps",
     "build": "npm run build-node && npm run build-public",
@@ -60,7 +60,6 @@
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
     "react-window": "^1.8.5",
     "winston": "^3.3.3"
   },

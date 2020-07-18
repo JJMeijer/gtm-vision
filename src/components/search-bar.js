@@ -118,10 +118,10 @@ export default function SearchBar(props) {
           return response;
         })
         .then(response => response.json())
-        .then(({ container: { resource: data } = {}, gtmId, clientFeedbackMessage }) => {
-          if (data) {
+        .then(({ parsedContainer = {}, gtmId, clientFeedbackMessage }) => {
+          if (parsedContainer) {
             setResponseValid(true);
-            pushApiResponse({ data, gtmId });
+            pushApiResponse({ parsedContainer, gtmId });
             setInputDisabled(false);
           }
 

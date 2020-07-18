@@ -8,7 +8,7 @@ import ContainerNavigationList from './container-navigation-list';
 
 export default function ContainerNavigation(props) {
   const {
-    parsedData,
+    parsedContainer,
     currentTabName,
     currentElementIndex,
     pushNewTabName,
@@ -17,7 +17,7 @@ export default function ContainerNavigation(props) {
 
   const tabs = ['tags', 'triggers', 'variables'];
 
-  const listElements = parsedData[currentTabName];
+  const listElements = parsedContainer[currentTabName];
   const currentTabIndex = tabs.indexOf(currentTabName);
 
   const pushTabChange = (newTabIndex) => {
@@ -52,7 +52,7 @@ export default function ContainerNavigation(props) {
 }
 
 ContainerNavigation.propTypes = {
-  parsedData: PropTypes.objectOf(
+  parsedContainer: PropTypes.objectOf(
     PropTypes.array,
   ).isRequired,
   currentTabName: PropTypes.string.isRequired,

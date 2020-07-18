@@ -6,7 +6,7 @@ import parseCode from './parse-code';
 import parseTemplate from './parse-template';
 import { filterFromTriggers, filterFromTagSeqeuncing } from './filter-inner';
 
-export default function parseGtm(container) {
+export default function gtmParser(container) {
   const {
     macros,
     predicates,
