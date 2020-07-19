@@ -54,21 +54,23 @@ app.get('/robots.txt', (req, res) => {
 app.use('/', apiRouter);
 
 // 404 Handling
-app.use((req, res, next) => {
+app.use((req, res) => {
+  res.type('text/plain');
+  res.send('In the future this will be a very beautiful 404 page.');
+
   const err = new Error(`Could not resolve request path: ${req.method} ${req.originalUrl}`);
   err.status = 404;
-  next(err);
+  serverLogger.error(`${err.name}: `, err);
 });
 
 // Main Error Handling
 app.use((err, req, res, next) => {
   const { name, message, status = 500 } = err;
+  serverLogger.error(`${name}: `, err);
   res.status(status);
   res.json({
     message,
   });
-
-  serverLogger.error(`${name}: `, err);
 
   next();
 });
