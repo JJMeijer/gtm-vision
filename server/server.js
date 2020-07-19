@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import { start as startDebug } from '@google-cloud/debug-agent';
 
-import Router from './router';
+import apiRouter from './router';
 import { serverLogger } from './utility';
 
 if (process.env.NODE_ENV === 'production') {
@@ -39,13 +39,19 @@ if (process.env.NODE_ENV !== 'production') {
 // serve static files
 app.use(express.static(appFolder));
 
-// get always routes to site
-app.get('*', (req, res) => {
+// SPA Routing
+app.get('/', (req, res) => {
   res.sendFile('index.html', { root: appFolder });
 });
 
-// Main routing
-app.use('/', Router);
+// Robots.txt Routing
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-Agent: *\nAllow: /$\nDisallow: /');
+});
+
+// Api routing
+app.use('/', apiRouter);
 
 // 404 Handling
 app.use((req, res, next) => {

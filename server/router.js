@@ -2,12 +2,12 @@ import express from 'express';
 
 import { routeApiGtm, routeApiWww, routeApiError } from './routes';
 
-const router = express.Router();
+const apiRouter = express.Router();
 
-router.post('/api/gtm', routeApiGtm);
+apiRouter.post('/api/gtm', routeApiGtm);
 
-router.post('/api/www', routeApiWww);
+apiRouter.post('/api/www', routeApiWww);
 
-router.post('/api/error', routeApiError);
+apiRouter.post('/api/error', routeApiError);
 
-export default router;
+export default apiRouter;
