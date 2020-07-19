@@ -16,7 +16,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { sendError } from '../utility';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   searchbar: {
     padding: '2px 4px',
     display: 'flex',
@@ -47,13 +47,13 @@ const inputOptions = {
   GTMID: {
     placeholder: 'GTM-NTQ25T',
     endpoint: '/api/gtm',
-    validateValue: value => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
+    validateValue: (value) => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
     validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
   },
   URL: {
     placeholder: 'https://www.digital-power.com',
     endpoint: '/api/www',
-    validateValue: value => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
+    validateValue: (value) => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
     validateMessage: 'The URL you provided is not valid',
   },
 };
@@ -104,22 +104,15 @@ export default function SearchBar(props) {
     if (isInputValid) {
       setLoadingState(true);
       setInputDisabled(true);
-      fetch(`${document.location.origin}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          value: inputValue,
-        }),
-      })
+
+      fetch(`${document.location.origin}${endpoint}?value=${inputValue}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(response.statusText);
           }
           return response;
         })
-        .then(response => response.json())
+        .then((response) => response.json())
         .then(({ parsedContainer = {}, gtmId, clientFeedbackMessage }) => {
           if (parsedContainer) {
             setResponseValid(true);

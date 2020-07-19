@@ -6,7 +6,6 @@ import CodeBlock from './code-block';
 import VariableConnections from './variable-connections';
 import Settings from './settings';
 
-
 const showVariableValues = (variableValues) => {
   const variableValuesKeys = Object.keys(variableValues);
   if (variableValuesKeys.length > 0) {

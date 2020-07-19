@@ -18,7 +18,7 @@ export default function TriggerConnections(props) {
       {triggerChildren.length > 0 && (
         <ConnectionButtons
           title="Triggers"
-          buttons={triggerChildren.map(x => x.reference)}
+          buttons={triggerChildren.map((x) => x.reference)}
           parentReference={reference}
           type="triggers"
           buttonStyle="contained"
@@ -38,7 +38,7 @@ export default function TriggerConnections(props) {
       {tags.length > 0 && (
         <ConnectionButtons
           title="Trigger for"
-          buttons={tags.map(x => x.match(/{{(.+)}}/)[1])}
+          buttons={tags.map((x) => x.match(/{{(.+)}}/)[1])}
           parentReference={reference}
           type="tags"
           buttonStyle="contained"
@@ -48,7 +48,7 @@ export default function TriggerConnections(props) {
       {exceptions.length > 0 && (
         <ConnectionButtons
           title="Exception for"
-          buttons={exceptions.map(x => x.match(/{{(.+)}}/)[1])}
+          buttons={exceptions.map((x) => x.match(/{{(.+)}}/)[1])}
           parentReference={reference}
           type="tags"
           buttonStyle="contained"

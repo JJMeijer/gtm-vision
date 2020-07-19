@@ -1,5 +1,5 @@
 import {
-  validateRequestBody,
+  validateRequest,
   serverLogger,
   getGtmScript,
   websiteDatabase,
@@ -19,9 +19,9 @@ import parseGtm from '../parsers/gtm-parser';
  */
 export default async function routeApiWww(req, res, next) {
   try {
-    validateRequestBody(req, ['value']);
+    validateRequest(req, 'query', ['value']);
 
-    const { value } = req.body;
+    const { value } = req.query;
 
     // Parse Url
     const valueUrl = new URL(!value.match('^http') ? `http://${value}` : value);
@@ -103,8 +103,10 @@ export default async function routeApiWww(req, res, next) {
           reference.set({ gtmUrl });
           serverLogger.info('GTM URL stored in websites database', { gtmUrl, hostname });
 
-          // Return to client.
-          res.json({ container, gtmId });
+          // Parse container & return
+          const { resource } = container;
+          const parsedContainer = parseGtm(resource);
+          res.json({ parsedContainer, gtmId });
         }
 
         if (clientFeedbackMessage) {

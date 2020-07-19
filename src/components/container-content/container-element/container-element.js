@@ -6,8 +6,7 @@ import Tag from './tag';
 import Trigger from './trigger';
 import Variable from './variable';
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   elementName: {
     paddingBottom: theme.spacing(1),
     borderBottomColor: theme.palette.divider,

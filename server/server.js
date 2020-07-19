@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import { start as startDebug } from '@google-cloud/debug-agent';
 
-import Router from './router';
+import apiRouter from './router';
 import { serverLogger } from './utility';
 
 if (process.env.NODE_ENV === 'production') {
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
   const morganFormat = ':method :url HTTP/:http-version :status :response-time ms ":user-agent"';
   app.use(morgan(morganFormat, {
     stream: {
-      write: message => serverLogger.info(message.trim()),
+      write: (message) => serverLogger.info(message.trim()),
     },
   }));
 }
@@ -39,36 +39,44 @@ if (process.env.NODE_ENV !== 'production') {
 // serve static files
 app.use(express.static(appFolder));
 
-// get always routes to site
-app.get('*', (req, res) => {
+// SPA Routing
+app.get('/', (req, res) => {
   res.sendFile('index.html', { root: appFolder });
 });
 
-// Main routing
-app.use('/', Router);
+// Robots.txt Routing
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-Agent: *\nAllow: /$\nDisallow: /');
+});
+
+// Api routing
+app.use('/', apiRouter);
 
 // 404 Handling
-app.use((req, res, next) => {
+app.use((req, res) => {
+  res.type('text/plain');
+  res.send('In the future this will be a very beautiful 404 page.');
+
   const err = new Error(`Could not resolve request path: ${req.method} ${req.originalUrl}`);
   err.status = 404;
-  next(err);
+  serverLogger.error(`${err.name}: `, err);
 });
 
 // Main Error Handling
 app.use((err, req, res, next) => {
   const { name, message, status = 500 } = err;
+  serverLogger.error(`${name}: `, err);
   res.status(status);
   res.json({
     message,
   });
 
-  serverLogger.error(`${name}: `, err);
-
   next();
 });
 
 // Log uncaught Exceptions
-process.on('uncaughtExceptionMonitor', err => serverLogger.error(err));
+process.on('uncaughtExceptionMonitor', (err) => serverLogger.error(err));
 
 // Start Express app
 serverLogger.info(`GTM Vision running on port: ${port}`);

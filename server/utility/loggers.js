@@ -33,7 +33,7 @@ const frontendLogger = winston.createLogger({
 });
 
 // Set Console Logger
-const loggerFormat = winston.format.printf(info => `${info.component} - ${info.timestamp} [${info.level}]: ${info.message}`);
+const loggerFormat = winston.format.printf((info) => `${info.component} - ${info.timestamp} [${info.level}]: ${info.message}`);
 
 if (process.env.NODE_ENV === 'production') {
   serverLogger.add(gcpLoggingServer);

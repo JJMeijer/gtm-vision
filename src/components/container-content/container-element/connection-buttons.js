@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Grid, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
@@ -67,7 +67,6 @@ export default function ConnectionButtons(props) {
   const buttonLimit = 30;
   const filteredButtons = showAll ? buttons : buttons.slice(0, buttonLimit);
 
-
   return (
     <Grid container direction="row" justify="flex-start" alignItems="center">
       <Grid item xs={2}>
@@ -83,7 +82,7 @@ export default function ConnectionButtons(props) {
         )}
       </Grid>
       <Grid item xs={10}>
-        {filteredButtons.map(buttonReference => (
+        {filteredButtons.map((buttonReference) => (
           <Button
             className={classes.button}
             key={`button-${buttonReference}-${type}-${parentReference}`}

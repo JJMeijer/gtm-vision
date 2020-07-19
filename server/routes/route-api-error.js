@@ -1,4 +1,4 @@
-import { validateRequestBody, frontendLogger } from '../utility';
+import { validateRequest, frontendLogger } from '../utility';
 
 /**
  * POST method to send an error to the server for
@@ -8,7 +8,7 @@ import { validateRequestBody, frontendLogger } from '../utility';
  */
 export default function routeApiError(req, res, next) {
   try {
-    validateRequestBody(req, ['message', 'name', 'stack', 'gtmId']);
+    validateRequest(req, 'body', ['message', 'name', 'stack', 'gtmId']);
 
     const {
       message,

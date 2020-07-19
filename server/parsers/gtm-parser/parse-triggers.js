@@ -34,7 +34,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 
         const exceptionArray = rulePart.slice(1);
         exceptionArray.forEach((tag) => {
-          if (resultArray.filter(x => x[1] === tag).length === 0) {
+          if (resultArray.filter((x) => x[1] === tag).length === 0) {
             resultArray.push(['tag', tag]);
           }
         });
@@ -46,7 +46,7 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 
         const tagArray = rulePart.slice(1);
         tagArray.forEach((tag) => {
-          if (resultArray.filter(x => x[1] === tag).length === 0) {
+          if (resultArray.filter((x) => x[1] === tag).length === 0) {
             resultArray.push(['tag', tag]);
           }
         });
@@ -62,11 +62,11 @@ const parseTriggers = function parsePredicatesAndRulesToTriggers(predicates, rul
 const parseTriggerNames = function parseTriggerNamesBasedOnEventValue(_trigger) {
   const triggerList = triggerDictionary();
   const trigger = _trigger;
-  const stockEventInTrigger = trigger.conditions.filter(cond => cond.variable.match(/Event\(1\)/)).length > 0;
+  const stockEventInTrigger = trigger.conditions.filter((cond) => cond.variable.match(/Event\(1\)/)).length > 0;
 
   const triggerType = stockEventInTrigger
-    ? trigger.conditions.filter(cond => cond.variable.match(/Event\(1\)/))[0].value
-    : trigger.conditions.filter(cond => cond.variable.match('Event'))[0].value;
+    ? trigger.conditions.filter((cond) => cond.variable.match(/Event\(1\)/))[0].value
+    : trigger.conditions.filter((cond) => cond.variable.match('Event'))[0].value;
 
   if (triggerList[triggerType]) {
     trigger.reference = `${trigger.reference} - ${triggerList[triggerType]}`;
@@ -94,7 +94,7 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
      */
     const specialTriggerTypes = ['Element Visibility', 'Youtube Video', 'Scroll Depth', 'Timer'];
     if (specialTriggerTypes.indexOf(trigger.type) !== -1) {
-      const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
+      const uniqueTriggerCondition = trigger.conditions.filter((condition) => condition.variable.match('gtm.triggers'))[0];
 
       if (uniqueTriggerCondition) {
         const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
@@ -130,7 +130,7 @@ const parseSpecialTriggers = function parseTriggersWithSpecialFunctionalities(_c
      * property is used to return the data about the trigger.
      */
     if (trigger.type === 'Trigger Group') {
-      const uniqueTriggerCondition = trigger.conditions.filter(condition => condition.variable.match('gtm.triggers'))[0];
+      const uniqueTriggerCondition = trigger.conditions.filter((condition) => condition.variable.match('gtm.triggers'))[0];
       const uniqueTriggerId = uniqueTriggerCondition.value.match(/\)(.+)\(/)[1];
 
       const triggerGroupTag = container.tags.filter((tag) => {

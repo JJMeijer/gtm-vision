@@ -6,7 +6,7 @@ import VariableLink from './variable-link';
 import ListTable from './list-table';
 import { convertCamelCase, replaceEmptyValues, sortObjectByKey } from '../../../utility';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   settingKey: {
     display: 'flex',
     flexDirection: 'column',
@@ -41,7 +41,7 @@ export default function Settings(props) {
   const { values, navigation, reference } = props;
 
   const replaceReferenceWithLink = (stringValue) => {
-    const stringArray = stringValue.split(/({{[^{]+}})/).filter(x => x !== '');
+    const stringArray = stringValue.split(/({{[^{]+}})/).filter((x) => x !== '');
     return stringArray.map((stringItem) => {
       if (stringItem.match(/{{.+}}/)) {
         const stringReference = stringItem.match(/{{(.+)}}/)[1];

@@ -9,7 +9,7 @@ import ListItem from './container-navigation-list-item';
 
 const listRef = React.createRef();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     minHeight: 600,

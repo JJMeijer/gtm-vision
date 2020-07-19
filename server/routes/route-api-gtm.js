@@ -1,5 +1,5 @@
 import {
-  validateRequestBody,
+  validateRequest,
   serverLogger,
   getGtmScript,
 } from '../utility';
@@ -13,9 +13,9 @@ import parseGtm from '../parsers/gtm-parser';
  */
 export default async function routeApiGtm(req, res, next) {
   try {
-    validateRequestBody(req, ['value']);
+    validateRequest(req, 'query', ['value']);
 
-    const { value } = req.body;
+    const { value } = req.query;
     const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
 
     // Get container at URL

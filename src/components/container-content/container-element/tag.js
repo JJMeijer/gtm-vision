@@ -6,7 +6,6 @@ import TagConnections from './tag-connections';
 import TagSequencing from './tag-sequencing';
 import CodeBlock from './code-block';
 
-
 export default function Tag(props) {
   const { elementData, navigation } = props;
   const {
