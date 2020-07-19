@@ -23,7 +23,7 @@ export default async function scrapeWebsite(href) {
     // Check for GTM scripts
     const gtmUrl = await page.evaluate(() => {
       const scripts = Array.prototype.slice.call(document.querySelectorAll('script[src*="googletagmanager.com/gtm.js?id=GTM-"]'));
-      return scripts.map(x => x.src)[0];
+      return scripts.map((x) => x.src)[0];
     });
 
     await browser.close();

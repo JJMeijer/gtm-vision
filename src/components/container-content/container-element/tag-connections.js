@@ -34,7 +34,7 @@ export default function TagConnections(props) {
       {realTriggers.length > 0 && (
         <ConnectionButtons
           title="Triggers"
-          buttons={realTriggers.map(x => x.reference)}
+          buttons={realTriggers.map((x) => x.reference)}
           parentReference={reference}
           type="triggers"
           buttonStyle="contained"
@@ -44,7 +44,7 @@ export default function TagConnections(props) {
       {exceptionTriggers.length > 0 && (
         <ConnectionButtons
           title="Exceptions"
-          buttons={exceptionTriggers.map(x => x.reference)}
+          buttons={exceptionTriggers.map((x) => x.reference)}
           parentReference={reference}
           type="exceptions"
           buttonStyle="contained"

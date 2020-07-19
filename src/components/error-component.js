@@ -8,7 +8,7 @@ import {
   Paper,
 } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   errorPaper: {
     margin: theme.spacing(10),
   },
@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: '40vh',
   },
 }));
-
 
 export default function ErrorComponent() {
   const classes = useStyles();

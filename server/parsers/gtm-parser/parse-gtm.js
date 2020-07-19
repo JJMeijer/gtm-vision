@@ -64,10 +64,10 @@ export default function gtmParser(container) {
    * - filter the 'inner_' tags within the tagSequencing object in a tag object
    * - filter out the 'gtm.triggers' variable from the variable array.
    */
-  parsedContainer.tags = parsedContainer.tags.filter(item => !item.type.match('inner_'));
+  parsedContainer.tags = parsedContainer.tags.filter((item) => !item.type.match('inner_'));
   parsedContainer.triggers = parsedContainer.triggers.map(filterFromTriggers);
   parsedContainer.tags = parsedContainer.tags.map(filterFromTagSeqeuncing);
-  parsedContainer.variables = parsedContainer.variables.filter(item => !item.reference.match('gtm.triggers'));
+  parsedContainer.variables = parsedContainer.variables.filter((item) => !item.reference.match('gtm.triggers'));
 
   return parsedContainer;
 }

@@ -19,12 +19,12 @@ const parseCode = function parseCodeArrays(containerElement) {
   if (code.length > 0) {
     const resultArray = [];
     if (Array.isArray(code)) {
-      const codeArray = code.filter(part => part !== 'template');
+      const codeArray = code.filter((part) => part !== 'template');
       codeArray.forEach((block, index) => {
         if (!Array.isArray(block)) {
           resultArray.push(block);
         } else {
-          const referenceName = block.filter(part => part.toString().match(/(\{\{[^{]+\}\})/));
+          const referenceName = block.filter((part) => part.toString().match(/(\{\{[^{]+\}\})/));
           const previousBlock = codeArray[index - 1];
           const nextBlock = codeArray[index + 1];
           if (previousBlock && typeof previousBlock === 'string' && previousBlock.slice(-1) === '"') {

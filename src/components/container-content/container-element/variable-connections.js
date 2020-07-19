@@ -27,7 +27,7 @@ export default function VariableConnections(props) {
       {triggers.length > 0 && (
         <ConnectionButtons
           title="Used in Triggers"
-          buttons={triggers.map(x => x.reference)}
+          buttons={triggers.map((x) => x.reference)}
           parentReference={reference}
           type="triggers"
           buttonStyle="contained"

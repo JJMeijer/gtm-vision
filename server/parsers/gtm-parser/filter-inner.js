@@ -1,10 +1,10 @@
 const filterFromTriggers = function filterInnerTagsFromTriggers(trigger) {
   const triggerObj = trigger;
   if (triggerObj.tags) {
-    triggerObj.tags = triggerObj.tags.filter(item => !item.match('inner_'));
+    triggerObj.tags = triggerObj.tags.filter((item) => !item.match('inner_'));
   }
   if (triggerObj.exceptions) {
-    triggerObj.exceptions = triggerObj.exceptions.filter(item => !item.match('inner_'));
+    triggerObj.exceptions = triggerObj.exceptions.filter((item) => !item.match('inner_'));
   }
 
   return triggerObj;

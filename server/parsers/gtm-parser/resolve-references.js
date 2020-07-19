@@ -47,7 +47,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
          * used as a real trigger or as an exception.
          */
         if (cat === 'triggers') {
-          if (usedInArray.filter(x => x.reference === item.reference).length === 0) {
+          if (usedInArray.filter((x) => x.reference === item.reference).length === 0) {
             usedInArray.push(item);
           }
         }
@@ -58,7 +58,7 @@ const resolveReferences = function resolveInnerReferencesInContainer(container) 
          * references if we push the whole object.
          */
         if (cat === 'tags' || cat === 'variables') {
-          if (usedInArray.filter(x => x === item.reference).length === 0) {
+          if (usedInArray.filter((x) => x === item.reference).length === 0) {
             usedInArray.push(item.reference);
           }
         }

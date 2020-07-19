@@ -6,7 +6,7 @@ import { Grid, Zoom } from '@material-ui/core';
 import ContainerNavigation from './container-navigation';
 import ContainerElement from './container-element';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   containerContent: {
     marginTop: '-17vh',
     minHeight: '90vh',
@@ -27,7 +27,7 @@ export default function ContainerContent(props) {
   });
 
   const pushNewElementIndex = (newElementIndex) => {
-    setCurrentElementIndexes(previousElementIndexes => ({
+    setCurrentElementIndexes((previousElementIndexes) => ({
       ...previousElementIndexes,
       [currentTabName]: newElementIndex,
     }));
@@ -43,7 +43,7 @@ export default function ContainerContent(props) {
     });
 
     pushNewTabName(newTabName);
-    setCurrentElementIndexes(previousElementIndexes => ({
+    setCurrentElementIndexes((previousElementIndexes) => ({
       ...previousElementIndexes,
       [newTabName]: newElementIndex,
     }));

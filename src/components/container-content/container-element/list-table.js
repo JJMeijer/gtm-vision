@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { operatorDictionary } from '../../../../server/parsers/gtm-parser/dictionaries';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   columnHeader: {
     fontWeight: 'bold',
   },
@@ -60,7 +60,7 @@ const createColumnsAndRows = (list) => {
   if (list[0] === 'list' && !Array.isArray(list[1])) {
     return {
       columnNames: ['list'],
-      rows: list.slice(1).map(x => [x]),
+      rows: list.slice(1).map((x) => [x]),
     };
   }
 
@@ -69,7 +69,7 @@ const createColumnsAndRows = (list) => {
   if (list[0] === 'list' && Array.isArray(list[1]) && list[1][0] === 'map') {
     return {
       columnNames: list[1].filter((item, index) => index > 0 && index % 2 !== 0),
-      rows: list.slice(1).map(row => row.filter((item, index) => index > 0 && index % 2 === 0)),
+      rows: list.slice(1).map((row) => row.filter((item, index) => index > 0 && index % 2 === 0)),
     };
   }
 
@@ -111,7 +111,7 @@ export default function ListTable(props) {
           <Table size="medium" className={classes.table}>
             <TableHead>
               <TableRow>
-                {columnNames.map(col => (
+                {columnNames.map((col) => (
                   <TableCell style={{ maxWidth: columnWidth }} key={col}>
                     <Typography variant="body1" className={classes.columnHeader}>{col}</Typography>
                   </TableCell>
@@ -119,9 +119,9 @@ export default function ListTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
+              {rows.map((row) => (
                 <TableRow key={`row-${String(row)}`}>
-                  {row.map(item => (
+                  {row.map((item) => (
                     <TableCell key={`item-${item}`}>
                       <Typography variant="body1">{replaceReferenceWithLink(item)}</Typography>
                     </TableCell>

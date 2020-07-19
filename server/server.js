@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
   const morganFormat = ':method :url HTTP/:http-version :status :response-time ms ":user-agent"';
   app.use(morgan(morganFormat, {
     stream: {
-      write: message => serverLogger.info(message.trim()),
+      write: (message) => serverLogger.info(message.trim()),
     },
   }));
 }
@@ -68,7 +68,7 @@ app.use((err, req, res, next) => {
 });
 
 // Log uncaught Exceptions
-process.on('uncaughtExceptionMonitor', err => serverLogger.error(err));
+process.on('uncaughtExceptionMonitor', (err) => serverLogger.error(err));
 
 // Start Express app
 serverLogger.info(`GTM Vision running on port: ${port}`);
