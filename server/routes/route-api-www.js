@@ -7,6 +7,8 @@ import {
   createClientFeedback,
 } from '../utility';
 
+import parseGtm from '../parsers/gtm-parser';
+
 /**
  * POST method to get the GTM container for a given URL
  * The URL is expected in the 'value' property of the
@@ -64,8 +66,10 @@ export default async function routeApiWww(req, res, next) {
         }
 
         if (container) {
-          // Return to client.
-          res.json({ container, gtmId });
+          // Parse container & return
+          const { resource } = container;
+          const parsedContainer = parseGtm(resource);
+          res.json({ parsedContainer, gtmId });
         }
 
         if (clientFeedbackMessage) {

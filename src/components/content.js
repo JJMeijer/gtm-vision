@@ -2,26 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ContainerContent from './container-content';
-import parseGtm from '../parsers/gtm-parser';
 import LoadingSpinner from './loading-spinner';
 
 export default function Content(props) {
   const { response, loading } = props;
 
   if (response) {
-    const { data, gtmId } = response;
-
-    // Parse the Raw GTM data
-    const parsedData = parseGtm(data);
+    const { parsedContainer, gtmId } = response;
 
     window.dataStore = {
-      data,
-      parsedData,
+      parsedContainer,
       gtmId,
     };
 
     // Return Container
-    return <ContainerContent parsedData={parsedData} gtmId={gtmId} />;
+    return <ContainerContent parsedContainer={parsedContainer} gtmId={gtmId} />;
   }
 
   // Loading Spinner
@@ -34,7 +29,7 @@ export default function Content(props) {
 
 Content.propTypes = {
   response: PropTypes.shape({
-    data: PropTypes.objectOf(
+    parsedContainer: PropTypes.objectOf(
       PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,

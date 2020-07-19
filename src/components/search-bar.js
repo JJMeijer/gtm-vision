@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Paper,
+  TextField,
+  IconButton,
+  Select,
+  MenuItem,
+  Divider,
+  Tooltip,
+  Zoom,
+} from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -118,10 +120,10 @@ export default function SearchBar(props) {
           return response;
         })
         .then(response => response.json())
-        .then(({ container: { resource: data } = {}, gtmId, clientFeedbackMessage }) => {
-          if (data) {
+        .then(({ parsedContainer = {}, gtmId, clientFeedbackMessage }) => {
+          if (parsedContainer) {
             setResponseValid(true);
-            pushApiResponse({ data, gtmId });
+            pushApiResponse({ parsedContainer, gtmId });
             setInputDisabled(false);
           }
 

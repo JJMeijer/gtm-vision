@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-
+import { Grid } from '@material-ui/core';
 import Settings from './settings';
 import TagConnections from './tag-connections';
 import TagSequencing from './tag-sequencing';
 import CodeBlock from './code-block';
+
 
 export default function Tag(props) {
   const { elementData, navigation } = props;

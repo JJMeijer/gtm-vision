@@ -1,3 +1,5 @@
+import { js, html } from 'js-beautify';
+
 const parseCode = function parseCodeArrays(containerElement) {
   const element = containerElement;
   const { category, type } = element;
@@ -40,7 +42,21 @@ const parseCode = function parseCodeArrays(containerElement) {
       resultArray.push(code);
     }
 
-    destination.code = resultArray.join('').replace(' type="text/gtmscript"', '');
+    const codeString = resultArray.join('').replace(' type="text/gtmscript"', '');
+
+    const beautifierOptions = {
+      indent_size: 4,
+      indent_char: ' ',
+      max_preserve_newlines: 1,
+    };
+
+    if (type === 'Custom javascript') {
+      destination.code = js(codeString, beautifierOptions);
+    }
+
+    if (type === 'Custom HTML') {
+      destination.code = html(codeString, beautifierOptions);
+    }
   }
 
   return element;

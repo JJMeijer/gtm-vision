@@ -6,6 +6,10 @@ import { sendError } from './utility';
 
 function renderApp() {
   render(<App />, document.getElementById('app'));
+
+  // Remove website loading spinner
+  const baseLoadingSpinner = document.querySelector('.baseSpinner');
+  baseLoadingSpinner.parentNode.removeChild(baseLoadingSpinner);
 }
 
 window.removeEventListener('error', sendError);
