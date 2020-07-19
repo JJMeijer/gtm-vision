@@ -1,5 +1,5 @@
 import {
-  validateRequestBody,
+  validateRequest,
   serverLogger,
   getGtmScript,
   websiteDatabase,
@@ -19,9 +19,9 @@ import parseGtm from '../parsers/gtm-parser';
  */
 export default async function routeApiWww(req, res, next) {
   try {
-    validateRequestBody(req, ['value']);
+    validateRequest(req, 'query', ['value']);
 
-    const { value } = req.body;
+    const { value } = req.query;
 
     // Parse Url
     const valueUrl = new URL(!value.match('^http') ? `http://${value}` : value);

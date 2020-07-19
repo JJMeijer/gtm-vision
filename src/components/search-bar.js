@@ -104,15 +104,8 @@ export default function SearchBar(props) {
     if (isInputValid) {
       setLoadingState(true);
       setInputDisabled(true);
-      fetch(`${document.location.origin}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          value: inputValue,
-        }),
-      })
+
+      fetch(`${document.location.origin}${endpoint}?value=${inputValue}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(response.statusText);
