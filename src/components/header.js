@@ -6,7 +6,7 @@ import SearchBar from './search-bar';
 import Title from './title';
 import backGround from '../images/water_1.webp';
 
-const cssBackgroundString = `-webkit-linear-gradient(rgba(63, 94, 251, 0.8), rgba(255, 70, 107, 0.8)), url(${backGround})`;
+const cssBackgroundString = `-webkit-linear-gradient(rgba(25, 118, 210, 0.8), rgba(255, 70, 107, 0.8)), url(${backGround})`;
 
 const useStyles = makeStyles(() => ({
   header: {
