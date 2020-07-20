@@ -46,8 +46,12 @@ app.get('/', (req, res) => {
 
 // Robots.txt Routing
 app.get('/robots.txt', (req, res) => {
-  res.type('text/plain');
-  res.send('User-Agent: *\nAllow: /$\nDisallow: /');
+  res.sendFile('robots.txt', { root: 'server' });
+});
+
+// Sitemap.xml routing
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile('sitemap.xml', { root: 'server' });
 });
 
 // Api routing
