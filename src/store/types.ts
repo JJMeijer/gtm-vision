@@ -1,4 +1,4 @@
-import { UPDATE_TAB, UPDATE_CONTAINER, UPDATE_LOADING_STATE } from './constants';
+import { UPDATE_TAB, UPDATE_CONTAINER, UPDATE_LOADING_STATE, UPDATE_ELEMENT } from './constants';
 
 import {
   ParsedContainer,
@@ -11,6 +11,7 @@ import {
 export type Container = ParsedContainer;
 export type Feedback = FeedbackMessage;
 export type ElementList = ParsedTag[] | ParsedTrigger[] | ParsedVariable[];
+export type Element = ParsedTag | ParsedTrigger | ParsedVariable;
 
 /**
  * Data objects
@@ -18,14 +19,14 @@ export type ElementList = ParsedTag[] | ParsedTrigger[] | ParsedVariable[];
 export interface State {
   loadingState: boolean;
   navigation: Navigation;
-  currentElements: ElementList;
-  gtmId?: string;
+  currentElements?: ElementList;
+  currentElement?: Element;
   container?: Container;
 }
 
 export interface Navigation {
   currentTab: number;
-  indexPerTab: [number, number, number];
+  indexPerTab: number[];
   currentIndex: number;
 }
 
@@ -35,7 +36,6 @@ export interface Navigation {
 interface UpdateContainer {
   type: typeof UPDATE_CONTAINER;
   payload: Container;
-  gtmId: string;
 }
 
 interface UpdateLoadingState {
@@ -48,4 +48,9 @@ interface UpdateTab {
   payload: number;
 }
 
-export type ActionTypes = UpdateTab | UpdateContainer | UpdateLoadingState;
+interface UpdateElement {
+  type: typeof UPDATE_ELEMENT;
+  payload: number;
+}
+
+export type ActionTypes = UpdateElement | UpdateTab | UpdateContainer | UpdateLoadingState;

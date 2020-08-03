@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { ElementList } from '../../../store/types';
+import { ElementList, State } from '../../../store/types';
+import { UPDATE_ELEMENT } from '../../../store/constants';
 
 const useStyles = makeStyles((theme) => ({
   elementName: {
@@ -20,26 +21,32 @@ const useStyles = makeStyles((theme) => ({
 interface ListItemProps {
   data: ElementList;
   index: number;
-  style: 
+  style
 }
 
 export const ListItem: React.FC<ListItemProps> = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { index, style } = props;
-  const { listElements, pushElementIndexChange, currentElementIndex } = data;
 
-  const { currentElements, navgiation: { currentIndex } = useSelector((state: State) => state);
+  const { currentElements, navigation: { currentIndex } } = useSelector((state: State) => state);
   
+  const handleClick() => {
+    dispatch({
+      type: UPDATE_ELEMENT,
+      payload: index,
+    });
+  }
 
-  const activeClass = index === currentElementIndex ? classes.activeElement : '';
+  const activeClass = index === currentIndex ? classes.activeElement : '';
 
   return (
     <Button
       variant="text"
       style={style}
-      key={listElements[index].reference}
+      key={currentElements[currentIndex].reference}
       className={`${classes.elementName} ${activeClass}`}
-      onClick={() => pushElementIndexChange(index)}
+      onClick={handleClick}
     >
       {listElements[index].reference}
     </Button>
@@ -54,14 +61,5 @@ ListItem.propTypes = {
     position: PropTypes.string.isRequired,
     top: PropTypes.number.isRequired,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  }).isRequired,
-  data: PropTypes.shape({
-    listElements: PropTypes.arrayOf(
-      PropTypes.shape({
-        reference: PropTypes.string.isRequired,
-      }).isRequired,
-    ).isRequired,
-    currentElementIndex: PropTypes.number.isRequired,
-    pushElementIndexChange: PropTypes.func.isRequired,
   }).isRequired,
 };
