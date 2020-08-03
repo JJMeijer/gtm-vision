@@ -1,4 +1,8 @@
-export default function sendError(error) {
+import { ErrorObject, CustomWindow } from '../../types/frontend';
+
+declare const window: CustomWindow;
+
+export const sendError = (error: ErrorObject): void => {
   const { name = 'Error', message = 'default error', stack = 'Stack missing' } = error.error;
   const gtmId = window.dataStore ? window.dataStore.gtmId || 'unknown' : 'No Data';
 
@@ -22,4 +26,4 @@ export default function sendError(error) {
     .catch((e) => {
       sendError(e);
     });
-}
+};

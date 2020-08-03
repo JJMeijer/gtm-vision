@@ -10,10 +10,17 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Title() {
+export const Title: React.FC = () => {
   const classes = useStyles();
   return (
-    <Grid container direction="column" justify="center" alignItems="center" className={classes.title} spacing={3}>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      className={classes.title}
+      spacing={3}
+    >
       <Grid item xs={12}>
         <Typography variant="h3" align="center">
           GTM Vision
@@ -26,4 +33,4 @@ export default function Title() {
       </Grid>
     </Grid>
   );
-}
+};

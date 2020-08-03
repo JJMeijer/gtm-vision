@@ -1,7 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
+
+import { UPDATE_TAB } from '../../../store/constants';
+import { State } from '../../../store/types';
 
 const useStyles = makeStyles(() => ({
   tabBar: {
@@ -12,26 +15,26 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ContainerNavigationTabs(props) {
+export const ContainerNavigationTabs: React.FC = () => {
   const classes = useStyles();
-  const { pushTabChange, tabInd } = props;
+  const dispatch = useDispatch();
 
-  const handleTabChange = (event, newTabIndex) => {
-    pushTabChange(newTabIndex);
+  const handleTabChange = (_event: React.ChangeEvent<unknown>, newTabIndex: number) => {
+    dispatch({
+      type: UPDATE_TAB,
+      payload: newTabIndex,
+    });
   };
+
+  const { currentTab } = useSelector((state: State) => state.navigation);
 
   return (
     <AppBar position="static" className={classes.tabBar} elevation={0}>
-      <Tabs value={tabInd} onChange={handleTabChange}>
+      <Tabs value={currentTab} onChange={handleTabChange}>
         <Tab label="Tags" id="tags-tab" className={classes.tab} />
         <Tab label="Triggers" id="triggers-tab" className={classes.tab} />
         <Tab label="Variables" className={classes.tab} />
       </Tabs>
     </AppBar>
   );
-}
-
-ContainerNavigationTabs.propTypes = {
-  tabInd: PropTypes.number.isRequired,
-  pushTabChange: PropTypes.func.isRequired,
 };

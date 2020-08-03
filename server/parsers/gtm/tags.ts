@@ -8,7 +8,7 @@ import {
   SomeOfParsedParameters,
   ParseTagsResponse,
   TemplateContext,
-} from './types';
+} from '../../types';
 
 import { tagDictionary } from './dictionaries';
 

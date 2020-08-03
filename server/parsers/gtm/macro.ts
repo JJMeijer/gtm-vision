@@ -8,7 +8,7 @@ import {
   ParseMacrosResponse,
   TriggerContextVariables,
   TemplateContext,
-} from './types';
+} from '../../types';
 
 import { macroDictionary } from './dictionaries';
 

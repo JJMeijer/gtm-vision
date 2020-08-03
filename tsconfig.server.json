@@ -1,0 +1,9 @@
+{   
+    "extends": "./tsconfig.json",
+    "include": ["server/**/*"],
+    "compilerOptions": {
+      "outDir": "dist",
+      "removeComments": true
+    }
+  }
+  

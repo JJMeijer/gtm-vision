@@ -1,4 +1,4 @@
-import { ParsedTag, ParsedTrigger, ParsedVariable } from './types';
+import { ParsedTag, ParsedTrigger, ParsedVariable } from '../../types';
 
 export const filterForTags = (tags: ParsedTag[]): ParsedTag[] => {
   return tags

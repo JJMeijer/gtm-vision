@@ -1,4 +1,4 @@
-import { ParsedContainer, ParsedVariable, ParsedTag, ParsedTrigger } from './types';
+import { ParsedContainer, ParsedVariable, ParsedTag, ParsedTrigger } from '../../types';
 
 const isObjectOrArray = (obj: unknown) => {
   return obj === Object(obj) && typeof obj !== 'function';

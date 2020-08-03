@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Container, CssBaseline } from '@material-ui/core';
 
-import ErrorBoundary from './error-boundary';
-import Header from './header';
-import Content from './content';
+import { ErrorBoundary } from './error-boundary';
+import { Header } from './header';
+import { Content } from './content';
 
 const useStyles = makeStyles(() => ({
   root: {
-    fontFamily: ['Roboto', 'sans-serif'],
+    fontFamily: 'Roboto',
   },
 }));
 
-export default function App() {
+export const App: React.FC = () => {
   const classes = useStyles();
-  const [response, pushApiResponse] = useState(null);
-  const [loading, setLoadingState] = useState(false);
 
   return (
     <>
@@ -24,20 +22,16 @@ export default function App() {
         <Grid container>
           <Grid item xs={12}>
             <ErrorBoundary>
-              <Header
-                pushApiResponse={pushApiResponse}
-                setLoadingState={setLoadingState}
-              />
+              <Header />
             </ErrorBoundary>
           </Grid>
           <Grid item xs={12}>
             <ErrorBoundary>
-              <Content response={response} loading={loading} />
+              <Content />
             </ErrorBoundary>
-
           </Grid>
         </Grid>
       </Container>
     </>
   );
-}
+};

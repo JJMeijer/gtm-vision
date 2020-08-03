@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -15,6 +15,8 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 
 import { sendError } from '../utility';
+
+import { UPDATE_CONTAINER, UPDATE_LOADING_STATE } from '../store/constants';
 
 const useStyles = makeStyles((theme) => ({
   searchbar: {
@@ -43,58 +45,84 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const inputOptions = {
+interface InputOptions {
+  [key: string]: {
+    placeholder: string;
+    endpoint: string;
+    validateValue: (value: string) => boolean;
+    validateMessage: string;
+  };
+}
+
+const inputOptions: InputOptions = {
   GTMID: {
     placeholder: 'GTM-NTQ25T',
     endpoint: '/api/gtm',
-    validateValue: (value) => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
-    validateMessage: 'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
+    validateValue: (value: string) => !!value.match(/^GTM-[0-9A-Z]{4,7}$/),
+    validateMessage:
+      'The ID you provided is not valid. a valid GTM container ID looks like "GTM-XXXXXX"',
   },
   URL: {
     placeholder: 'https://www.digital-power.com',
     endpoint: '/api/www',
-    validateValue: (value) => !!value.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/),
+    validateValue: (value: string) =>
+      !!value.match(
+        /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+      ),
     validateMessage: 'The URL you provided is not valid',
   },
 };
 
-export default function SearchBar(props) {
+export const SearchBar: React.FC = () => {
   const classes = useStyles();
-  const { pushApiResponse, setLoadingState } = props;
+  const dispatch = useDispatch();
+
   const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState('GTMID');
   const [inputValid, setInputValid] = useState(true);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [responseValid, setResponseValid] = useState(true);
   const [invalidResponseMessage, setInvalidResponseMessage] = useState('');
-  const {
-    placeholder,
-    endpoint,
-    validateValue,
-    validateMessage,
-  } = inputOptions[inputType];
+  const { placeholder, endpoint, validateValue, validateMessage } = inputOptions[inputType];
 
-  const handleTypeChange = (event) => {
-    setInputType(event.target.value);
+  const handleTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setInputType(event.target.value as string);
     setInputValue('');
     setInputValid(true);
     setResponseValid(true);
-    pushApiResponse(null);
-    setLoadingState(false);
+
+    dispatch({
+      type: UPDATE_CONTAINER,
+      payload: undefined,
+    });
+
+    dispatch({
+      type: UPDATE_LOADING_STATE,
+      payload: false,
+    });
   };
 
-  const handleValueChange = (event) => {
-    const trimmedValue = event.target.value.trim();
+  const handleValueChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
+    const trimmedValue = value.trim();
     if (inputValue !== trimmedValue) {
       setInputValue(trimmedValue);
       setInputValid(true);
       setResponseValid(true);
-      pushApiResponse(null);
-      setLoadingState(false);
+
+      dispatch({
+        type: UPDATE_CONTAINER,
+        payload: undefined,
+      });
+
+      dispatch({
+        type: UPDATE_LOADING_STATE,
+        payload: false,
+      });
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     setResponseValid(true);
 
@@ -102,7 +130,11 @@ export default function SearchBar(props) {
     setInputValid(isInputValid);
 
     if (isInputValid) {
-      setLoadingState(true);
+      dispatch({
+        type: UPDATE_LOADING_STATE,
+        payload: true,
+      });
+
       setInputDisabled(true);
 
       fetch(`${document.location.origin}${endpoint}?value=${inputValue}`)
@@ -113,23 +145,38 @@ export default function SearchBar(props) {
           return response;
         })
         .then((response) => response.json())
-        .then(({ parsedContainer = {}, gtmId, clientFeedbackMessage }) => {
+        .then(({ parsedContainer = {}, gtmId, message }) => {
           if (parsedContainer) {
             setResponseValid(true);
-            pushApiResponse({ parsedContainer, gtmId });
             setInputDisabled(false);
+
+            dispatch({
+              type: UPDATE_CONTAINER,
+              payload: parsedContainer,
+              gtmId,
+            });
           }
 
-          if (clientFeedbackMessage) {
+          if (message) {
             setResponseValid(false);
-            setLoadingState(false);
+
+            dispatch({
+              type: UPDATE_LOADING_STATE,
+              payload: false,
+            });
+
             setInputDisabled(false);
-            setInvalidResponseMessage(clientFeedbackMessage);
+            setInvalidResponseMessage(message);
           }
         })
         .catch((e) => {
           setResponseValid(false);
-          setLoadingState(false);
+
+          dispatch({
+            type: UPDATE_LOADING_STATE,
+            payload: false,
+          });
+
           setInputDisabled(false);
           setInvalidResponseMessage('An unexpected error occured :(');
           sendError(e);
@@ -139,7 +186,7 @@ export default function SearchBar(props) {
   };
 
   return (
-    <Paper dp="20" component="form" className={classes.searchbar} onSubmit={handleSubmit}>
+    <Paper elevation={20} component="form" className={classes.searchbar} onSubmit={handleSubmit}>
       <Select
         className={classes.select}
         value={inputType}
@@ -170,7 +217,6 @@ export default function SearchBar(props) {
           InputProps={{
             disableUnderline: true,
           }}
-          // eslint-disable-next-line react/jsx-no-duplicate-props
           inputProps={{ spellCheck: 'false' }}
         />
       </Tooltip>
@@ -180,9 +226,4 @@ export default function SearchBar(props) {
       </IconButton>
     </Paper>
   );
-}
-
-SearchBar.propTypes = {
-  pushApiResponse: PropTypes.func.isRequired,
-  setLoadingState: PropTypes.func.isRequired,
 };

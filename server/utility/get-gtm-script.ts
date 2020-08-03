@@ -6,7 +6,7 @@ import { cache } from './cache';
 import { serverLogger } from './loggers';
 import { parseGtm } from '../parsers/gtm';
 
-import { ParsedContainer } from '../parsers/gtm/types';
+import { ParsedContainer } from '../types';
 
 export interface GetGtmResponse {
   parsedContainer?: ParsedContainer;

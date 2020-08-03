@@ -1,13 +1,6 @@
 import { serverLogger } from './loggers';
 
-interface FeedbackMessage {
-  message: string;
-  code: number;
-}
-
-interface FeedbackMessages {
-  [key: string]: FeedbackMessage;
-}
+import { FeedbackMessage, FeedbackMessages } from '../types';
 
 interface Metadata {
   [key: string]: string;

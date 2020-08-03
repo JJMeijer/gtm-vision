@@ -1,5 +1,5 @@
 import { js, html } from 'js-beautify';
-import { ParsedTag, ParsedVariable, TemplateContext, Template } from './types';
+import { ParsedTag, ParsedVariable, TemplateContext, Template } from '../../types';
 
 const parseTemplate = (param: string, template: Template): string => {
   const [, ...templateContent] = template;

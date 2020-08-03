@@ -1,3 +1,12 @@
+export interface FeedbackMessage {
+  message: string;
+  code: number;
+}
+
+export interface FeedbackMessages {
+  [key: string]: FeedbackMessage;
+}
+
 export interface Container {
   resource: Resource;
   runtime: Runtime;

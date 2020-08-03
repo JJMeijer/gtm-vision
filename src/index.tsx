@@ -1,8 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import App from './components/app';
-import { sendError } from './utility';
+import { sendError } from './utility/send-error';
 
 function renderApp() {
   render(<App />, document.getElementById('app'));

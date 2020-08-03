@@ -9,7 +9,7 @@ import {
   TriggerContextTags,
   SomeOfParsedParameters,
   ParsedTag,
-} from './types';
+} from '../../types';
 import { operatorDictionary, triggerDictionary } from './dictionaries';
 
 const parsePredicate = (predicate: Predicate, sentiment: 'positive' | 'negative'): Condition => {

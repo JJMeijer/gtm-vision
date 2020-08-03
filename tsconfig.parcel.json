@@ -1,0 +1,12 @@
+{
+    "include": ["src/**/*"],
+    "compilerOptions": {                 
+      "noEmit": true,                        
+      "baseUrl": "./src",                      
+      "paths": {
+          "~/*": ["./*"]
+      },                           
+      "typeRoots": ["node_modules/@types"]
+    }
+  }
+  

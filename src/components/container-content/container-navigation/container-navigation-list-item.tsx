@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { ElementList } from '../../../store/types';
 
 const useStyles = makeStyles((theme) => ({
   elementName: {
@@ -15,14 +17,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListItem(props) {
+interface ListItemProps {
+  data: ElementList;
+  index: number;
+  style: 
+}
+
+export const ListItem: React.FC<ListItemProps> = (props) => {
   const classes = useStyles();
-  const { data, index, style } = props;
-  const {
-    listElements,
-    pushElementIndexChange,
-    currentElementIndex,
-  } = data;
+  const { index, style } = props;
+  const { listElements, pushElementIndexChange, currentElementIndex } = data;
+
+  const { currentElements, navgiation: { currentIndex } = useSelector((state: State) => state);
+  
 
   const activeClass = index === currentElementIndex ? classes.activeElement : '';
 
@@ -37,7 +44,7 @@ export default function ListItem(props) {
       {listElements[index].reference}
     </Button>
   );
-}
+};
 
 ListItem.propTypes = {
   index: PropTypes.number.isRequired,

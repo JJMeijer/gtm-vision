@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Fab } from '@material-ui/core';
-import { FixedSizeList } from 'react-window';
 import UpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import ListItem from './container-navigation-list-item';
+import { FixedSizeList } from 'react-window';
 
-const listRef = React.createRef();
+import { ListItem } from './container-navigation-list-item';
+
+import { State } from '../../../store/types';
+
+const listRef = React.createRef<FixedSizeList>();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,14 +41,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ContainerNavigationList(props) {
+export const ContainerNavigationList: React.FC = () => {
   const classes = useStyles();
-  const {
-    listElements,
-    currentElementIndex,
-  } = props;
 
-  useEffect(() => listRef.current.scrollToItem(currentElementIndex, 'smart'));
+  const {
+    currentElements,
+    navigation: { currentIndex },
+  } = useSelector((state: State) => state);
+
+  useEffect(() => {
+    if (listRef.current !== null) {
+      listRef.current.scrollToItem(currentIndex, 'smart');
+    }
+  });
 
   return (
     <div className={classes.root}>
@@ -52,26 +61,20 @@ export default function ContainerNavigationList(props) {
         className={classes.list}
         ref={listRef}
         height={600}
-        itemCount={listElements.length}
+        itemCount={currentElements.length}
         itemSize={55}
-        itemData={props}
         width="100%"
-        initialScrollOffset={currentElementIndex}
+        initialScrollOffset={currentIndex}
       >
         {ListItem}
       </FixedSizeList>
-      <Fab size="small" className={classes.fab} onClick={() => listRef.current.scrollTo(0)}>
+      <Fab
+        size="small"
+        className={classes.fab}
+        onClick={() => listRef.current && listRef.current.scrollTo(0)}
+      >
         <UpIcon />
       </Fab>
     </div>
   );
-}
-
-ContainerNavigationList.propTypes = {
-  listElements: PropTypes.arrayOf(
-    PropTypes.shape({
-      reference: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
-  currentElementIndex: PropTypes.number.isRequired,
 };

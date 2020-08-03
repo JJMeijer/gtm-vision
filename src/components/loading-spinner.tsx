@@ -10,12 +10,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoadingSpinner() {
+export const LoadingSpinner: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={3} direction="column" justify="center" alignItems="center" className={classes.loadingSpace}>
+    <Grid
+      container
+      spacing={3}
+      direction="column"
+      justify="center"
+      alignItems="center"
+      className={classes.loadingSpace}
+    >
       <CircularProgress size={80} color="inherit" />
     </Grid>
   );
-}
+};

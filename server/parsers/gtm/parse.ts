@@ -1,4 +1,4 @@
-import { Container, ParsedContainer } from './types';
+import { Container, ParsedContainer } from '../../types';
 import { parseMacros } from './macro';
 import { parseTags } from './tags';
 import { parseTriggers, parseTriggerGroups } from './triggers';
