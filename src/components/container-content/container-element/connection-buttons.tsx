@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Grid, Typography } from '@material-ui/core';
+import {
+  NAVIGATE,
+  TAB_INDEX_TAGS,
+  TAB_INDEX_TRIGGERS,
+  TAB_INDEX_VARIABLES,
+} from '../../../store/constants';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -30,42 +36,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const buttonOptions = {
+interface ButtonOption {
+  color: 'primary' | 'secondary' | 'default';
+  tabIndex: 0 | 1 | 2;
+}
+
+interface ButtonOptions {
+  [key: string]: ButtonOption;
+}
+
+const buttonOptions: ButtonOptions = {
   tags: {
     color: 'secondary',
-    tabName: 'tags',
+    tabIndex: TAB_INDEX_TAGS,
   },
   triggers: {
     color: 'primary',
-    tabName: 'triggers',
+    tabIndex: TAB_INDEX_TRIGGERS,
   },
   exceptions: {
     color: 'default',
-    tabName: 'triggers',
+    tabIndex: TAB_INDEX_TRIGGERS,
   },
   variables: {
     color: 'default',
-    tabName: 'variables',
+    tabIndex: TAB_INDEX_VARIABLES,
   },
 };
 
-export default function ConnectionButtons(props) {
-  const classes = useStyles();
-  const {
-    title,
-    buttons,
-    parentReference,
-    type,
-    buttonStyle,
-    navigation,
-  } = props;
+interface ConnectionButtonsProps {
+  title: string;
+  buttons: string[];
+  parentReference: string;
+  type: string;
+  buttonStyle: 'text' | 'outlined' | 'contained';
+}
 
-  const { color, tabName } = buttonOptions[type];
+export const ConnectionButtons: React.FC<ConnectionButtonsProps> = (props) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const { title, buttons, parentReference, type, buttonStyle } = props;
+
+  const { color, tabIndex } = buttonOptions[type];
 
   const [showAll, changeShowAll] = useState(false);
 
   const buttonLimit = 30;
   const filteredButtons = showAll ? buttons : buttons.slice(0, buttonLimit);
+
+  const handleClick = (buttonReference: string) => {
+    dispatch({
+      type: NAVIGATE,
+      payload: {
+        tab: tabIndex,
+        reference: buttonReference,
+      },
+    });
+  };
 
   return (
     <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -88,7 +116,7 @@ export default function ConnectionButtons(props) {
             key={`button-${buttonReference}-${type}-${parentReference}`}
             variant={buttonStyle}
             color={color}
-            onClick={() => navigation(tabName, buttonReference)}
+            onClick={() => handleClick(buttonReference)}
           >
             {buttonReference}
           </Button>
@@ -96,13 +124,4 @@ export default function ConnectionButtons(props) {
       </Grid>
     </Grid>
   );
-}
-
-ConnectionButtons.propTypes = {
-  title: PropTypes.string.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
-  parentReference: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  buttonStyle: PropTypes.string.isRequired,
-  navigation: PropTypes.func.isRequired,
 };

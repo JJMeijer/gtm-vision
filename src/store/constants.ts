@@ -6,6 +6,10 @@ export const UPDATE_TAB = 'UPDATE_TAB';
 
 export const UPDATE_ELEMENT = 'UPDATE_ELEMENT';
 
+export const NAVIGATE = 'NAVIGATE';
+
+export const RESET_CONTAINER = 'RESET_CONTAINER';
+
 export const TAB_INDEX_TAGS = 0;
 export const TAB_INDEX_TRIGGERS = 1;
 export const TAB_INDEX_VARIABLES = 2;

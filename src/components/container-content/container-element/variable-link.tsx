@@ -1,7 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { ButtonBase } from '@material-ui/core';
+
+import { NAVIGATE, TAB_INDEX_VARIABLES } from '../../../store/constants';
 
 const useStyles = makeStyles((theme) => ({
   buttonLink: {
@@ -25,21 +27,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VariableLink(props) {
+interface VariableLinkProps {
+  variableName: string;
+}
+
+export const VariableLink: React.FC<VariableLinkProps> = (props) => {
   const classes = useStyles();
-  const { navigation, variableName } = props;
+  const dispatch = useDispatch();
+  const { variableName } = props;
+
+  const handleClick = (variableReference: string) => {
+    dispatch({
+      type: NAVIGATE,
+      payload: {
+        tab: TAB_INDEX_VARIABLES,
+        reference: variableReference,
+      },
+    });
+  };
 
   return (
-    <ButtonBase
-      className={classes.buttonLink}
-      onClick={() => navigation('variables', variableName)}
-    >
+    <ButtonBase className={classes.buttonLink} onClick={() => handleClick(variableName)}>
       {variableName}
     </ButtonBase>
   );
-}
-
-VariableLink.propTypes = {
-  navigation: PropTypes.func.isRequired,
-  variableName: PropTypes.string.isRequired,
 };

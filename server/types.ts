@@ -133,7 +133,7 @@ interface RawParameters {
   vtp_dimension: ListOfMaps;
   vtp_defaultPages: ListOfMaps;
   vtp_map: ListOfMaps;
-  vtp_triggerIds: listOfStrings;
+  vtp_triggerIds: ListOfStrings;
   setup_tags: RawTagSequencing;
   teardown_tags: RawTagSequencing;
   [key: string]:
@@ -142,7 +142,7 @@ interface RawParameters {
     | Reference<'macro'>
     | boolean
     | ListOfMaps
-    | listOfStrings
+    | ListOfStrings
     | Map
     | RawTagSequencing
     | number
@@ -159,13 +159,13 @@ type StringParameter = Template | ReferenceOr<'macro', string>;
 
 type Escape = ['escape', ReferenceOr<'macro', string>, ...number[]];
 
-type List<T, U> = [T, ...U[]];
+export type List<T, U> = [T, ...U[]];
 
-type Map = List<'map', ReferenceOr<'macro', string>>;
+export type Map = List<'map', ReferenceOr<'macro', string>>;
 
-type ListOfMaps = List<'list', Map>;
+export type ListOfMaps = List<'list', Map>;
 
-type listOfStrings = List<'list', string>;
+export type ListOfStrings = List<'list', string>;
 
 export type RawTagSequencing = List<'list', ['tag', number, number]>;
 
@@ -273,14 +273,14 @@ interface ParsedParameters {
   dimension: ListOfMaps;
   defaultPages: ListOfMaps;
   map: ListOfMaps;
-  triggerIds: listOfStrings;
+  triggerIds: ListOfStrings;
   [key: string]:
     | StringParameter
     | ReferenceOr<'macro', boolean>
     | Reference<'macro'>
     | boolean
     | ListOfMaps
-    | listOfStrings
+    | ListOfStrings
     | Map
     | RawTagSequencing
     | number

@@ -1,10 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import Tag from './tag';
+import { Tag } from './tag';
 import Trigger from './trigger';
 import Variable from './variable';
+
+import { State, Element } from '../../../store/types';
 
 const useStyles = makeStyles((theme) => ({
   elementName: {
@@ -19,25 +21,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ContainerElement(props) {
+export const ContainerElement: React.FC = () => {
   const classes = useStyles();
-  const { elementData, navigation } = props;
-  const { category, reference } = elementData;
+
+  const { currentElement } = useSelector((state: State) => state);
+  const { category, reference } = currentElement as Element;
 
   let contentElement;
   if (category === 'tags') {
-    contentElement = <Tag elementData={elementData} navigation={navigation} />;
+    contentElement = <Tag />;
   }
   if (category === 'triggers') {
-    contentElement = <Trigger elementData={elementData} navigation={navigation} />;
+    contentElement = <Trigger />;
   }
   if (category === 'variables') {
-    contentElement = <Variable elementData={elementData} navigation={navigation} />;
+    contentElement = <Variable />;
   }
 
   return (
     <Paper className={classes.content} elevation={4}>
-      {elementData && (
+      {currentElement && (
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="h4" align="center" className={classes.elementName}>
@@ -51,12 +54,4 @@ export default function ContainerElement(props) {
       )}
     </Paper>
   );
-}
-
-ContainerElement.propTypes = {
-  elementData: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-    reference: PropTypes.string.isRequired,
-  }).isRequired,
-  navigation: PropTypes.func.isRequired,
 };

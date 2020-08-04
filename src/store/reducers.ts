@@ -3,6 +3,7 @@ import {
   UPDATE_LOADING_STATE,
   UPDATE_TAB,
   UPDATE_ELEMENT,
+  RESET_CONTAINER,
   TAB_INDEX_TAGS,
   TAB_INDEX_TRIGGERS,
   TAB_INDEX_VARIABLES,
@@ -24,6 +25,19 @@ export const reducer = (state = initialState, action: ActionTypes): State => {
       return {
         ...state,
         loadingState: action.payload,
+      };
+
+    case RESET_CONTAINER:
+      return {
+        ...state,
+        container: undefined,
+        navigation: {
+          currentTab: 0,
+          currentIndex: 0,
+          indexPerTab: [0, 0, 0],
+        },
+        currentElement: undefined,
+        currentElements: undefined,
       };
 
     case UPDATE_CONTAINER:

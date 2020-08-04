@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Zoom } from '@material-ui/core';
 
-import ContainerNavigation from './container-navigation';
-import ContainerElement from './container-element';
+import { ContainerNavigation } from './container-navigation';
+import { ContainerElement } from './container-element';
 
 const useStyles = makeStyles((theme) => ({
   containerContent: {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { ElementList, State } from '../../../store/types';
+import { State } from '../../../store/types';
 import { UPDATE_ELEMENT } from '../../../store/constants';
+import { CSSProperties } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   elementName: {
@@ -19,9 +19,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ListItemProps {
-  data: ElementList;
   index: number;
-  style
+  style: CSSProperties;
 }
 
 export const ListItem: React.FC<ListItemProps> = (props) => {
@@ -29,14 +28,17 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
   const dispatch = useDispatch();
   const { index, style } = props;
 
-  const { currentElements, navigation: { currentIndex } } = useSelector((state: State) => state);
-  
-  const handleClick() => {
+  const {
+    currentElements,
+    navigation: { currentIndex },
+  } = useSelector((state: State) => state);
+
+  const handleClick = () => {
     dispatch({
       type: UPDATE_ELEMENT,
       payload: index,
     });
-  }
+  };
 
   const activeClass = index === currentIndex ? classes.activeElement : '';
 
@@ -44,22 +46,11 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
     <Button
       variant="text"
       style={style}
-      key={currentElements[currentIndex].reference}
+      key={currentElements && currentElements[currentIndex].reference}
       className={`${classes.elementName} ${activeClass}`}
       onClick={handleClick}
     >
-      {listElements[index].reference}
+      {currentElements && currentElements[index].reference}
     </Button>
   );
-};
-
-ListItem.propTypes = {
-  index: PropTypes.number.isRequired,
-  style: PropTypes.shape({
-    height: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired,
-    position: PropTypes.string.isRequired,
-    top: PropTypes.number.isRequired,
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  }).isRequired,
 };

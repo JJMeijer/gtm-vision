@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import Prism from 'prismjs';
-import ConnectionButtons from './connection-buttons';
+import { ConnectionButtons } from './connection-buttons';
+
+import { State, Tag, Element, Variable } from '../../../store/types';
 
 const useStyles = makeStyles(() => ({
   codeBlock: {
@@ -11,18 +13,36 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function CodeBlock(props) {
+export const CodeBlock: React.FC = () => {
   const classes = useStyles();
-  const {
-    codeString,
-    codeType,
-    navigation,
-    reference,
-  } = props;
 
-  const variableList = [];
+  const { currentElement } = useSelector((state: State) => state);
+  const { category, reference } = currentElement as Element;
+
+  let code = '';
+  let type = '';
+
+  if (category === 'tags') {
+    const {
+      tagValues: { html },
+    } = currentElement as Tag;
+
+    code = html as string;
+    type = 'html';
+  }
+
+  if (category === 'variables') {
+    const {
+      variableValues: { javascript },
+    } = currentElement as Variable;
+
+    code = javascript as string;
+    type = 'javascript';
+  }
+
+  const variableList: string[] = [];
   // Find Variable Names in Code & Create Links
-  codeString.split(/({{[^{]+}})/).forEach((codePart) => {
+  code.split(/({{[^{]+}})/).forEach((codePart) => {
     const variableMatch = codePart.match(/{{(.+)}}/);
     if (variableMatch && variableList.indexOf(variableMatch[1]) === -1) {
       const variableName = variableMatch[1];
@@ -36,11 +56,9 @@ export default function CodeBlock(props) {
 
   return (
     <>
-      <Typography variant="h6">{`${codeType.toUpperCase()} (Minified):`}</Typography>
+      <Typography variant="h6">{`${type.toUpperCase()} (Minified):`}</Typography>
       <pre className={`line-numbers ${classes.codeBlock}`}>
-        <code className={`language-${codeType}`}>
-          {codeString}
-        </code>
+        <code className={`language-${type}`}>{code}</code>
       </pre>
       {variableList.length > 0 && (
         <ConnectionButtons
@@ -49,16 +67,8 @@ export default function CodeBlock(props) {
           parentReference={reference}
           type="variables"
           buttonStyle="outlined"
-          navigation={navigation}
         />
       )}
     </>
   );
-}
-
-CodeBlock.propTypes = {
-  codeString: PropTypes.string.isRequired,
-  codeType: PropTypes.string.isRequired,
-  navigation: PropTypes.func.isRequired,
-  reference: PropTypes.string.isRequired,
 };
