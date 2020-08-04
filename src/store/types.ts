@@ -23,7 +23,7 @@ export type TagT = ParsedTag;
 export type TriggerT = ParsedTrigger;
 export type VariableT = ParsedVariable;
 
-export type ElementList = Tag[] | Trigger[] | Variable[];
+export type ElementList = TagT[] | TriggerT[] | VariableT[];
 export type Element = TagT | TriggerT | VariableT;
 
 export type SettingsValues = SomeOfParsedParameters;
@@ -37,6 +37,7 @@ export interface State {
   currentElements?: ElementList;
   currentElement?: Element;
   container?: Container;
+  gtmId?: string;
 }
 
 export interface Navigation {
@@ -59,7 +60,10 @@ export type ListOptions = EmptyList | StringList | MapList | ListOfZoneBoundary;
  */
 interface UpdateContainer {
   type: typeof UPDATE_CONTAINER;
-  payload: Container;
+  payload: {
+    container: Container;
+    gtmId: string;
+  };
 }
 
 interface UpdateLoadingState {

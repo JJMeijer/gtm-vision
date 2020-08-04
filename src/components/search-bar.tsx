@@ -14,9 +14,9 @@ import {
 
 import SearchIcon from '@material-ui/icons/Search';
 
-import { sendError } from '../utility';
+import { sendError } from './send-error';
 
-import { UPDATE_CONTAINER, UPDATE_LOADING_STATE } from '../store/constants';
+import { UPDATE_CONTAINER, RESET_CONTAINER, UPDATE_LOADING_STATE } from '../store/constants';
 
 const useStyles = makeStyles((theme) => ({
   searchbar: {
@@ -92,8 +92,7 @@ export const SearchBar: React.FC = () => {
     setResponseValid(true);
 
     dispatch({
-      type: UPDATE_CONTAINER,
-      payload: undefined,
+      type: RESET_CONTAINER,
     });
 
     dispatch({
@@ -111,8 +110,7 @@ export const SearchBar: React.FC = () => {
       setResponseValid(true);
 
       dispatch({
-        type: UPDATE_CONTAINER,
-        payload: undefined,
+        type: RESET_CONTAINER,
       });
 
       dispatch({
@@ -152,8 +150,10 @@ export const SearchBar: React.FC = () => {
 
             dispatch({
               type: UPDATE_CONTAINER,
-              payload: parsedContainer,
-              gtmId,
+              payload: {
+                container: parsedContainer,
+                gtmId: gtmId,
+              },
             });
           }
 

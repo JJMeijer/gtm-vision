@@ -3,16 +3,27 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import App from './components/app';
-import { sendError } from './utility/send-error';
+import { reducer } from './store/reducers';
 
-function renderApp() {
-  render(<App />, document.getElementById('app'));
+import { App } from './components/app';
+import { sendError } from './components/send-error';
+
+const store = createStore(reducer);
+
+const renderApp = () => {
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('app'),
+  );
 
   // Remove website loading spinner
   const baseLoadingSpinner = document.querySelector('.baseSpinner');
-  baseLoadingSpinner.parentNode.removeChild(baseLoadingSpinner);
-}
+  if (baseLoadingSpinner && baseLoadingSpinner.parentNode) {
+    baseLoadingSpinner.parentNode.removeChild(baseLoadingSpinner);
+  }
+};
 
 window.removeEventListener('error', sendError);
 window.addEventListener('error', sendError);

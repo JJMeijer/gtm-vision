@@ -31,6 +31,7 @@ export const reducer = (state = initialState, action: ActionTypes): State => {
       return {
         ...state,
         container: undefined,
+        gtmId: undefined,
         navigation: {
           currentTab: 0,
           currentIndex: 0,
@@ -41,10 +42,11 @@ export const reducer = (state = initialState, action: ActionTypes): State => {
       };
 
     case UPDATE_CONTAINER:
-      const container = action.payload;
+      const { container, gtmId } = action.payload;
       return {
         ...state,
         container,
+        gtmId,
         navigation: {
           currentTab: 0,
           currentIndex: 0,

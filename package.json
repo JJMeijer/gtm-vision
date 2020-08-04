@@ -13,7 +13,8 @@
     "gcp-build": "npm run build-node && npm run build-public",
     "firestore-emulator": "gcloud beta emulators firestore start --host-port=localhost:8010",
     "deploy": "eslint ./ && gcloud app deploy -q",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "tsc": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

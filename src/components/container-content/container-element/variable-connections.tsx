@@ -1,16 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import ConnectionButtons from './connection-buttons';
+import { ConnectionButtons } from './connection-buttons';
 
-export default function VariableConnections(props) {
-  const {
-    tags,
-    variables,
-    triggers,
-    navigation,
-    reference,
-  } = props;
+import { State, VariableT } from '../../../store/types';
+
+export const VariableConnections: React.FC = () => {
+  const { currentElement } = useSelector((state: State) => state);
+  const { reference, usedIn = {} } = currentElement as VariableT;
+  const { tags = [], triggers = [], variables = [] } = usedIn;
 
   return (
     <>
@@ -21,7 +19,6 @@ export default function VariableConnections(props) {
           parentReference={reference}
           type="tags"
           buttonStyle="contained"
-          navigation={navigation}
         />
       )}
       {triggers.length > 0 && (
@@ -31,7 +28,6 @@ export default function VariableConnections(props) {
           parentReference={reference}
           type="triggers"
           buttonStyle="contained"
-          navigation={navigation}
         />
       )}
       {variables.length > 0 && (
@@ -41,25 +37,8 @@ export default function VariableConnections(props) {
           parentReference={reference}
           type="variables"
           buttonStyle="contained"
-          navigation={navigation}
         />
       )}
     </>
   );
-}
-
-VariableConnections.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string),
-  variables: PropTypes.arrayOf(PropTypes.string),
-  triggers: PropTypes.arrayOf(PropTypes.shape({
-    reference: PropTypes.string.isRequired,
-  })),
-  navigation: PropTypes.func.isRequired,
-  reference: PropTypes.string.isRequired,
-};
-
-VariableConnections.defaultProps = {
-  tags: [],
-  triggers: [],
-  variables: [],
 };

@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import Prism from 'prismjs';
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, Tag, Element, Variable } from '../../../store/types';
+import { State, TagT, Element, VariableT } from '../../../store/types';
 
 const useStyles = makeStyles(() => ({
   codeBlock: {
@@ -25,7 +25,7 @@ export const CodeBlock: React.FC = () => {
   if (category === 'tags') {
     const {
       tagValues: { html },
-    } = currentElement as Tag;
+    } = currentElement as TagT;
 
     code = html as string;
     type = 'html';
@@ -34,7 +34,7 @@ export const CodeBlock: React.FC = () => {
   if (category === 'variables') {
     const {
       variableValues: { javascript },
-    } = currentElement as Variable;
+    } = currentElement as VariableT;
 
     code = javascript as string;
     type = 'javascript';

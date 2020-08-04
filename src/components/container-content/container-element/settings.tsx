@@ -6,12 +6,6 @@ import { VariableLink } from './variable-link';
 import { ListTable } from './list-table';
 
 import {
-  convertToSentenceCaseWithSpaces,
-  replaceEmptyValues,
-  sortObjectByKey,
-} from '../../../utility';
-
-import {
   State,
   Element,
   TagT,
@@ -21,6 +15,46 @@ import {
   ListOptions,
 } from '../../../store/types';
 
+/**
+ * Helper Functions
+ */
+const convertToSentenceCaseWithSpaces = (str: string): string => {
+  const strWithSpaces = str.replace(/([A-Z])/g, ' $1').toLowerCase();
+  return strWithSpaces.charAt(0).toUpperCase() + strWithSpaces.slice(1);
+};
+
+const replaceEmptyValues = (stringValue: string): string => {
+  if (stringValue === '') {
+    return '""';
+  }
+  return stringValue;
+};
+
+const sortObjectByKey = (obj: SettingsValues) => {
+  const keys = Object.getOwnPropertyNames(obj);
+  const orderedObj: SettingsValues = {};
+  keys.sort().forEach((key) => {
+    orderedObj[key] = obj[key];
+    return null;
+  });
+  return orderedObj;
+};
+
+export const replaceReferenceWithLink = (stringValue: string): (ReactElement | string)[] => {
+  const stringArray = stringValue.split(/({{[^{]+}})/).filter((x) => x !== '');
+  return stringArray.map((stringItem) => {
+    const referenceMatch = stringItem.match(/{{.+}}/);
+    if (referenceMatch) {
+      const stringReference = referenceMatch[1];
+      return <VariableLink key={stringReference} variableName={stringReference} />;
+    }
+    return stringItem;
+  });
+};
+
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   settingKey: {
     display: 'flex',
@@ -51,18 +85,9 @@ const settingKeyBlacklist = [
   'enableIframeMode',
 ];
 
-export const replaceReferenceWithLink = (stringValue: string): (ReactElement | string)[] => {
-  const stringArray = stringValue.split(/({{[^{]+}})/).filter((x) => x !== '');
-  return stringArray.map((stringItem) => {
-    const referenceMatch = stringItem.match(/{{.+}}/);
-    if (referenceMatch) {
-      const stringReference = referenceMatch[1];
-      return <VariableLink key={stringReference} variableName={stringReference} />;
-    }
-    return stringItem;
-  });
-};
-
+/**
+ * Settings Element
+ */
 export const Settings: React.FC = () => {
   const classes = useStyles();
 

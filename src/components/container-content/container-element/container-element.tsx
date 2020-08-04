@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { Tag } from './tag';
-import Trigger from './trigger';
-import Variable from './variable';
+import { Trigger } from './trigger';
+import { Variable } from './variable';
 
 import { State, Element } from '../../../store/types';
 

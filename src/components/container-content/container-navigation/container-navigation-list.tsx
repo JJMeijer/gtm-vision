@@ -45,7 +45,7 @@ export const ContainerNavigationList: React.FC = () => {
   const classes = useStyles();
 
   const {
-    currentElements,
+    currentElements = [],
     navigation: { currentIndex },
   } = useSelector((state: State) => state);
 

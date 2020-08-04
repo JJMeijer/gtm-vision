@@ -1,10 +1,13 @@
 import { UPDATE_CONTAINER, UPDATE_ELEMENT, UPDATE_LOADING_STATE, UPDATE_TAB } from './constants';
 import { Container, ActionTypes } from './types';
 
-export const updateContainer = (container: Container): ActionTypes => {
+export const updateContainer = (container: Container, gtmId: string): ActionTypes => {
   return {
     type: UPDATE_CONTAINER,
-    payload: container,
+    payload: {
+      container,
+      gtmId,
+    },
   };
 };
 
