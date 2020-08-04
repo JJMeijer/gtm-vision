@@ -56,7 +56,7 @@
     "prop-types": "^15.7.2",
     "puppeteer": "^5.2.0",
     "puppeteer-extra": "^3.1.12",
-    "puppeteer-extra-plugin-stealth": "^2.4.13",
+    "puppeteer-extra-plugin-stealth": "^2.4.15",
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
