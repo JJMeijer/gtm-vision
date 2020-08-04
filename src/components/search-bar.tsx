@@ -90,15 +90,6 @@ export const SearchBar: React.FC = () => {
     setInputValue('');
     setInputValid(true);
     setResponseValid(true);
-
-    dispatch({
-      type: RESET_CONTAINER,
-    });
-
-    dispatch({
-      type: UPDATE_LOADING_STATE,
-      payload: false,
-    });
   };
 
   const handleValueChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -108,15 +99,6 @@ export const SearchBar: React.FC = () => {
       setInputValue(trimmedValue);
       setInputValid(true);
       setResponseValid(true);
-
-      dispatch({
-        type: RESET_CONTAINER,
-      });
-
-      dispatch({
-        type: UPDATE_LOADING_STATE,
-        payload: false,
-      });
     }
   };
 
@@ -131,6 +113,10 @@ export const SearchBar: React.FC = () => {
       dispatch({
         type: UPDATE_LOADING_STATE,
         payload: true,
+      });
+
+      dispatch({
+        type: RESET_CONTAINER,
       });
 
       setInputDisabled(true);
@@ -192,6 +178,7 @@ export const SearchBar: React.FC = () => {
         value={inputType}
         onChange={handleTypeChange}
         disableUnderline
+        disabled={inputDisabled}
       >
         <MenuItem value="GTMID">GTM ID</MenuItem>
         <MenuItem value="URL">URL</MenuItem>
@@ -210,6 +197,7 @@ export const SearchBar: React.FC = () => {
         disableTouchListener
       >
         <TextField
+          name="Search Field"
           className={classes.input}
           placeholder={placeholder}
           onChange={handleValueChange}
@@ -217,6 +205,7 @@ export const SearchBar: React.FC = () => {
           InputProps={{
             disableUnderline: true,
           }}
+          disabled={inputDisabled}
           inputProps={{ spellCheck: 'false' }}
         />
       </Tooltip>

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { ErrorComponent } from './error-component';
 
@@ -21,8 +20,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return { hasError: true };
   }
 
-  static propTypes = {};
-
   render(): React.ReactElement | React.ReactNode {
     const { hasError } = this.state;
     const { children } = this.props;
@@ -32,7 +29,3 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return children;
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.element.isRequired,
-};

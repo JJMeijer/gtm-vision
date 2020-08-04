@@ -43,7 +43,7 @@ const sortObjectByKey = (obj: SettingsValues) => {
 export const replaceReferenceWithLink = (stringValue: string): (ReactElement | string)[] => {
   const stringArray = stringValue.split(/({{[^{]+}})/).filter((x) => x !== '');
   return stringArray.map((stringItem) => {
-    const referenceMatch = stringItem.match(/{{.+}}/);
+    const referenceMatch = stringItem.match(/{{(.+)}}/);
     if (referenceMatch) {
       const stringReference = referenceMatch[1];
       return <VariableLink key={stringReference} variableName={stringReference} />;
@@ -74,7 +74,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const settingKeyBlacklist = [
-  'code',
+  'html',
+  'javascript',
   'enableRecaptchaOption',
   'enableUaRlsa',
   'enableUseInternalVersion',

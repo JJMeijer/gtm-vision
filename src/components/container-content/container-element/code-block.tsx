@@ -5,14 +5,38 @@ import { Typography } from '@material-ui/core';
 import Prism from 'prismjs';
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, TagT, Element, VariableT } from '../../../store/types';
+import { State, TagType, Element, VariableType } from '../../../store/types';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles(() => ({
   codeBlock: {
     maxHeight: '50vh',
   },
 }));
 
+const extractReferences = (code: string): string[] => {
+  const variableList: string[] = [];
+  code.split(/({{[^{]+}})/).forEach((codePart) => {
+    const variableMatch = codePart.match(/{{(.+)}}/);
+
+    if (variableMatch && variableList.indexOf(variableMatch[1]) === -1) {
+      const variableName = variableMatch[1];
+      if (variableList.indexOf(variableName) === -1) {
+        variableList.push(variableName);
+      }
+    }
+  });
+
+  return variableList;
+};
+
+/**
+ * Take the html or javascript property from an element and display it in
+ * a <pre><code> block. Prism is used for highlighting/formatting that
+ * <pre><code> block.
+ */
 export const CodeBlock: React.FC = () => {
   const classes = useStyles();
 
@@ -25,7 +49,7 @@ export const CodeBlock: React.FC = () => {
   if (category === 'tags') {
     const {
       tagValues: { html },
-    } = currentElement as TagT;
+    } = currentElement as TagType;
 
     code = html as string;
     type = 'html';
@@ -34,23 +58,13 @@ export const CodeBlock: React.FC = () => {
   if (category === 'variables') {
     const {
       variableValues: { javascript },
-    } = currentElement as VariableT;
+    } = currentElement as VariableType;
 
     code = javascript as string;
     type = 'javascript';
   }
 
-  const variableList: string[] = [];
-  // Find Variable Names in Code & Create Links
-  code.split(/({{[^{]+}})/).forEach((codePart) => {
-    const variableMatch = codePart.match(/{{(.+)}}/);
-    if (variableMatch && variableList.indexOf(variableMatch[1]) === -1) {
-      const variableName = variableMatch[1];
-      if (variableList.indexOf(variableName) === -1) {
-        variableList.push(variableName);
-      }
-    }
-  });
+  const variableList = extractReferences(code);
 
   useEffect(() => Prism.highlightAll());
 

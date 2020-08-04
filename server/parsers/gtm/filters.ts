@@ -1,6 +1,6 @@
-import { ParsedTag, ParsedTrigger, ParsedVariable } from '../../types';
+import { ResolvedTag, ResolvedTrigger, ResolvedVariable } from '../../types';
 
-export const filterForTags = (tags: ParsedTag[]): ParsedTag[] => {
+export const filterForTags = (tags: ResolvedTag[]): ResolvedTag[] => {
   return tags
     .filter((tag) => !tag.type.match('inner_'))
     .map((tag) => {
@@ -25,24 +25,22 @@ export const filterForTags = (tags: ParsedTag[]): ParsedTag[] => {
     });
 };
 
-export const filterForTriggers = (triggers: ParsedTrigger[]): ParsedTrigger[] => {
+export const filterForTriggers = (triggers: ResolvedTrigger[]): ResolvedTrigger[] => {
   return triggers.map((trigger) => {
     if (trigger.tags) {
       trigger.tags = trigger.tags.filter((tag) => {
-        const stringTagReference = tag as string;
-        return !stringTagReference.match('inner_');
+        return !tag.match('inner_');
       });
     }
 
     if (trigger.exceptions) {
       trigger.exceptions = trigger.exceptions.filter((exception) => {
-        const stringExceptionReference = exception as string;
-        return !stringExceptionReference.match('inner_');
+        return !exception.match('inner_');
       });
     }
 
     trigger.conditions = trigger.conditions.filter((condition) => {
-      const conditionVariable = condition.variable as string;
+      const conditionVariable = condition.variable;
       return !conditionVariable.match('gtm.triggers');
     });
 
@@ -50,6 +48,6 @@ export const filterForTriggers = (triggers: ParsedTrigger[]): ParsedTrigger[] =>
   });
 };
 
-export const filterForVariables = (variables: ParsedVariable[]): ParsedVariable[] => {
+export const filterForVariables = (variables: ResolvedVariable[]): ResolvedVariable[] => {
   return variables.filter((variable) => !variable.reference.match('gtm.triggers'));
 };

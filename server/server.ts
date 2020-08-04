@@ -63,6 +63,7 @@ app.use('/', apiRouter);
 // 404 Handling
 app.use((req, res) => {
   res.type('text/plain');
+  res.status(404);
   res.send('In the future this will be a very beautiful 404 page.');
 
   const err = new HttpError(

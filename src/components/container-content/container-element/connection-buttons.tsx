@@ -89,7 +89,7 @@ export const ConnectionButtons: React.FC<ConnectionButtonsProps> = (props) => {
     dispatch({
       type: NAVIGATE,
       payload: {
-        tab: tabIndex,
+        tabIndex: tabIndex,
         reference: buttonReference,
       },
     });

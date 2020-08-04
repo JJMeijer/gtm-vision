@@ -4,17 +4,16 @@ import {
   ElementCounter,
   ParsedTagSequencing,
   TriggerContextTags,
-  ParsedElement,
+  NamedElement,
   SomeOfParsedParameters,
   ParseTagsResponse,
   TemplateContext,
+  VtpParameter,
 } from '../../types';
 
 import { tagDictionary } from './dictionaries';
 
-const getTagName = (element: ContainerElement, counters: ElementCounter): ParsedElement => {
-  const category = 'tags';
-
+const getTagName = (element: ContainerElement, counters: ElementCounter): NamedElement => {
   const elementKey = element.function.match('__cvt_.+') ? 'template' : element.function;
 
   const type = tagDictionary[elementKey] || 'Unknown';
@@ -22,7 +21,6 @@ const getTagName = (element: ContainerElement, counters: ElementCounter): Parsed
   const reference = `${type}(${counter})`;
 
   return {
-    category,
     type,
     reference,
   };
@@ -36,7 +34,7 @@ const getTagParameters = (element: ContainerElement): SomeOfParsedParameters => 
    */
   for (const key in element) {
     if (key.indexOf('vtp_') === 0) {
-      parameters[key.replace('vtp_', '')] = element[key];
+      parameters[key.replace('vtp_', '')] = element[key] as VtpParameter;
     }
   }
 
@@ -175,7 +173,10 @@ export const parseTags = (tags: ContainerElement[]): ParseTagsResponse => {
      */
     const tagSequencing = parseTagSequencing(tag);
 
-    const parsedTag = {
+    const category = 'tags';
+
+    const parsedTag: ParsedTag = {
+      category,
       ...tagName,
       tagValues,
       ...(tagSequencing ? { tagSequencing } : null),

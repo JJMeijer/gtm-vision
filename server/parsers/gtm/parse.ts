@@ -1,4 +1,4 @@
-import { Container, ParsedContainer } from '../../types';
+import { RawContainer, ParsedContainer, ResolvedContainer } from '../../types';
 import { parseMacros } from './macro';
 import { parseTags } from './tags';
 import { parseTriggers, parseTriggerGroups } from './triggers';
@@ -6,7 +6,7 @@ import { resolveReferences } from './resolver';
 import { parseTemplatesAndCode } from './template';
 import { filterForTags, filterForTriggers, filterForVariables } from './filters';
 
-export const parseGtm = (container: Container): ParsedContainer => {
+export const parseGtm = (container: RawContainer): ResolvedContainer => {
   const { resource } = container;
   const { macros, tags, predicates, rules } = resource;
 
@@ -37,7 +37,7 @@ export const parseGtm = (container: Container): ParsedContainer => {
   /**
    * Create Container object
    */
-  const parsedContainer = {
+  const parsedContainer: ParsedContainer = {
     variables: parsedVariables,
     tags: parsedTags,
     triggers: parsedTriggers,
@@ -46,20 +46,25 @@ export const parseGtm = (container: Container): ParsedContainer => {
   /**
    * Resolve References
    */
-  resolveReferences(parsedContainer);
+  const resolvedContainer: ResolvedContainer = resolveReferences(parsedContainer);
 
   /**
    * Parse Trigger Groups. This happens after resolving the refernces, because
    * resolving the references makes it much easier to connect the trigger group to
    * the correct triggers.
    */
-  parseTriggerGroups(parsedTags, parsedTriggers, triggerContextTags);
+  parseTriggerGroups(resolvedContainer.tags, resolvedContainer.triggers, triggerContextTags);
 
   /**
    * Parse ['template', ...stuff] arrays. These arrays function as concatenations of
    * strings & variable references, for example in javascript & html fields.
    */
-  parseTemplatesAndCode(parsedTags, parsedVariables, templateContextVariables, templateContextTags);
+  parseTemplatesAndCode(
+    resolvedContainer.tags,
+    resolvedContainer.variables,
+    templateContextVariables,
+    templateContextTags,
+  );
 
   /**
    * Filtering
@@ -69,9 +74,9 @@ export const parseGtm = (container: Container): ParsedContainer => {
    *    * tags array within tag sequencing
    * - Remove the gtm.triggers variable.
    */
-  parsedContainer.tags = filterForTags(parsedTags);
-  parsedContainer.triggers = filterForTriggers(parsedTriggers);
-  parsedContainer.variables = filterForVariables(parsedVariables);
+  resolvedContainer.tags = filterForTags(resolvedContainer.tags);
+  resolvedContainer.triggers = filterForTriggers(resolvedContainer.triggers);
+  resolvedContainer.variables = filterForVariables(resolvedContainer.variables);
 
-  return parsedContainer;
+  return resolvedContainer;
 };

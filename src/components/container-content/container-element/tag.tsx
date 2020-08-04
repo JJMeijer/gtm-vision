@@ -11,11 +11,11 @@ import { State, TagT } from '../../../store/types';
 export const Tag: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
   const { tagValues, tagSequencing } = currentElement as TagT;
-  const { code } = tagValues;
+  const { html } = tagValues;
 
   return (
     <Grid container spacing={3}>
-      {code && (
+      {html && (
         <Grid item xs={12}>
           <CodeBlock />
         </Grid>

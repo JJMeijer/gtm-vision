@@ -3,7 +3,8 @@
     "include": ["server/**/*"],
     "compilerOptions": {
       "outDir": "dist",
-      "removeComments": true
+      "removeComments": true,
+      "sourceMap": true,
     }
   }
   

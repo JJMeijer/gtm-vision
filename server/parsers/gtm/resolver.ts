@@ -1,10 +1,17 @@
-import { ParsedContainer, ParsedVariable, ParsedTag, ParsedTrigger } from '../../types';
+import {
+  ParsedContainer,
+  ParsedVariable,
+  ParsedTag,
+  ParsedTrigger,
+  ResolvedTrigger,
+  ResolvedContainer,
+} from '../../types';
 
 const isObjectOrArray = (obj: unknown) => {
   return obj === Object(obj) && typeof obj !== 'function';
 };
 
-export const resolveReferences = (parsedContainer: ParsedContainer): void => {
+export const resolveReferences = (parsedContainer: ParsedContainer): ResolvedContainer => {
   let sourceElement: ParsedTag | ParsedTrigger | ParsedVariable;
   let category: string;
 
@@ -62,7 +69,7 @@ export const resolveReferences = (parsedContainer: ParsedContainer): void => {
           referencedItem.usedIn.triggers = referencedItem.usedIn.triggers || [];
           const usedInArray = referencedItem.usedIn.triggers;
 
-          const triggerSourceElement = sourceElement as ParsedTrigger;
+          const triggerSourceElement = sourceElement as ResolvedTrigger;
 
           const { reference } = triggerSourceElement;
 
@@ -100,4 +107,6 @@ export const resolveReferences = (parsedContainer: ParsedContainer): void => {
   if (isObjectOrArray(parsedContainer)) {
     resolve(parsedContainer);
   }
+
+  return parsedContainer as ResolvedContainer;
 };

@@ -8,7 +8,8 @@ import {
   TriggerContextVariables,
   TriggerContextTags,
   SomeOfParsedParameters,
-  ParsedTag,
+  ResolvedTag,
+  ResolvedTrigger,
 } from '../../types';
 import { operatorDictionary, triggerDictionary } from './dictionaries';
 
@@ -160,8 +161,8 @@ export const parseTriggers = (
 };
 
 export const parseTriggerGroups = (
-  parsedTags: ParsedTag[],
-  parsedTriggers: ParsedTrigger[],
+  parsedTags: ResolvedTag[],
+  parsedTriggers: ResolvedTrigger[],
   triggerContextTags: TriggerContextTags,
 ): void => {
   parsedTriggers.forEach((parsedTrigger) => {

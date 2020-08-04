@@ -8,25 +8,25 @@ import {
 } from './constants';
 
 import {
-  ParsedContainer,
+  ResolvedContainer,
   FeedbackMessage,
-  ParsedTag,
-  ParsedTrigger,
-  ParsedVariable,
-  SomeOfParsedParameters,
+  ResolvedTag,
+  ResolvedTrigger,
+  ResolvedVariable,
+  SomeOfResolvedParameters,
   List,
 } from '../../server/types';
 
-export type Container = ParsedContainer;
+export type Container = ResolvedContainer;
 export type Feedback = FeedbackMessage;
-export type TagT = ParsedTag;
-export type TriggerT = ParsedTrigger;
-export type VariableT = ParsedVariable;
+export type TagType = ResolvedTag;
+export type TriggerType = ResolvedTrigger;
+export type VariableType = ResolvedVariable;
 
-export type ElementList = TagT[] | TriggerT[] | VariableT[];
-export type Element = TagT | TriggerT | VariableT;
+export type ElementList = TagType[] | TriggerType[] | VariableType[];
+export type Element = TagType | TriggerType | VariableType;
 
-export type SettingsValues = SomeOfParsedParameters;
+export type SettingsValues = SomeOfResolvedParameters;
 
 /**
  * Data objects
@@ -41,7 +41,7 @@ export interface State {
 }
 
 export interface Navigation {
-  currentTab: number;
+  currentTab: 0 | 1 | 2;
   indexPerTab: number[];
   currentIndex: number;
 }
@@ -73,7 +73,7 @@ interface UpdateLoadingState {
 
 interface UpdateTab {
   type: typeof UPDATE_TAB;
-  payload: number;
+  payload: 0 | 1 | 2;
 }
 
 interface UpdateElement {
@@ -84,7 +84,7 @@ interface UpdateElement {
 interface Navigate {
   type: typeof NAVIGATE;
   payload: {
-    tabIndex: number;
+    tabIndex: 0 | 1 | 2;
     reference: string;
   };
 }

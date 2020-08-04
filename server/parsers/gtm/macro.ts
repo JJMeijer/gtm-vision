@@ -3,23 +3,22 @@ import {
   ContainerElement,
   ConvertFormat,
   ElementCounter,
-  ParsedElement,
+  NamedElement,
   SomeOfParsedParameters,
   ParseMacrosResponse,
   TriggerContextVariables,
   TemplateContext,
+  VtpParameter,
 } from '../../types';
 
 import { macroDictionary } from './dictionaries';
 
-const getMacroName = (element: ContainerElement, counters: ElementCounter): ParsedElement => {
-  const category = 'variables';
+const getMacroName = (element: ContainerElement, counters: ElementCounter): NamedElement => {
   const type = macroDictionary[element.function] || 'Unknown';
   const counter = counters[type] ? (counters[type] += 1) : (counters[type] = 1);
   const reference = `${type}(${counter})`;
 
   return {
-    category,
     type,
     reference,
   };
@@ -33,7 +32,7 @@ const getMacroParameters = (element: ContainerElement): SomeOfParsedParameters =
    */
   for (const key in element) {
     if (key.indexOf('vtp_') === 0) {
-      parameters[key.replace('vtp_', '')] = element[key];
+      parameters[key.replace('vtp_', '')] = element[key] as VtpParameter;
     }
   }
 
@@ -163,7 +162,10 @@ export const parseMacros = (macros: ContainerElement[]): ParseMacrosResponse => 
      */
     const format = getFormatParameters(macro);
 
-    const parsedMacro = {
+    const category = 'variables';
+
+    const parsedMacro: ParsedVariable = {
+      category,
       ...variableNames,
       variableValues,
       ...(format ? { format } : null),

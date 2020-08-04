@@ -40,7 +40,7 @@ export const VariableLink: React.FC<VariableLinkProps> = (props) => {
     dispatch({
       type: NAVIGATE,
       payload: {
-        tab: TAB_INDEX_VARIABLES,
+        tabIndex: TAB_INDEX_VARIABLES,
         reference: variableReference,
       },
     });

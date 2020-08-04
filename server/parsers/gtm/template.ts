@@ -1,7 +1,7 @@
 import { js, html } from 'js-beautify';
-import { ParsedTag, ParsedVariable, TemplateContext, Template } from '../../types';
+import { ResolvedTag, ResolvedVariable, TemplateContext, ResolvedTemplate } from '../../types';
 
-const parseTemplate = (param: string, template: Template): string => {
+const parseTemplate = (param: string, template: ResolvedTemplate): string => {
   const [, ...templateContent] = template;
 
   const resultArray: string[] = [];
@@ -19,12 +19,10 @@ const parseTemplate = (param: string, template: Template): string => {
        * to determine if a GTM {{variable_name}} is typed as "{{variable_name}}" or not.
        * I'm not 100% sure I fully understand all options here.
        */
-      if (typeof reference === 'string') {
-        if (type > 7) {
-          resultArray.push(`"${reference}"`);
-        } else {
-          resultArray.push(reference);
-        }
+      if (type > 7) {
+        resultArray.push(`"${reference}"`);
+      } else {
+        resultArray.push(reference);
       }
     }
   });
@@ -49,8 +47,8 @@ const parseTemplate = (param: string, template: Template): string => {
 };
 
 export const parseTemplatesAndCode = (
-  parsedTags: ParsedTag[],
-  parsedVariables: ParsedVariable[],
+  parsedTags: ResolvedTag[],
+  parsedVariables: ResolvedVariable[],
   templateContextVariables: TemplateContext,
   templateContextTags: TemplateContext,
 ): void => {
@@ -59,7 +57,7 @@ export const parseTemplatesAndCode = (
     const { tagValues } = parsedTags[tagIndex];
 
     templateParams.forEach((param) => {
-      tagValues[param] = parseTemplate(param, tagValues[param] as Template);
+      tagValues[param] = parseTemplate(param, tagValues[param] as ResolvedTemplate);
     });
   });
 
@@ -68,7 +66,7 @@ export const parseTemplatesAndCode = (
     const { variableValues } = parsedVariables[variableIndex];
 
     templateParams.forEach((param) => {
-      variableValues[param] = parseTemplate(param, variableValues[param] as Template);
+      variableValues[param] = parseTemplate(param, variableValues[param] as ResolvedTemplate);
     });
   });
 };
