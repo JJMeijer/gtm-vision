@@ -17,11 +17,3 @@
 # Node.js dependencies:
 node_modules/
 
-# Eslint config:
-.eslintrc
-.eslintignore
-
-# Docker files
-Dockerfile
-.dockerignore
-

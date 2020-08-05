@@ -7,12 +7,11 @@
     "dev-server": "ts-node-dev server/server.ts --watch server",
     "build-server": "tsc -p ./tsconfig.server.json",
     "dev-frontend": "parcel watch src/index.html --target=browser --dist-dir ./public",
-    "build-frontend": "tsc --noEmit && parcel build src/index.html --target=browser --dist-dir ./public --no-source-maps",
+    "build-frontend": "parcel build src/index.html --target=browser --dist-dir ./public --no-source-maps",
     "build": "npm run build-server && npm run build-frontend",
     "start": "node ./dist/server.js",
     "firestore-emulator": "gcloud beta emulators firestore start --host-port=localhost:8010",
-    "lint": "eslint ./",
-    "test": "tsc --noEmit"
+    "test": "tsc --noEmit && eslint ./"
   },
   "repository": {
     "type": "git",
