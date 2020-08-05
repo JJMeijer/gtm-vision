@@ -5,6 +5,9 @@ import { SearchBar } from './search-bar';
 import { Title } from './title';
 import backGround from 'url:../images/water_1.png';
 
+/**
+ * Styling
+ */
 const cssBackgroundString = `-webkit-linear-gradient(rgba(25, 118, 210, 0.8), rgba(255, 70, 107, 0.8)), url(${backGround})`;
 
 const useStyles = makeStyles(() => ({
@@ -14,6 +17,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * Header component that holds the title & the search bar.
+ * TODO: Add Navigation
+ */
 export const Header: React.FC = () => {
   const classes = useStyles();
 

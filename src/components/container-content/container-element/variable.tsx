@@ -6,8 +6,11 @@ import { CodeBlock } from './code-block';
 import { VariableConnections } from './variable-connections';
 import { Settings } from './settings';
 
-import { State, VariableT, SettingsValues } from '../../../store/types';
+import { State, VariableType, SettingsValues } from '../../../store/types';
 
+/**
+ * Helper Function
+ */
 const showVariableValues = (variableValues: SettingsValues) => {
   const variableValuesKeys = Object.keys(variableValues);
   if (variableValuesKeys.length > 0) {
@@ -20,9 +23,12 @@ const showVariableValues = (variableValues: SettingsValues) => {
   return false;
 };
 
+/**
+ * React element that is used to display a variable item.
+ */
 export const Variable: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
-  const { variableValues } = currentElement as VariableT;
+  const { variableValues } = currentElement as VariableType;
   const { javascript } = variableValues;
 
   return (

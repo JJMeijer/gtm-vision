@@ -9,6 +9,9 @@ import {
   TAB_INDEX_VARIABLES,
 } from '../../../store/constants';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -36,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Element Specific Types
+ */
 interface ButtonOption {
   color: 'primary' | 'secondary' | 'default';
   tabIndex: 0 | 1 | 2;
@@ -45,6 +51,17 @@ interface ButtonOptions {
   [key: string]: ButtonOption;
 }
 
+interface ConnectionButtonsProps {
+  title: string;
+  buttons: string[];
+  parentReference: string;
+  type: string;
+  buttonStyle: 'text' | 'outlined' | 'contained';
+}
+
+/**
+ * Variants of buttons that can be generated
+ */
 const buttonOptions: ButtonOptions = {
   tags: {
     color: 'secondary',
@@ -64,14 +81,10 @@ const buttonOptions: ButtonOptions = {
   },
 };
 
-interface ConnectionButtonsProps {
-  title: string;
-  buttons: string[];
-  parentReference: string;
-  type: string;
-  buttonStyle: 'text' | 'outlined' | 'contained';
-}
-
+/**
+ * Generate an array of buttons that link to other elements that
+ * have a relationship with the current Element.
+ */
 export const ConnectionButtons: React.FC<ConnectionButtonsProps> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();

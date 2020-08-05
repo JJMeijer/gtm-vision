@@ -6,6 +6,9 @@ import { State } from '../../../store/types';
 import { UPDATE_ELEMENT } from '../../../store/constants';
 import { CSSProperties } from 'react';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   elementName: {
     justifyContent: 'left',
@@ -18,11 +21,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Element specific Types
+ */
 interface ListItemProps {
   index: number;
   style: CSSProperties;
 }
 
+/**
+ * Item in the list of elements in the current tab. Clicking will
+ * change the active element.
+ */
 export const ListItem: React.FC<ListItemProps> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();

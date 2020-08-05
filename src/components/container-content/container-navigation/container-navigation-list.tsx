@@ -11,8 +11,9 @@ import { ListItem } from './container-navigation-list-item';
 
 import { State } from '../../../store/types';
 
-const listRef = React.createRef<FixedSizeList>();
-
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
@@ -41,6 +42,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Reference to the to be created List.
+ */
+const listRef = React.createRef<FixedSizeList>();
+
+/**
+ * Navigation list that contains the elements in the current Tab.
+ */
 export const ContainerNavigationList: React.FC = () => {
   const classes = useStyles();
 

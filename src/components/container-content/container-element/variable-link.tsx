@@ -5,6 +5,9 @@ import { ButtonBase } from '@material-ui/core';
 
 import { NAVIGATE, TAB_INDEX_VARIABLES } from '../../../store/constants';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles((theme) => ({
   buttonLink: {
     color: theme.palette.primary.main,
@@ -27,10 +30,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Element Specific Types
+ */
 interface VariableLinkProps {
   variableName: string;
 }
 
+/**
+ * Generates a link to a variable
+ */
 export const VariableLink: React.FC<VariableLinkProps> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();

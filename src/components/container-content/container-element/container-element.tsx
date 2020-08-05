@@ -8,6 +8,9 @@ import { Variable } from './variable';
 
 import { State, Element } from '../../../store/types';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles((theme) => ({
   elementName: {
     paddingBottom: theme.spacing(1),
@@ -21,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Element that contains All information about a GTM item like
+ * tags, triggers or variables.
+ */
 export const ContainerElement: React.FC = () => {
   const classes = useStyles();
 

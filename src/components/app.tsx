@@ -6,12 +6,18 @@ import { ErrorBoundary } from './error-boundary';
 import { Header } from './header';
 import { Content } from './content';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles(() => ({
   root: {
     fontFamily: 'Roboto',
   },
 }));
 
+/**
+ * Parent element for the whole application.
+ */
 export const App: React.FC = () => {
   const classes = useStyles();
 

@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux';
 
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, VariableT } from '../../../store/types';
+import { State, VariableType } from '../../../store/types';
 
+/**
+ * React Element that generates the buttons that link to the
+ * other items that the current item has a relationship with.
+ */
 export const VariableConnections: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
-  const { reference, usedIn = {} } = currentElement as VariableT;
+  const { reference, usedIn = {} } = currentElement as VariableType;
   const { tags = [], triggers = [], variables = [] } = usedIn;
 
   return (

@@ -18,6 +18,8 @@ import { sendError } from './send-error';
 
 import { UPDATE_CONTAINER, RESET_CONTAINER, UPDATE_LOADING_STATE } from '../store/constants';
 
+import { ApiResponse } from '../store/types';
+
 const useStyles = makeStyles((theme) => ({
   searchbar: {
     padding: '2px 4px',
@@ -102,6 +104,15 @@ export const SearchBar: React.FC = () => {
     }
   };
 
+  const api = function <T>(url: string): Promise<T> {
+    return fetch(url).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    });
+  };
+
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     setResponseValid(true);
@@ -121,23 +132,18 @@ export const SearchBar: React.FC = () => {
 
       setInputDisabled(true);
 
-      fetch(`${document.location.origin}${endpoint}?value=${inputValue}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response;
-        })
-        .then((response) => response.json())
-        .then(({ parsedContainer = {}, gtmId, message }) => {
-          if (parsedContainer) {
+      const url = `${document.location.origin}${endpoint}?value=${inputValue}`;
+
+      api<ApiResponse>(url)
+        .then(({ resolvedContainer, gtmId, message }) => {
+          if (resolvedContainer) {
             setResponseValid(true);
             setInputDisabled(false);
 
             dispatch({
               type: UPDATE_CONTAINER,
               payload: {
-                container: parsedContainer,
+                container: resolvedContainer,
                 gtmId: gtmId,
               },
             });

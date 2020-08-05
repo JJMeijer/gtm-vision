@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Grid, Typography } from '@material-ui/core';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles({
   title: {
     color: 'white',
@@ -10,6 +13,9 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * Application title Element
+ */
 export const Title: React.FC = () => {
   const classes = useStyles();
   return (

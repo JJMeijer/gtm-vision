@@ -4,8 +4,11 @@ import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { VariableLink } from './variable-link';
 
-import { State, TriggerT } from '../../../store/types';
+import { State, TriggerType } from '../../../store/types';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles((theme) => ({
   inputLike: {
     borderColor: theme.palette.divider,
@@ -25,10 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * React Element that generates an array of elements that
+ * show the conditions for a trigger.
+ */
 export const TriggerConditions: React.FC = () => {
   const classes = useStyles();
   const { currentElement } = useSelector((state: State) => state);
-  const { conditions, reference } = currentElement as TriggerT;
+  const { conditions, reference } = currentElement as TriggerType;
 
   const replaceReferenceWithLink = (stringValue: string, index: number) => {
     const stringReferenceMatch = stringValue.match(/{{(.+)}}/);

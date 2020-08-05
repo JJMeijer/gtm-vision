@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import Prism from 'prismjs';
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, TagType, Element, VariableType } from '../../../store/types';
+import { State, Element } from '../../../store/types';
 
 /**
  * Styles
@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * Helper Functions
+ */
 const extractReferences = (code: string): string[] => {
   const variableList: string[] = [];
   code.split(/({{[^{]+}})/).forEach((codePart) => {
@@ -40,25 +43,23 @@ const extractReferences = (code: string): string[] => {
 export const CodeBlock: React.FC = () => {
   const classes = useStyles();
 
-  const { currentElement } = useSelector((state: State) => state);
-  const { category, reference } = currentElement as Element;
+  const currentElement = useSelector((state: State) => state.currentElement as Element);
+  const { reference } = currentElement;
 
   let code = '';
   let type = '';
 
-  if (category === 'tags') {
-    const {
-      tagValues: { html },
-    } = currentElement as TagType;
+  if ('tagValues' in currentElement) {
+    const { tagValues } = currentElement;
+    const { html } = tagValues;
 
     code = html as string;
     type = 'html';
   }
 
-  if (category === 'variables') {
-    const {
-      variableValues: { javascript },
-    } = currentElement as VariableType;
+  if ('variableValues' in currentElement) {
+    const { variableValues } = currentElement;
+    const { javascript } = variableValues;
 
     code = javascript as string;
     type = 'javascript';

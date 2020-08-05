@@ -30,7 +30,7 @@ const getTriggerName = (
   eventVariableIndexes: number[],
   counters: ElementCounter,
 ): {
-  category: string;
+  category: 'triggers';
   type: string;
   reference: string;
 } => {

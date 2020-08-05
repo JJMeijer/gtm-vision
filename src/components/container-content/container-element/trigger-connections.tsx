@@ -3,8 +3,12 @@ import { useSelector } from 'react-redux';
 
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, TriggerT } from '../../../store/types';
+import { State, TriggerType } from '../../../store/types';
 
+/**
+ * React Element that generates the buttons that link to the
+ * other items that the current item has a relationship with.
+ */
 export const TriggerConnections: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
   const {
@@ -13,7 +17,7 @@ export const TriggerConnections: React.FC = () => {
     triggerParent,
     tags = [],
     exceptions = [],
-  } = currentElement as TriggerT;
+  } = currentElement as TriggerType;
 
   const tagsAsString = tags as string[];
   const exceptionsAsString = exceptions as string[];

@@ -17,6 +17,9 @@ import { replaceReferenceWithLink } from './settings';
 
 import { ListOptions, StringList, MapList, ListOfZoneBoundary } from '../../../store/types';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles((theme) => ({
   columnHeader: {
     fontWeight: 'bold',
@@ -51,6 +54,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Element Specific Types
+ */
+interface ListTableProps {
+  list: ListOptions;
+}
+
+/**
+ * Helper Function that translates multiple list options into
+ * clear columns and rows.
+ */
 const createColumnsAndRows = (list: ListOptions) => {
   // Empty List => ['list']
   if (list[0] === 'list' && !list[1]) {
@@ -104,10 +118,11 @@ const createColumnsAndRows = (list: ListOptions) => {
   };
 };
 
-interface ListTableProps {
-  list: ListOptions;
-}
-
+/**
+ * Generates a Table from a list element in the GTM container.
+ * List is hidden at first, because they can be quite long and take over
+ * the screen.
+ */
 export const ListTable: React.FC<ListTableProps> = (props) => {
   const classes = useStyles();
 

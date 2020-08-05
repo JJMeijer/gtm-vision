@@ -6,11 +6,14 @@ import { TagConnections } from './tag-connections';
 import { TagSequencing } from './tag-sequencing';
 import { CodeBlock } from './code-block';
 
-import { State, TagT } from '../../../store/types';
+import { State, TagType } from '../../../store/types';
 
+/**
+ * React element that is used to display a Tag item.
+ */
 export const Tag: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
-  const { tagValues, tagSequencing } = currentElement as TagT;
+  const { tagValues, tagSequencing } = currentElement as TagType;
   const { html } = tagValues;
 
   return (
