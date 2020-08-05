@@ -9,6 +9,7 @@
     "dev-frontend": "parcel watch src/index.html --target=browser --dist-dir ./public",
     "build-frontend": "parcel build src/index.html --target=browser --dist-dir ./public --no-source-maps",
     "build": "npm run build-server && npm run build-frontend",
+    "gcp-build": "npm run build",
     "start": "node ./dist/server.js",
     "firestore-emulator": "gcloud beta emulators firestore start --host-port=localhost:8010",
     "test": "tsc --noEmit && eslint ./"

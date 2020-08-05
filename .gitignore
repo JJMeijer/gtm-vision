@@ -1,9 +1,7 @@
 # Ignored maps/files
 node_modules/
-node_modules_bak/
 .cache/
 .parcel-cache/
 dist/
 public/
 .vscode/
-parse-runtime.js
