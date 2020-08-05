@@ -10,6 +10,10 @@ interface ErrorBoundaryState {
   hasError: boolean;
 }
 
+/**
+ * Error Boundary class. Purpose is to show the ErrorComponent if
+ * an error occured in a child component.
+ */
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);

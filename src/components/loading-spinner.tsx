@@ -2,6 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, CircularProgress } from '@material-ui/core';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   loadingSpace: {
     marginTop: '-10vh',
@@ -10,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Loading spinner element whil the API gets the container data.
+ */
 export const LoadingSpinner: React.FC = () => {
   const classes = useStyles();
 

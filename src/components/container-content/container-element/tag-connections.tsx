@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux';
 
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, TagT, TriggerT } from '../../../store/types';
+import { State, TagType, TriggerType } from '../../../store/types';
 
+/**
+ * React Element that generates the buttons that link to the
+ * other items that the current item has a relationship with.
+ */
 export const TagConnections: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
-  const { reference, usedIn = {} } = currentElement as TagT;
+  const { reference, usedIn = {} } = currentElement as TagType;
 
   const { triggers, tags = [] } = usedIn;
   /**
@@ -16,8 +20,8 @@ export const TagConnections: React.FC = () => {
    * This is done by looking into the trigger Object and finding out if in the
    * optional exception array the current tag (reference) is mentioned.
    */
-  const realTriggers: TriggerT[] = [];
-  const exceptionTriggers: TriggerT[] = [];
+  const realTriggers: TriggerType[] = [];
+  const exceptionTriggers: TriggerType[] = [];
   if (triggers) {
     triggers.forEach((trigger) => {
       if (trigger.exceptions && trigger.exceptions.indexOf(`{{${reference}}}`) !== -1) {

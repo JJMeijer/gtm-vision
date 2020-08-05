@@ -54,14 +54,14 @@ export const routeWww = async (req: Request, res: Response, next: NextFunction):
         serverLogger.info('GTM URL used from Firestore Database', { hostname, gtmUrl });
 
         // Get Container for GTM URL
-        const { parsedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
+        const { resolvedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
 
-        if (!parsedContainer && !message) {
+        if (!resolvedContainer && !message) {
           throw new Error('Unexpected Error');
         }
 
-        if (parsedContainer) {
-          res.json({ parsedContainer, gtmId });
+        if (resolvedContainer) {
+          res.json({ resolvedContainer, gtmId });
         }
 
         if (message) {
@@ -76,20 +76,20 @@ export const routeWww = async (req: Request, res: Response, next: NextFunction):
 
       if (gtmUrl) {
         // Get Container for GTM URL
-        const { parsedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
+        const { resolvedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
 
-        if (!parsedContainer && !message) {
+        if (!resolvedContainer && !message) {
           throw new Error('Unexpected Error');
         }
 
-        if (parsedContainer) {
+        if (resolvedContainer) {
           // Set GTM URL in database so we don't have to scrape next time
           const reference = websiteDatabase.doc(hostname);
           reference.set({ gtmUrl });
           serverLogger.info('GTM URL stored in websites database', { gtmUrl, hostname });
 
           // Parse container & return
-          res.json({ parsedContainer, gtmId });
+          res.json({ resolvedContainer, gtmId });
         }
 
         if (message) {

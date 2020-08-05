@@ -28,9 +28,13 @@ export type Element = TagType | TriggerType | VariableType;
 
 export type SettingsValues = SomeOfResolvedParameters;
 
-/**
- * Data objects
- */
+export interface ApiResponse {
+  resolvedContainer?: Container;
+  gtmId?: string;
+  message?: string;
+  code?: number;
+}
+
 export interface State {
   loadingState: boolean;
   navigation: Navigation;

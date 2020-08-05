@@ -5,6 +5,9 @@ import { Grid, Zoom } from '@material-ui/core';
 import { ContainerNavigation } from './container-navigation';
 import { ContainerElement } from './container-element';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   containerContent: {
     marginTop: '-17vh',
@@ -14,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Parent element for the container navigation & container element blocks
+ */
 export const ContainerContent: React.FC = () => {
   const classes = useStyles();
 

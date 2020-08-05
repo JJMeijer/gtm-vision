@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Grid, Typography, Button, Paper } from '@material-ui/core';
 
+/**
+ * Styling
+ */
 const useStyles = makeStyles((theme) => ({
   errorPaper: {
     margin: theme.spacing(10),
@@ -12,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Simple error component
+ */
 export const ErrorComponent: React.FC = () => {
   const classes = useStyles();
   return (

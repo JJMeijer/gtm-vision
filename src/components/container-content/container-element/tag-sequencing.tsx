@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { ConnectionButtons } from './connection-buttons';
 
-import { State, TagT } from '../../../store/types';
+import { State, TagType } from '../../../store/types';
 
+/**
+ * Element that displays tagSequencing information and generates
+ * buttons to the tags that are used for the sequence.
+ */
 export const TagSequencing: React.FC = () => {
   const { currentElement } = useSelector((state: State) => state);
-  const { tagSequencing = {}, reference } = currentElement as TagT;
+  const { tagSequencing = {}, reference } = currentElement as TagType;
 
   return (
     <>

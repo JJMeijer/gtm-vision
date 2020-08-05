@@ -6,6 +6,9 @@ import { AppBar, Tabs, Tab } from '@material-ui/core';
 import { UPDATE_TAB } from '../../../store/constants';
 import { State } from '../../../store/types';
 
+/**
+ * Styles
+ */
 const useStyles = makeStyles(() => ({
   tabBar: {
     borderRadius: '4px 4px 0px 0px',
@@ -15,6 +18,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * Navigation element that displays the three tabs.
+ */
 export const ContainerNavigationTabs: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -31,8 +37,8 @@ export const ContainerNavigationTabs: React.FC = () => {
   return (
     <AppBar position="static" className={classes.tabBar} elevation={0}>
       <Tabs value={currentTab} onChange={handleTabChange}>
-        <Tab label="Tags" id="tags-tab" className={classes.tab} />
-        <Tab label="Triggers" id="triggers-tab" className={classes.tab} />
+        <Tab label="Tags" className={classes.tab} />
+        <Tab label="Triggers" className={classes.tab} />
         <Tab label="Variables" className={classes.tab} />
       </Tabs>
     </AppBar>

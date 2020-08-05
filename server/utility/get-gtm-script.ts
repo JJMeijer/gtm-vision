@@ -6,10 +6,10 @@ import { cache } from './cache';
 import { serverLogger } from './loggers';
 import { parseGtm } from '../parsers/gtm';
 
-import { ParsedContainer } from '../types';
+import { ResolvedContainer } from '../types';
 
 export interface GetGtmResponse {
-  parsedContainer?: ParsedContainer;
+  resolvedContainer?: ResolvedContainer;
   gtmId?: string;
   message?: string;
   code?: number;
@@ -27,10 +27,10 @@ export const getGtmScript = async function getGtmScript(gtmUrl: string): Promise
   const { id: gtmId } = query;
 
   if (typeof gtmId === 'string') {
-    const cachedContainer = cache.get(gtmId) as ParsedContainer;
+    const cachedContainer = cache.get(gtmId) as ResolvedContainer;
     if (cachedContainer) {
       serverLogger.info('Cached Container Used', { gtmId });
-      return { parsedContainer: cachedContainer, gtmId };
+      return { resolvedContainer: cachedContainer, gtmId };
     }
 
     let body: string;
@@ -49,11 +49,11 @@ export const getGtmScript = async function getGtmScript(gtmUrl: string): Promise
         const containerText = containerMatch[0].replace(';\n/*\n\n', '');
         const container = JSON.parse(containerText);
 
-        const parsedContainer = parseGtm(container);
+        const resolvedContainer = parseGtm(container);
 
-        cache.set(gtmId, parsedContainer);
+        cache.set(gtmId, resolvedContainer);
 
-        return { parsedContainer, gtmId };
+        return { resolvedContainer, gtmId };
       }
     } catch (e) {
       return createClientFeedback('GTM_PARSING_ERROR', { gtmUrl });

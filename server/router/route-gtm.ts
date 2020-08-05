@@ -16,14 +16,14 @@ export const routeGtm = async (req: Request, res: Response, next: NextFunction):
     const gtmUrl = `https://www.googletagmanager.com/gtm.js?id=${value}`;
 
     // Get container at URL
-    const { parsedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
+    const { resolvedContainer, gtmId, message, code } = await getGtmScript(gtmUrl);
 
-    if (!parsedContainer && !message) {
+    if (!resolvedContainer && !message) {
       throw new Error('Unexpected Error');
     }
 
-    if (parsedContainer) {
-      res.json({ parsedContainer, gtmId });
+    if (resolvedContainer) {
+      res.json({ resolvedContainer, gtmId });
     }
 
     if (message) {

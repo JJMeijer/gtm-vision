@@ -5,15 +5,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { VariableLink } from './variable-link';
 import { ListTable } from './list-table';
 
-import {
-  State,
-  Element,
-  TagT,
-  TriggerT,
-  VariableT,
-  SettingsValues,
-  ListOptions,
-} from '../../../store/types';
+import { State, Element, SettingsValues, ListOptions } from '../../../store/types';
 
 /**
  * Helper Functions
@@ -92,25 +84,25 @@ const settingKeyBlacklist = [
 export const Settings: React.FC = () => {
   const classes = useStyles();
 
-  const { currentElement } = useSelector((state: State) => state);
-  const { category, reference } = currentElement as Element;
+  const currentElement = useSelector((state: State) => state.currentElement as Element);
+  const { reference } = currentElement;
 
   let values: SettingsValues = {};
 
-  if (category === 'tags') {
-    const { tagValues } = currentElement as TagT;
+  if (currentElement && 'tagValues' in currentElement) {
+    const { tagValues } = currentElement;
     values = tagValues;
   }
 
-  if (category === 'triggers') {
-    const { triggerValues } = currentElement as TriggerT;
+  if (currentElement && 'triggerValues' in currentElement) {
+    const { triggerValues } = currentElement;
     if (triggerValues) {
       values = triggerValues;
     }
   }
 
-  if (category === 'variables') {
-    const { variableValues } = currentElement as VariableT;
+  if (currentElement && 'variableValues' in currentElement) {
+    const { variableValues } = currentElement;
     values = variableValues;
   }
 
