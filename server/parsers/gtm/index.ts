@@ -1,0 +1,1 @@
+export { parseGtm } from './parse';
