@@ -9,5 +9,5 @@ steps:
   entrypoint: npm
   args: ['run', 'build']
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy']
+  args: ['app', 'deploy', '--version', '$SHORT_SHA']
   timeout: '1600s'
