@@ -49,7 +49,7 @@
     "js-beautify": "^1.11.0",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
-    "prismjs": "^1.20.0",
+    "prismjs": "^1.21.0",
     "puppeteer": "^5.2.1",
     "puppeteer-extra": "^3.1.13",
     "puppeteer-extra-plugin-stealth": "^2.4.15",
