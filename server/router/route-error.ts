@@ -8,7 +8,6 @@ import { frontendLogger } from '../utility/loggers';
  * POST method to send an error to the server for
  * logging purposes. The body is expected to contain
  * a message, name & stack property.
-
  */
 export const routeError = (req: Request, res: Response, next: NextFunction): void => {
   try {
