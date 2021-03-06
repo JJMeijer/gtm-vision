@@ -65,6 +65,7 @@
     "@babel/core": "^7.11.6",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@parcel/transformer-image": "2.0.0-nightly.2242",
     "@types/bent": "^7.3.0",
     "@types/compression": "^1.7.0",
     "@types/express": "^4.17.7",
