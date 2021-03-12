@@ -18,7 +18,7 @@ interface ScrapeResponse {
  * GTM scripts on that page. The first found GTM script is returned
  */
 export const scrapeWebsite = async (href: string): Promise<ScrapeResponse> => {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({});
   try {
     const page = await browser.newPage();
 
