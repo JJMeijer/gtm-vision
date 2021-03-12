@@ -2,15 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import { start as startDebug } from '@google-cloud/debug-agent';
 
 import { apiRouter } from './router';
 import { serverLogger } from './utility/loggers';
 import { HttpError } from './utility/errors';
-
-if (process.env.NODE_ENV === 'production') {
-  startDebug({ allowExpressions: true });
-}
 
 // initialize Express app
 const app = express();
