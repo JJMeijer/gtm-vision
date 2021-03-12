@@ -15,7 +15,6 @@ if (process.env.NODE_ENV === 'production') {
 // initialize Express app
 const app = express();
 const port = process.env.PORT || 3000;
-const appFolder = 'public';
 
 // Use Helmet to enhance API Security
 app.use(helmet());
@@ -38,24 +37,6 @@ if (process.env.NODE_ENV !== 'production') {
     }),
   );
 }
-
-// serve static files
-app.use(express.static(appFolder));
-
-// SPA Routing
-app.get('/', (_req, res) => {
-  res.sendFile('index.html', { root: appFolder });
-});
-
-// Robots.txt Routing
-app.get('/robots.txt', (_req, res) => {
-  res.sendFile('robots.txt', { root: 'server' });
-});
-
-// Sitemap.xml routing
-app.get('/sitemap.xml', (_req, res) => {
-  res.sendFile('sitemap.xml', { root: 'server' });
-});
 
 // Api routing
 app.use('/', apiRouter);
