@@ -1,7 +1,3 @@
 # Ignored maps/files
 node_modules/
-.cache/
-.parcel-cache/
 dist/
-public/
-.vscode/

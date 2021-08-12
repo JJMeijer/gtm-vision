@@ -15,18 +15,6 @@ const feedbackMessages: FeedbackMessages = {
     message: 'An error occurred during the parsing of the GTM Script',
     code: 1002,
   },
-  SCRIPT_NOT_FOUND_FIRST: {
-    message: 'Could not find GTM script at the provided URL',
-    code: 1003,
-  },
-  SCRIPT_NOT_FOUND_SECONDARY: {
-    message: 'The previous time this URL was searched there was no GTM script found.',
-    code: 1004,
-  },
-  BROWSING_ERROR: {
-    message: 'The provided URL could not be reached',
-    code: 1005,
-  },
   UNEXPECTED_GTM_URL: {
     message: 'The GTM URL has an unexpected format',
     code: 1006,
