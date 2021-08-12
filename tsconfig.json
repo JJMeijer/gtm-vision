@@ -42,8 +42,8 @@
     "noPropertyAccessFromIndexSignature": true,
 
     // "moduleResolution": "node",
-    // "baseUrl": "./",
-    // "paths": {},
+    //"baseUrl": "./",
+    //"paths": {},
     // "rootDirs": [],
     // "typeRoots": [],
     // "types": [],

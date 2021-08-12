@@ -13,5 +13,6 @@
     ],
     "rules": {
         "prettier/prettier": 2
-    }
+    },
+    "ignorePatterns": ["dist/**/*.js", "test.js"]
 }
