@@ -1,0 +1,14 @@
+import { redirect } from "@sveltejs/kit";
+import type { PageLoad } from "./$types";
+
+export const trailingSlash = "always";
+
+export const load = (async ({ parent }) => {
+    const { resolvedContainer } = await parent();
+
+    const firstVariable = resolvedContainer.variables.sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: "base", numeric: true }),
+    )[0];
+
+    throw redirect(307, `${firstVariable.index}`);
+}) satisfies PageLoad;
