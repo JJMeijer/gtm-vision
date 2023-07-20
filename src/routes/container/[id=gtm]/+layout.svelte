@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Search, TopNavLink } from "$components";
     import { setContext } from "svelte";
-    import type { LayoutData } from "./$types";
+    import type { LayoutServerData } from "./$types";
 
-    export let data: LayoutData;
+    export let data: LayoutServerData;
 
     $: ({ id, resolvedContainer } = data);
 

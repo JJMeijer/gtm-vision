@@ -1,10 +1,12 @@
 import { getGtmContainer, parseGtmContainer } from "$lib/gtm";
 import { redirect } from "@sveltejs/kit";
-import type { LayoutLoad } from "./$types";
+import type { LayoutServerLoad } from "./$types";
 import { GtmIdError } from "$constants";
 
 export const load = (async ({ params }) => {
     const { id } = params;
+
+    console.log("hi");
 
     const containerText = await getGtmContainer(id);
 
@@ -22,4 +24,4 @@ export const load = (async ({ params }) => {
         id,
         resolvedContainer,
     };
-}) satisfies LayoutLoad;
+}) satisfies LayoutServerLoad;
