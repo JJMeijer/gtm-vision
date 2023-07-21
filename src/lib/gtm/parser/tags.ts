@@ -12,7 +12,7 @@ import type {
 } from "../types";
 import { OPERATORS, TAGS } from "./dictionaries";
 
-import { copy, parseTemplateId, sentenceCase } from "./utility";
+import { copy, decodeGtmScript, parseTemplateId, sentenceCase } from "./utility";
 import { beautifyOptions } from "./beautify-options";
 
 const { html } = jsbeautify;
@@ -89,10 +89,7 @@ const parseProperties = (tag: Tag): ParsedProperties => {
      * Cleanup & beautify HTML property when it's only a string
      */
     if (properties.html && typeof properties.html === "string") {
-        properties.html = html(
-            decodeURIComponent(properties.html).replace(' type="text/gtmscript"', ""),
-            beautifyOptions,
-        );
+        properties.html = html(decodeGtmScript(properties.html).replace(' type="text/gtmscript"', ""), beautifyOptions);
     }
 
     return properties;

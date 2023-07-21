@@ -32,7 +32,7 @@
     <input
         name="id"
         type="text"
-        placeholder="Search.."
+        placeholder="GTM-ABC123"
         autocomplete="off"
         bind:value
         bind:this={input}
