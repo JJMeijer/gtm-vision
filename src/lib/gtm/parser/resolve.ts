@@ -10,6 +10,7 @@ import type {
 } from "../types";
 import { isEscape, isObject, isParsedItem, isReference, isTemplate } from "../type-guards";
 import { beautifyOptions } from "./beautify-options";
+import { decodeGtmScript } from "./utility";
 
 const { js, html } = jsbeautify;
 
@@ -31,7 +32,7 @@ const resolveTemplate = (template: ResolvedTemplate, property: string): string =
     const [, ...content] = template;
 
     if (property === "html") {
-        return html(decodeURIComponent(content.join("").replace(' type="text/gtmscript"', "")), beautifyOptions);
+        return html(decodeGtmScript(content.join("").replace(' type="text/gtmscript"', "")), beautifyOptions);
     }
 
     if (property === "javascript") {
