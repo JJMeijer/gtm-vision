@@ -9,3 +9,7 @@
 </script>
 
 <ReferencesList title="Tags" references={tags} type="Tag" />
+
+{#if tags.length === 0}
+    <p class="text-gray-500">None</p>
+{/if}
