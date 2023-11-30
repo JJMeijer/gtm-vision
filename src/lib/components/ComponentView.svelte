@@ -20,7 +20,7 @@
     <div
         class="flex flex-col gap-8 min-h-0 flex-grow px-14 py-8 overflow-y-scroll scrollbar-thin scrollbar-track-zinc-200 scrollbar-thumb-neutral-300"
     >
-        <TitledContainer title="{data.type} Configuration">
+        <TitledContainer title="{data.type} Configuration" size={data.component.size}>
             <ComponentProperties properties={data.component.properties || {}} />
 
             {#if data.type === "Tag" && data.component.tagSequencing}

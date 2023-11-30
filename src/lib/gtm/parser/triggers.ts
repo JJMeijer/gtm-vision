@@ -13,6 +13,7 @@ import type {
 } from "../types";
 import { isStockTrigger } from "../type-guards";
 import { OPERATORS, TRIGGERS } from "./dictionaries";
+import { getItemSize } from "./utility";
 
 const parsePredicate = (predicate: Predicate, sentiment: "positive" | "negative"): Condition => {
     return {
@@ -138,12 +139,15 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
 
         const { eventMacros, triggerMacro } = contextMacros;
 
+        let size = new TextEncoder().encode(JSON.stringify(rule)).length;
+
         rule.forEach((partOfRule) => {
             const [type, ...indexes] = partOfRule;
 
             if (type === "if") {
                 indexes.forEach((index) => {
                     const predicate = predicates[index] as Predicate;
+                    size += new TextEncoder().encode(JSON.stringify(predicate)).length;
                     conditions.push(parsePredicate(predicate, "positive"));
                 });
             }
@@ -151,6 +155,7 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
             if (type === "unless") {
                 indexes.forEach((index) => {
                     const predicate = predicates[index] as Predicate;
+                    size += new TextEncoder().encode(JSON.stringify(predicate)).length;
                     conditions.push(parsePredicate(predicate, "negative"));
                 });
             }
@@ -179,7 +184,10 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
         const triggerName = getTriggerName(conditions, eventMacros, counters);
         const properties = getProperties(conditions, triggerMacro, contextTags);
 
+        size += new TextEncoder().encode(JSON.stringify(properties)).length;
+
         return {
+            size: (size / 1024).toFixed(2),
             index,
             category: "triggers",
             ...triggerName,

@@ -1,4 +1,4 @@
-import type { ParsedProperty } from "../types";
+import type { ParsedProperty, Tag, Macro, Rule } from "../types";
 
 export const parseTemplateId = (templateString: string): string | void => {
     const match = templateString.match("__cvt_[0-9]+_([0-9]+)");
@@ -38,4 +38,8 @@ export const decodeGtmScript = (script: string): string => {
     const decodedString = decodedParts.join("");
 
     return decodedString;
+};
+
+export const getItemSize = (item: Tag | Macro | Rule): string => {
+    return (new TextEncoder().encode(JSON.stringify(item)).length / 1024).toFixed(2);
 };

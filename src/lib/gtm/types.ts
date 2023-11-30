@@ -186,6 +186,7 @@ export interface ParsedMacro extends ItemName {
     properties: ParsedProperties;
     format?: MacroFormat;
     references: References;
+    size: string;
 }
 
 export interface ResolvedMacro extends ItemName {
@@ -194,6 +195,7 @@ export interface ResolvedMacro extends ItemName {
     properties: ResolvedProperties;
     format?: MacroFormat;
     references: References;
+    size: string;
 }
 
 /**
@@ -236,6 +238,7 @@ export interface ParsedTag extends ItemName {
     properties: ParsedProperties;
     tagSequencing?: TagSequencing;
     references: References;
+    size: string;
 }
 
 export interface ResolvedTag extends ItemName {
@@ -244,6 +247,7 @@ export interface ResolvedTag extends ItemName {
     properties: ResolvedProperties;
     tagSequencing?: ResolvedTagSequencing;
     references: References;
+    size: string;
 }
 
 /**
@@ -270,6 +274,7 @@ export interface ParsedTrigger extends ItemName {
     exceptions?: Reference<"tag">[];
     triggerParents?: string[];
     triggerChildren?: string[];
+    size: string;
 }
 
 export interface ResolvedTrigger extends ItemName {
@@ -281,6 +286,7 @@ export interface ResolvedTrigger extends ItemName {
     exceptions?: string[];
     triggerParents?: string[];
     triggerChildren?: string[];
+    size: string;
 }
 
 export interface ParsedRuntime {

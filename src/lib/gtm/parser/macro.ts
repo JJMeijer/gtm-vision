@@ -9,7 +9,7 @@ import type {
     TriggerContextMacros,
 } from "../types";
 import { MACROS } from "./dictionaries";
-import { parseTemplateId } from "./utility";
+import { getItemSize, parseTemplateId } from "./utility";
 
 const parseMacroName = (macro: Macro, counters: Counter): ItemName => {
     const type = MACROS[macro.function] || parseTemplateId(macro.function) || "Unknown";
@@ -144,6 +144,7 @@ export const parseMacros = (macros: Macro[]) => {
         enhanceMacroName(variableName, properties);
 
         const parsedMacro: ParsedMacro = {
+            size: getItemSize(macro),
             index,
             category: "variables",
             ...variableName,

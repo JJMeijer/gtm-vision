@@ -12,9 +12,8 @@ import type {
 } from "../types";
 import { OPERATORS, TAGS } from "./dictionaries";
 
-import { copy, decodeGtmScript, parseTemplateId, sentenceCase } from "./utility";
+import { copy, decodeGtmScript, parseTemplateId, sentenceCase, getItemSize } from "./utility";
 import { beautifyOptions } from "./beautify-options";
-
 const { html } = jsbeautify;
 
 const parseTagName = (tag: Tag, counters: Counter): ItemName => {
@@ -142,6 +141,7 @@ export const parseTags = (tags: Tag[]) => {
     };
 
     tags.forEach((tag, index) => {
+        const size = getItemSize(tag);
         const tagName = parseTagName(tag, counters);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
@@ -157,6 +157,7 @@ export const parseTags = (tags: Tag[]) => {
                 tags: [],
                 triggers: [],
             },
+            size,
         };
 
         parsedTags.push(parsedTag);
