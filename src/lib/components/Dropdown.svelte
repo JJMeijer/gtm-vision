@@ -4,7 +4,7 @@
     export let name: string;
     export let border: boolean;
 
-    let open = false;
+    let open = true;
 
     const toggleOpen = () => {
         open = !open;

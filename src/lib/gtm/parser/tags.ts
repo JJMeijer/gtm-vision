@@ -21,6 +21,10 @@ const parseTagName = (tag: Tag, counters: Counter): ItemName => {
     const counter = counters[type] ? (counters[type] += 1) : (counters[type] = 1);
     let name = `${type} (${counter})`;
 
+    if (type === "Unknown") {
+        console.log(tag);
+    }
+
     // For GA UA the track type is added to make the name more clear.
     if (type === "Google Analytics: UA" && tag.vtp_trackType) {
         const { vtp_trackType: trackType } = tag;
