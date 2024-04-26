@@ -7,6 +7,6 @@
 </script>
 
 <ComponentLayout>
-    <ComponentsList  data={{ components: data.resolvedContainer.tags, type: "Tag"}} />
+    <ComponentsList data={{ components: data.resolvedContainer.tags, type: "Tag" }} />
     <slot />
 </ComponentLayout>

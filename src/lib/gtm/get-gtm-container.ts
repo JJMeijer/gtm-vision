@@ -1,6 +1,6 @@
-export const getGtmContainer = async (id: string) => {
+export const getGtmContainer = async (svelteFetch: typeof fetch, id: string) => {
     try {
-        const res = await fetch(`https://www.googletagmanager.com/gtm.js?id=${id}`);
+        const res = await svelteFetch(`https://www.googletagmanager.com/gtm.js?id=${id}`);
 
         if (!res.ok) {
             return null;

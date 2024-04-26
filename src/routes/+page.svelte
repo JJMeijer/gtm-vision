@@ -5,7 +5,7 @@
     import { GtmIdError } from "$constants";
 
     $: gtmId = $page.url.searchParams.get("gtmId") || undefined;
-    $: gtmIdError = $page.url.searchParams.get("gtmIdError") as GtmIdError || undefined;
+    $: gtmIdError = ($page.url.searchParams.get("gtmIdError") as GtmIdError) || undefined;
 
     const errorMessages: Record<GtmIdError, (id: string) => string> = {
         [GtmIdError.NotFound]: (id) => `Could not find a GTM container with ID '${id}'`,

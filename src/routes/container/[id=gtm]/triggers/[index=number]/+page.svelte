@@ -5,4 +5,4 @@
     export let data: PageData;
 </script>
 
-<ComponentView data={{ component: data.trigger, type: "Trigger" }}/>
+<ComponentView data={{ component: data.trigger, type: "Trigger" }} />

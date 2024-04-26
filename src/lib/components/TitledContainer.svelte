@@ -9,7 +9,6 @@
         {#if size}
             <p class="text-sm text-zinc-500">Size: {size}kb</p>
         {/if}
-
     </div>
     <div class="flex flex-col py-4 px-8">
         <slot />

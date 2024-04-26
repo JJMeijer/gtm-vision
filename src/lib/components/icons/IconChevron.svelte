@@ -14,5 +14,6 @@
     stroke-linecap="round"
     stroke-linejoin="round"
 >
-    <path stroke="none" d="M0 0h24v24H0z" /> <polyline points="9 6 15 12 9 18" /></svg
->
+    <path stroke="none" d="M0 0h24v24H0z" />
+    <polyline points="9 6 15 12 9 18" />
+</svg>

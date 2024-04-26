@@ -7,6 +7,6 @@
 </script>
 
 <ComponentLayout>
-    <ComponentsList  data={{ components: data.resolvedContainer.triggers, type: "Trigger"}} />
+    <ComponentsList data={{ components: data.resolvedContainer.triggers, type: "Trigger" }} />
     <slot />
 </ComponentLayout>

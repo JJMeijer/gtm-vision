@@ -107,8 +107,10 @@
             {#each variableReferences as variableReference}
                 <a
                     href={getComponentLink(variableReference, resolvedContainer)}
-                    class="text-sm text-zinc-600 p-1 bg-zinc-200/50 hover:bg-zinc-200 rounded-md">{variableReference}</a
+                    class="text-sm text-zinc-600 p-1 bg-zinc-200/50 hover:bg-zinc-200 rounded-md"
                 >
+                    {variableReference}
+                </a>
             {/each}
         </div>
     {/if}

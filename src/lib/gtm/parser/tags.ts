@@ -145,12 +145,14 @@ export const parseTags = (tags: Tag[]) => {
         const tagName = parseTagName(tag, counters);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
+        const consent = tag.consent ? tag.consent.slice(1) : [];
 
         const parsedTag: ParsedTag = {
             index,
             category: "tags",
             ...tagName,
             properties,
+            consent,
             ...(tagSequencing ? { tagSequencing } : null),
             references: {
                 variables: [],

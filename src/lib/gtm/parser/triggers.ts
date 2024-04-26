@@ -13,7 +13,6 @@ import type {
 } from "../types";
 import { isStockTrigger } from "../type-guards";
 import { OPERATORS, TRIGGERS } from "./dictionaries";
-import { getItemSize } from "./utility";
 
 const parsePredicate = (predicate: Predicate, sentiment: "positive" | "negative"): Condition => {
     return {
@@ -54,9 +53,11 @@ const getTriggerName = (conditions: Condition[], eventMacros: number[], counters
 };
 
 interface GetProperties {
-    (conditions: Condition[], triggerMacro: number | undefined, contextTags: TriggerContextTags):
-        | ParsedProperties
-        | undefined;
+    (
+        conditions: Condition[],
+        triggerMacro: number | undefined,
+        contextTags: TriggerContextTags,
+    ): ParsedProperties | undefined;
 }
 
 /**

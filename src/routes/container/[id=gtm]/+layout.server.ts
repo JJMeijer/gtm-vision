@@ -3,12 +3,10 @@ import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 import { GtmIdError } from "$constants";
 
-export const load = (async ({ params }) => {
+export const load = (async ({ fetch, params }) => {
     const { id } = params;
 
-    console.log("hi");
-
-    const containerText = await getGtmContainer(id);
+    const containerText = await getGtmContainer(fetch, id);
 
     if (!containerText) {
         throw redirect(307, `/?gtmIdError=${GtmIdError.NotFound}&gtmId=${id}`);
