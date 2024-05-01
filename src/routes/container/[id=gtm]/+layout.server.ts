@@ -6,8 +6,6 @@ import { GtmIdError } from "$constants";
 export const load = (async ({ params }) => {
     const { id } = params;
 
-    console.log("hi");
-
     const containerText = await getGtmContainer(id);
 
     if (!containerText) {
