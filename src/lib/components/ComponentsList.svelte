@@ -3,6 +3,8 @@
     import { IconClose } from "./icons";
     import { page } from "$app/stores";
     import { onDestroy, onMount } from "svelte";
+    import { isObject } from "$lib/gtm/type-guards";
+    import type { GenericObject } from "$lib/gtm/types";
 
     export let data: ComponentsData;
 
@@ -17,9 +19,22 @@
         index: number;
     }
 
-    $: filteredComponents = (data.components as MinimalComponent[]).filter((component) =>
-        component.name.toLowerCase().includes(query.toLowerCase()),
-    );
+    /**
+     * recursive search in all values of an object
+     */
+    const search: (component: MinimalComponent | GenericObject, query: string) => boolean = (component) => {
+        return Object.values(component).some((value) => {
+            if (isObject(value)) {
+                return search(value, query);
+            }
+
+            if (typeof value === "string") {
+                return value.toLowerCase().includes(query.toLowerCase());
+            }
+        });
+    };
+
+    $: filteredComponents = (data.components as MinimalComponent[]).filter((component) => search(component, query));
 
     $: sortedComponents = filteredComponents.sort((a, b) =>
         a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" }),
