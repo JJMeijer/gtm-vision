@@ -18,12 +18,14 @@
         {#if part.match(/^{{/)}
             <a
                 href={getComponentLink(part, resolvedContainer)}
-                class="text-zinc-700 py-0.5 hover:border-zinc-500 border-b border-transparent">{part}</a
+                class="text-zinc-700 py-0.5 hover:border-zinc-500 border-b border-transparent"
             >
+                {part}
+            </a>
         {:else if part.match(GTM_REGEXP)}
-            <a href="/container/{part}/" class="text-blue-900 py-0.5 hover:border-blue-900 border-b border-transparent"
-                >{part}</a
-            >
+            <a href="/container/{part}/" class="text-blue-900 py-0.5 hover:border-blue-900 border-b border-transparent">
+                {part}
+            </a>
         {:else}
             <span class="text-zinc-700">{part}</span>
         {/if}

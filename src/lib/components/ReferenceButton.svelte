@@ -20,4 +20,4 @@
     const resolvedContainer = getContext<ResolvedContainer>($page.params.id);
 </script>
 
-<a class="py-1 px-3 border-2 rounded-xl {colors}" href={getComponentLink(name, resolvedContainer)}>{name} </a>
+<a class="py-1 px-3 border-2 rounded-xl {colors}" href={getComponentLink(name, resolvedContainer)}>{name}</a>

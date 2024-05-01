@@ -12,6 +12,8 @@ export const MACROS = {
     __d: "DOM Element",
     __uv: "Undefined",
     __gas: "GA settings",
+    __gtes: "GTAG Event Settings",
+    __gtcs: "GTAG Config Settings",
     __smm: "Lookup table",
     __remm: "Regex lookuptable",
     __dbg: "Debug mode",

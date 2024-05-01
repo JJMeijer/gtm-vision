@@ -54,6 +54,7 @@ export type ResolvedProperty =
     | ListOfResolvedBoundaries;
 
 export interface ItemProperties {
+    consent?: ListOfStrings;
     convert_case_to?: 1 | 2;
     convert_false_to?: StringProperty;
     convert_true_to?: StringProperty;
@@ -186,6 +187,7 @@ export interface ParsedMacro extends ItemName {
     properties: ParsedProperties;
     format?: MacroFormat;
     references: References;
+    size: string;
 }
 
 export interface ResolvedMacro extends ItemName {
@@ -194,6 +196,7 @@ export interface ResolvedMacro extends ItemName {
     properties: ResolvedProperties;
     format?: MacroFormat;
     references: References;
+    size: string;
 }
 
 /**
@@ -234,16 +237,20 @@ export interface ParsedTag extends ItemName {
     index: number;
     category: "tags";
     properties: ParsedProperties;
+    consent: string[];
     tagSequencing?: TagSequencing;
     references: References;
+    size: string;
 }
 
 export interface ResolvedTag extends ItemName {
     index: number;
     category: "tags";
     properties: ResolvedProperties;
+    consent: string[];
     tagSequencing?: ResolvedTagSequencing;
     references: References;
+    size: string;
 }
 
 /**
@@ -270,6 +277,7 @@ export interface ParsedTrigger extends ItemName {
     exceptions?: Reference<"tag">[];
     triggerParents?: string[];
     triggerChildren?: string[];
+    size: string;
 }
 
 export interface ResolvedTrigger extends ItemName {
@@ -281,6 +289,7 @@ export interface ResolvedTrigger extends ItemName {
     exceptions?: string[];
     triggerParents?: string[];
     triggerChildren?: string[];
+    size: string;
 }
 
 export interface ParsedRuntime {

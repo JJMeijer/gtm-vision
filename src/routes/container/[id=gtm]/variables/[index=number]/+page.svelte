@@ -5,4 +5,4 @@
     export let data: PageData;
 </script>
 
-<ComponentView data={{ component: data.variable, type: "Variable" }}/>
+<ComponentView data={{ component: data.variable, type: "Variable" }} />

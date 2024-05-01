@@ -14,6 +14,6 @@
     <p class="w-[24%] text-center">{operator}</p>
 
     <div class="w-[38%]">
-        <StringField value={value} />
+        <StringField {value} />
     </div>
 </div>

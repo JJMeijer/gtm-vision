@@ -8,8 +8,6 @@
     $: tags = [...(component.tags || []), ...(component.exceptions || [])];
 </script>
 
-<ReferencesList title="Tags" references={tags} type="Tag" />
-
-{#if tags.length === 0}
-    <p class="text-gray-500">None</p>
-{/if}
+{#if tags.length > 0}<ReferencesList title="Tags" references={tags} type="Tag" />{:else}<p class="text-gray-500 italic">
+        None
+    </p>{/if}

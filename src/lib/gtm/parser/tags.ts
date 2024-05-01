@@ -12,15 +12,18 @@ import type {
 } from "../types";
 import { OPERATORS, TAGS } from "./dictionaries";
 
-import { copy, decodeGtmScript, parseTemplateId, sentenceCase } from "./utility";
+import { copy, decodeGtmScript, parseTemplateId, sentenceCase, getItemSize } from "./utility";
 import { beautifyOptions } from "./beautify-options";
-
 const { html } = jsbeautify;
 
 const parseTagName = (tag: Tag, counters: Counter): ItemName => {
     const type = TAGS[tag.function] || parseTemplateId(tag.function) || "Unknown";
     const counter = counters[type] ? (counters[type] += 1) : (counters[type] = 1);
     let name = `${type} (${counter})`;
+
+    if (type === "Unknown") {
+        console.log(tag);
+    }
 
     // For GA UA the track type is added to make the name more clear.
     if (type === "Google Analytics: UA" && tag.vtp_trackType) {
@@ -142,21 +145,25 @@ export const parseTags = (tags: Tag[]) => {
     };
 
     tags.forEach((tag, index) => {
+        const size = getItemSize(tag);
         const tagName = parseTagName(tag, counters);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
+        const consent = tag.consent ? tag.consent.slice(1) : [];
 
         const parsedTag: ParsedTag = {
             index,
             category: "tags",
             ...tagName,
             properties,
+            consent,
             ...(tagSequencing ? { tagSequencing } : null),
             references: {
                 variables: [],
                 tags: [],
                 triggers: [],
             },
+            size,
         };
 
         parsedTags.push(parsedTag);

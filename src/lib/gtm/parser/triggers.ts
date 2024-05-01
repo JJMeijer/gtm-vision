@@ -53,9 +53,11 @@ const getTriggerName = (conditions: Condition[], eventMacros: number[], counters
 };
 
 interface GetProperties {
-    (conditions: Condition[], triggerMacro: number | undefined, contextTags: TriggerContextTags):
-        | ParsedProperties
-        | undefined;
+    (
+        conditions: Condition[],
+        triggerMacro: number | undefined,
+        contextTags: TriggerContextTags,
+    ): ParsedProperties | undefined;
 }
 
 /**
@@ -138,12 +140,15 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
 
         const { eventMacros, triggerMacro } = contextMacros;
 
+        let size = new TextEncoder().encode(JSON.stringify(rule)).length;
+
         rule.forEach((partOfRule) => {
             const [type, ...indexes] = partOfRule;
 
             if (type === "if") {
                 indexes.forEach((index) => {
                     const predicate = predicates[index] as Predicate;
+                    size += new TextEncoder().encode(JSON.stringify(predicate)).length;
                     conditions.push(parsePredicate(predicate, "positive"));
                 });
             }
@@ -151,6 +156,7 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
             if (type === "unless") {
                 indexes.forEach((index) => {
                     const predicate = predicates[index] as Predicate;
+                    size += new TextEncoder().encode(JSON.stringify(predicate)).length;
                     conditions.push(parsePredicate(predicate, "negative"));
                 });
             }
@@ -179,7 +185,10 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
         const triggerName = getTriggerName(conditions, eventMacros, counters);
         const properties = getProperties(conditions, triggerMacro, contextTags);
 
+        size += new TextEncoder().encode(JSON.stringify(properties)).length;
+
         return {
+            size: (size / 1024).toFixed(2),
             index,
             category: "triggers",
             ...triggerName,

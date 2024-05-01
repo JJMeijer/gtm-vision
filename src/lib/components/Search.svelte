@@ -38,5 +38,5 @@
         bind:this={input}
         class="px-3 py-3 w-80 bg-transparent h-full outline-none text-neutral-800/50 focus:text-neutral-800"
     />
-    <button type="submit" class="h-full w-24 bg-blue-600 hover:bg-blue-700 text-neutral-200"> Analyze </button>
+    <button type="submit" class="h-full w-24 bg-blue-600 hover:bg-blue-700 text-neutral-200">Analyze</button>
 </form>

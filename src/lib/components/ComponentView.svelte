@@ -9,6 +9,7 @@
     import VariableReferences from "./VariableReferences.svelte";
     import TriggerConditions from "./TriggerConditions.svelte";
     import TriggerReferences from "./TriggerReferences.svelte";
+    import TagConsent from "./TagConsent.svelte";
 
     export let data: ComponentData;
 </script>
@@ -20,11 +21,17 @@
     <div
         class="flex flex-col gap-8 min-h-0 flex-grow px-14 py-8 overflow-y-scroll scrollbar-thin scrollbar-track-zinc-200 scrollbar-thumb-neutral-300"
     >
-        <TitledContainer title="{data.type} Configuration">
+        <TitledContainer title="{data.type} Configuration" size={data.component.size}>
             <ComponentProperties properties={data.component.properties || {}} />
 
-            {#if data.type === "Tag" && data.component.tagSequencing}
-                <TagSequencing tagSequencing={data.component.tagSequencing} />
+            {#if data.type === "Tag"}
+                {#if data.component.tagSequencing}
+                    <TagSequencing tagSequencing={data.component.tagSequencing} />
+                {/if}
+
+                {#if data.component.consent.length > 0}
+                    <TagConsent consent={data.component.consent} />
+                {/if}
             {/if}
 
             {#if data.type === "Trigger"}

@@ -6,6 +6,6 @@
 </script>
 
 <ComponentLayout>
-    <ComponentsList data={{ components: data.resolvedContainer.variables, type: "Variable"}} />
+    <ComponentsList data={{ components: data.resolvedContainer.variables, type: "Variable" }} />
     <slot />
 </ComponentLayout>

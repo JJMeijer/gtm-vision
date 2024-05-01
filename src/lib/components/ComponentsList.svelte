@@ -95,13 +95,13 @@
             class="w-11/12 h-8 p-2 mb-1 border-b border-zinc-300 text-zinc-600 outline-none focus:border-zinc-400"
             placeholder="Search.."
         />
-        <div
+        <button
             on:click={clearQuery}
             on:keypress={clearQuery}
             class="absolute right-4 inset-y-0 h-full flex items-center pb-1.5"
         >
             <IconClose class="h-4 w-4 text-zinc-400 hover:text-zinc-500 cursor-pointer {!query && 'hidden'}" />
-        </div>
+        </button>
     </div>
     <div
         id="components-list"
@@ -112,8 +112,9 @@
                 id={`component-link-${index}`}
                 href={`${index}`}
                 class="p-2 hover:bg-zinc-100 {$page.params.index == String(index) && 'bg-zinc-100 rounded-sm'}"
-                >{name}</a
             >
+                {name}
+            </a>
         {/each}
     </div>
 </div>

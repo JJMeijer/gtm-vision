@@ -4,6 +4,7 @@ export const TAGS = {
     __sp: "Google Remarketing",
     __gaawc: "Google Analytics: GA4 Configuration",
     __gaawe: "Google Analytics: GA4 Event",
+    __googtag: "Google Tag",
     __flc: "Floodlight Counter",
     __fls: "Floodlight Sales",
     __gclidw: "Conversion Linker",
