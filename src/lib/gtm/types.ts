@@ -126,7 +126,7 @@ export interface PermissionsList {
     [key: string]: Permissions;
 }
 
-export type RuntimeInstructionContent = string | number | boolean | number[] | RuntimeInstruction;
+export type RuntimeInstructionContent = string | number | boolean | RuntimeInstruction;
 export type RuntimeInstruction = [number | string, ...RuntimeInstructionContent[]];
 
 export type Runtime = [50, string, ...RuntimeInstruction[]];
@@ -310,4 +310,9 @@ export interface ResolvedContainer {
 
 export interface GenericObject {
     [key: string]: unknown;
+}
+
+export interface MinimalComponent {
+    name: string;
+    index: number;
 }

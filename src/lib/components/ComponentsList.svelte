@@ -3,19 +3,11 @@
     import { IconClose } from "./icons";
     import { page } from "$app/stores";
     import { onDestroy, onMount } from "svelte";
+    import type { MinimalComponent } from "$lib/gtm/types";
 
     export let data: ComponentsData;
 
     let query = "";
-
-    /**
-     * Cast the components to a minimal component type to avoid union type errors.
-     * This is not nice.
-     */
-    interface MinimalComponent {
-        name: string;
-        index: number;
-    }
 
     $: filteredComponents = (data.components as MinimalComponent[]).filter((component) =>
         component.name.toLowerCase().includes(query.toLowerCase()),
