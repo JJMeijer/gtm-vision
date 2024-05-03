@@ -2,10 +2,13 @@
     import { Search, TopNavLink } from "$components";
     import { setContext } from "svelte";
     import type { LayoutServerData } from "./$types";
+    import { browser } from "$app/environment";
 
     export let data: LayoutServerData;
 
     $: ({ id, resolvedContainer } = data);
+
+    $: browser && console.log(resolvedContainer);
 
     $: setContext(id, resolvedContainer);
 </script>
