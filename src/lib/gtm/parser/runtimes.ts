@@ -74,7 +74,7 @@ class RuntimeFactory {
             const instruction = content[0] as RuntimeInstruction;
 
             if (instruction.length === 1) {
-                return `case ${caseValueList[index]}:\n`;
+                return `case ${caseValueList[index]}:`;
             }
 
             return `case ${caseValueList[index]}:\n${this.parseInstruction(instruction)}\n`;
@@ -202,6 +202,12 @@ class RuntimeFactory {
             return `-${this.parseInstructionContent(value)}`;
         },
 
+        // Not (!)
+        28: (content) => {
+            const [value] = content;
+            return `!(${this.parseInstructionContent(value)})`;
+        },
+
         // Not comparison (!=)
         29: (content) => {
             const [left, right] = content;
@@ -248,6 +254,8 @@ class RuntimeFactory {
 
             const conditionString = this.parseInstructionContent(condition);
             const caseInstructionsString = this.parseInstructionContent(caseInstructions);
+
+            this.context.remove("caseValueList");
 
             return `switch (${conditionString}) {\n ${caseInstructionsString}}\n`;
         },
