@@ -41,10 +41,85 @@ class RuntimeFactory {
             return `{\n${pairs.join(",\n")}\n}`;
         },
 
+        // divide (/)
+        10: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} / ${this.parseInstructionContent(right)}`;
+        },
+
+        // comparison (==)
+        12: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} == ${this.parseInstructionContent(right)}`;
+        },
+
         // Variable reference
         15: (content) => {
             const name = content[0] as string;
             return `${this.variables[name] || name}`;
+        },
+
+        // Greater than (>)
+        18: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} > ${this.parseInstructionContent(right)}`;
+        },
+
+        // Greater than or equal (>=)
+        19: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} >= ${this.parseInstructionContent(right)}`;
+        },
+
+        // Comparision (===)
+        20: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} === ${this.parseInstructionContent(right)}`;
+        },
+
+        // if statement
+        22: (content) => {
+            const [condition, ...bodyInstructions] = content;
+            const conditionString = this.parseInstructionContent(condition);
+            const body = bodyInstructions.map(this.parseInstructionContent).join("\n");
+
+            return `if (${conditionString}) {\n${body}\n}\n`;
+        },
+
+        // less than (<)
+        23: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} < ${this.parseInstructionContent(right)}`;
+        },
+
+        // less than or equal (<=)
+        24: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} <= ${this.parseInstructionContent(right)}`;
+        },
+
+        // Modulo (%)
+        25: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} % ${this.parseInstructionContent(right)}`;
+        },
+
+        // Multiplication (*)
+        26: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} * ${this.parseInstructionContent(right)}`;
+        },
+
+        // subtraction shorthand
+        32: (content) => {
+            const [variable] = content;
+            return `${this.parseInstructionContent(variable)}--`;
+        },
+
+        // addition shorthand
+        33: (content) => {
+            const [variable] = content;
+            return `${this.parseInstructionContent(variable)}++`;
         },
 
         // Return statement
@@ -77,8 +152,13 @@ class RuntimeFactory {
             return "null";
         },
 
-        // initiate data object
-        46: () => {
+        // start scoped list of instructions
+        // TODO check if we need to do something with this
+        46: (content) => {
+            if (Array.isArray(content[0])) {
+                return content.map(this.parseInstructionContent).join("\n");
+            }
+
             return "";
         },
 
@@ -93,17 +173,18 @@ class RuntimeFactory {
             const args = (argsInstruction as RuntimeInstruction).slice(1).join(", ");
             const body = (bodyInstructions as RuntimeInstruction[]).map(this.parseInstruction).join("\n");
 
-            return `function ${name}(${args}) {\n${body}\n}`;
+            return `function ${name}(${args}) {\n${body}\n}\n`;
         },
 
         // Define Function expression
+        // TODO: Maybe use function() {} instead of () => {}
         51: (content) => {
             const [_functionName, argsInstruction, ...bodyInstructions] = content;
 
             const args = (argsInstruction as RuntimeInstruction).slice(1).join(", ");
             const body = (bodyInstructions as RuntimeInstruction[]).map(this.parseInstruction).join("\n");
 
-            return `(${args}) => {\n${body}\n}`;
+            return `\n(${args}) => {\n${body}\n}\n`;
         },
 
         // Set `const` variable
@@ -128,6 +209,48 @@ class RuntimeFactory {
             return `const ${newName} = ${value}`;
         },
 
+        // Bitwise AND (&)
+        56: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} & ${this.parseInstructionContent(right)}`;
+        },
+
+        // Bitwise left shift (<<)
+        57: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} << ${this.parseInstructionContent(right)}`;
+        },
+
+        // Bitwise NOT (~)
+        58: (content) => {
+            const [value] = content;
+            return `~${this.parseInstructionContent(value)}`;
+        },
+
+        // Bitwise OR (|)
+        59: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} | ${this.parseInstructionContent(right)}`;
+        },
+
+        // Bitwise right shift (>>)
+        60: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} >> ${this.parseInstructionContent(right)}`;
+        },
+
+        // Bitwise unsigned right shift (>>>)
+        61: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} >>> ${this.parseInstructionContent(right)}`;
+        },
+
+        // Bitwise XOR (^)
+        62: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} ^ ${this.parseInstructionContent(right)}`;
+        },
+
         // Require Library
         require: (content) => {
             const [name] = content;
@@ -149,7 +272,7 @@ class RuntimeFactory {
         const [opcode, ...content] = instruction;
 
         if (!this.operations[opcode]) {
-            return JSON.stringify(instruction);
+            return `\n${JSON.stringify(instruction)}`;
         }
 
         return this.operations[opcode](content);
