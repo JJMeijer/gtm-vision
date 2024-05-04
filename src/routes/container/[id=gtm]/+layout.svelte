@@ -8,7 +8,8 @@
 
     $: ({ id, resolvedContainer } = data);
 
-    $: browser && console.log(resolvedContainer);
+    $: browser && console.log(resolvedContainer.runtime[0]);
+    $: browser && console.log(resolvedContainer.parsedRuntimes[0].code);
 
     $: setContext(id, resolvedContainer);
 </script>

@@ -131,7 +131,7 @@ export type RuntimeInstruction = [number | string, ...RuntimeInstructionContent[
 
 export type Runtime = [50, string, ...RuntimeInstruction[]];
 
-export interface RuntimeFactory {
+export interface RuntimeOperations {
     [key: number | string]: (content: RuntimeInstructionContent[]) => string;
 }
 
