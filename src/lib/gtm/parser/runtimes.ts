@@ -17,6 +17,15 @@ class RuntimeFactory {
             return `${this.parseInstructionContent(left)} + ${this.parseInstructionContent(right)}`;
         },
 
+        // Method call
+        2: (content) => {
+            const [variable, method, args] = content;
+
+            const methodArgs = Array.isArray(args) ? args.slice(1).map(this.parseInstructionContent).join(", ") : args;
+
+            return `${this.parseInstructionContent(variable)}.${method}(${methodArgs})`;
+        },
+
         // Variable assignment
         3: (content) => {
             const [variable, value] = content;
@@ -71,10 +80,16 @@ class RuntimeFactory {
             return `${this.parseInstructionContent(left)} >= ${this.parseInstructionContent(right)}`;
         },
 
-        // Comparision (===)
+        // Comparison (===)
         20: (content) => {
             const [left, right] = content;
             return `${this.parseInstructionContent(left)} === ${this.parseInstructionContent(right)}`;
+        },
+
+        // Not comparison (!==)
+        21: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} !== ${this.parseInstructionContent(right)}`;
         },
 
         // if statement
@@ -108,6 +123,12 @@ class RuntimeFactory {
         26: (content) => {
             const [left, right] = content;
             return `${this.parseInstructionContent(left)} * ${this.parseInstructionContent(right)}`;
+        },
+
+        // Not comparison (!=)
+        29: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} != ${this.parseInstructionContent(right)}`;
         },
 
         // subtraction shorthand
