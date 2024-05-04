@@ -128,11 +128,12 @@ export interface PermissionsList {
 
 export type RuntimeInstructionContent = string | number | boolean | RuntimeInstruction;
 export type RuntimeInstruction = [number | string, ...RuntimeInstructionContent[]];
+export type RuntimeInstructionContext = Record<string, unknown>;
 
 export type Runtime = [50, string, ...RuntimeInstruction[]];
 
 export interface RuntimeOperations {
-    [key: number | string]: (content: RuntimeInstructionContent[]) => string;
+    [key: number | string]: (content: RuntimeInstructionContent[], index?: number) => string;
 }
 
 export interface Container {

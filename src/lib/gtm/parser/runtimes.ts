@@ -5,10 +5,30 @@ import { beautifyOptions } from "./beautify-options";
 
 const { js } = jsBeautify;
 
+class RuntimeContext {
+    data: Record<string, unknown> = {};
+
+    set = (key: string, value: unknown) => {
+        this.data[key] = value;
+    };
+
+    get = (key: string) => {
+        return this.data[key];
+    };
+
+    remove = (key: string) => {
+        delete this.data[key];
+    };
+}
+
 class RuntimeFactory {
     variables: Record<string, string> = {
         a: "data",
     };
+
+    letInitialized: Record<string, boolean> = {};
+
+    context = new RuntimeContext();
 
     operations: RuntimeOperations = {
         // Addition (+)
@@ -30,7 +50,34 @@ class RuntimeFactory {
         3: (content) => {
             const [variable, value] = content;
 
-            return `${variable} = ${this.parseInstructionContent(value)}`;
+            if (this.letInitialized[variable as string]) {
+                return `${variable} = ${this.parseInstructionContent(value)}`;
+            }
+
+            this.letInitialized[variable as string] = true;
+            return `let ${variable} = ${this.parseInstructionContent(value)}`;
+        },
+
+        // Break statement
+        4: () => {
+            return "break";
+        },
+
+        // Case statement
+        5: (content, index) => {
+            const caseValueList = this.context.get("caseValueList") as string[];
+
+            if (!caseValueList || typeof index !== "number" || !caseValueList[index]) {
+                return "";
+            }
+
+            const instruction = content[0] as RuntimeInstruction;
+
+            if (instruction.length === 1) {
+                return `case ${caseValueList[index]}:\n`;
+            }
+
+            return `case ${caseValueList[index]}:\n${this.parseInstruction(instruction)}\n`;
         },
 
         // Define Array
@@ -50,6 +97,12 @@ class RuntimeFactory {
             return `{\n${pairs.join(",\n")}\n}`;
         },
 
+        // default case
+        9: (content) => {
+            const [instruction] = content;
+            return `default:\n${this.parseInstructionContent(instruction)}`;
+        },
+
         // divide (/)
         10: (content) => {
             const [left, right] = content;
@@ -66,6 +119,18 @@ class RuntimeFactory {
         15: (content) => {
             const name = content[0] as string;
             return `${this.variables[name] || name}`;
+        },
+
+        // Object property reference
+        16: (content) => {
+            const [object, property] = content;
+            return `${this.parseInstructionContent(object)}[${this.parseInstructionContent(property)}]`;
+        },
+
+        // Dot notation
+        17: (content) => {
+            const [variable, property] = content;
+            return `${this.parseInstructionContent(variable)}.${property}`;
         },
 
         // Greater than (>)
@@ -94,11 +159,17 @@ class RuntimeFactory {
 
         // if statement
         22: (content) => {
-            const [condition, ...bodyInstructions] = content;
+            const [condition, ifBlockInstruction, elseBlockInstruction] = content;
             const conditionString = this.parseInstructionContent(condition);
-            const body = bodyInstructions.map(this.parseInstructionContent).join("\n");
+            const ifBlock = this.parseInstructionContent(ifBlockInstruction);
 
-            return `if (${conditionString}) {\n${body}\n}\n`;
+            if (elseBlockInstruction) {
+                const elseBlock = this.parseInstructionContent(elseBlockInstruction);
+
+                return `if (${conditionString}) {\n${ifBlock}\n} else {\n${elseBlock}\n}\n`;
+            }
+
+            return `if (${conditionString}) {\n${ifBlock}\n}\n`;
         },
 
         // less than (<)
@@ -125,10 +196,22 @@ class RuntimeFactory {
             return `${this.parseInstructionContent(left)} * ${this.parseInstructionContent(right)}`;
         },
 
+        // minus (-)
+        27: (content) => {
+            const [value] = content;
+            return `-${this.parseInstructionContent(value)}`;
+        },
+
         // Not comparison (!=)
         29: (content) => {
             const [left, right] = content;
             return `${this.parseInstructionContent(left)} != ${this.parseInstructionContent(right)}`;
+        },
+
+        // logical OR (||)
+        30: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} || ${this.parseInstructionContent(right)}`;
         },
 
         // subtraction shorthand
@@ -156,11 +239,32 @@ class RuntimeFactory {
             return `${this.parseInstructionContent(left)} - ${this.parseInstructionContent(right)}`;
         },
 
+        // Switch statement
+        38: (content) => {
+            const [condition, caseValues, caseInstructions] = content;
+
+            const caseValueList = (caseValues as RuntimeInstruction[]).slice(1).map(this.parseInstructionContent);
+            this.context.set("caseValueList", caseValueList);
+
+            const conditionString = this.parseInstructionContent(condition);
+            const caseInstructionsString = this.parseInstructionContent(caseInstructions);
+
+            return `switch (${conditionString}) {\n ${caseInstructionsString}}\n`;
+        },
+
+        // typeof
+        40: (content) => {
+            const [value] = content;
+            return `typeof ${this.parseInstructionContent(value)}`;
+        },
+
         // initialize let (no assignment)
         41: (content) => {
             const [name] = content;
 
-            return `let ${name}`;
+            this.letInitialized[name as string] = false;
+
+            return ``;
         },
 
         // undefined
@@ -177,7 +281,10 @@ class RuntimeFactory {
         // TODO check if we need to do something with this
         46: (content) => {
             if (Array.isArray(content[0])) {
-                return content.map(this.parseInstructionContent).join("\n");
+                return content
+                    .map(this.parseInstructionContent)
+                    .filter((i) => i)
+                    .join("\n");
             }
 
             return "";
@@ -192,7 +299,10 @@ class RuntimeFactory {
             };
 
             const args = (argsInstruction as RuntimeInstruction).slice(1).join(", ");
-            const body = (bodyInstructions as RuntimeInstruction[]).map(this.parseInstruction).join("\n");
+            const body = (bodyInstructions as RuntimeInstruction[])
+                .map(this.parseInstruction)
+                .filter((i) => i)
+                .join("\n");
 
             return `function ${name}(${args}) {\n${body}\n}\n`;
         },
@@ -203,7 +313,10 @@ class RuntimeFactory {
             const [_functionName, argsInstruction, ...bodyInstructions] = content;
 
             const args = (argsInstruction as RuntimeInstruction).slice(1).join(", ");
-            const body = (bodyInstructions as RuntimeInstruction[]).map(this.parseInstruction).join("\n");
+            const body = (bodyInstructions as RuntimeInstruction[])
+                .map(this.parseInstruction)
+                .filter((i) => i)
+                .join("\n");
 
             return `\n(${args}) => {\n${body}\n}\n`;
         },
@@ -289,17 +402,17 @@ class RuntimeFactory {
         },
     };
 
-    parseInstruction = (instruction: RuntimeInstruction) => {
+    parseInstruction = (instruction: RuntimeInstruction, index?: number) => {
         const [opcode, ...content] = instruction;
 
         if (!this.operations[opcode]) {
             return `\n${JSON.stringify(instruction)}`;
         }
 
-        return this.operations[opcode](content);
+        return this.operations[opcode](content, index);
     };
 
-    parseInstructionContent = (content: RuntimeInstructionContent): string => {
+    parseInstructionContent = (content: RuntimeInstructionContent, index?: number): string => {
         if (typeof content === "string") {
             return `"${content}"`;
         }
@@ -308,7 +421,7 @@ class RuntimeFactory {
             return `${content}`;
         }
 
-        return this.parseInstruction(content);
+        return this.parseInstruction(content, index);
     };
 }
 
