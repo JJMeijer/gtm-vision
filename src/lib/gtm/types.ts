@@ -235,6 +235,7 @@ export interface ParsedTag extends ItemName {
     properties: ParsedProperties;
     consent: string[];
     tagSequencing?: TagSequencing;
+    runtime?: ParsedRuntime;
     references: References;
     size: string;
 }
@@ -245,6 +246,7 @@ export interface ResolvedTag extends ItemName {
     properties: ResolvedProperties;
     consent: string[];
     tagSequencing?: ResolvedTagSequencing;
+    runtime?: ParsedRuntime;
     references: References;
     size: string;
 }

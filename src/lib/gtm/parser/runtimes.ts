@@ -404,6 +404,18 @@ class RuntimeFactory {
             return "";
         },
 
+        // For..of loop
+        55: (content) => {
+            const [variable, iterable, bodyInstruction] = content;
+
+            const iterableString = this.parseInstructionContent(iterable);
+            const bodyInstructionString = this.parseInstructionContent(bodyInstruction);
+
+            this.variables[variable as string] = `${variable}`;
+
+            return `for (let ${variable} of ${iterableString}) {\n${bodyInstructionString}\n}\n`;
+        },
+
         // Bitwise AND (&)
         56: (content) => {
             const [left, right] = content;

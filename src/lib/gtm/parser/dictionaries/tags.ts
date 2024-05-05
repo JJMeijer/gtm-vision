@@ -54,6 +54,7 @@ export const TAGS = {
     __pc: "Personali Canvas",
     __placedPixel: "Placed",
     __pijs: "Pulse Insights",
+    __pntr: "Pinterest",
     __qca: "Quantcast Advertise",
     __qcm: "Quantcast Measure",
     __scjs: "SaleCycle Javascript",

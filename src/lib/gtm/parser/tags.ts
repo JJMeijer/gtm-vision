@@ -23,7 +23,7 @@ const parseTagName = (tag: Tag, counters: Counter): ItemName => {
     let name = `${type} (${counter})`;
 
     if (type === "Unknown") {
-        console.log(tag);
+        console.warn(`Unknown tag type: ${tag.function}`);
     }
 
     // For GA UA the track type is added to make the name more clear.
@@ -147,13 +147,7 @@ export const parseTags = (tags: Tag[], parsedRuntimes: ParsedRuntimes) => {
 
     tags.forEach((tag, index) => {
         const tagName = parseTagName(tag, counters);
-
         const runtime = parsedRuntimes[tagName.type];
-        if (runtime) {
-            const { code } = runtime;
-            tag.vtp_javascript = code;
-        }
-
         const size = getItemSize(tag);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
@@ -165,6 +159,7 @@ export const parseTags = (tags: Tag[], parsedRuntimes: ParsedRuntimes) => {
             ...tagName,
             properties,
             consent,
+            ...(runtime ? { runtime } : null),
             ...(tagSequencing ? { tagSequencing } : null),
             references: {
                 variables: [],
