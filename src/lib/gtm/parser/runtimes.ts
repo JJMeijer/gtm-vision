@@ -30,11 +30,19 @@ class RuntimeFactory {
 
     context = new RuntimeContext();
 
+    REPLACER = "-REPLACER-";
+
     operations: RuntimeOperations = {
         // Addition (+)
         0: (content) => {
             const [left, right] = content;
             return `${this.parseInstructionContent(left)} + ${this.parseInstructionContent(right)}`;
+        },
+
+        // AND (&&)
+        1: (content) => {
+            const [left, right] = content;
+            return `${this.parseInstructionContent(left)} && ${this.parseInstructionContent(right)}`;
         },
 
         // Method call
@@ -113,6 +121,14 @@ class RuntimeFactory {
         12: (content) => {
             const [left, right] = content;
             return `${this.parseInstructionContent(left)} == ${this.parseInstructionContent(right)}`;
+        },
+
+        // Self invoking function
+        13: (content) => {
+            const [, letFuncInstruction] = content;
+            const [, , funcInstruction] = letFuncInstruction as RuntimeInstruction;
+
+            return `(${this.parseInstructionContent(funcInstruction)})()`;
         },
 
         // Variable reference
@@ -260,6 +276,17 @@ class RuntimeFactory {
             return `switch (${conditionString}) {\n ${caseInstructionsString}}\n`;
         },
 
+        // Ternary operator
+        39: (content) => {
+            const [conditionInstruction, trueInstruction, falseInstruction] = content;
+
+            const conditionInstructionString = this.parseInstructionContent(conditionInstruction);
+            const trueInstructionString = this.parseInstructionContent(trueInstruction);
+            const falseInstructionString = this.parseInstructionContent(falseInstruction);
+
+            return `${conditionInstructionString} ? ${trueInstructionString} : ${falseInstructionString}`;
+        },
+
         // typeof
         40: (content) => {
             const [value] = content;
@@ -273,6 +300,12 @@ class RuntimeFactory {
             this.letInitialized[name as string] = false;
 
             return ``;
+        },
+
+        // Object property assignment
+        43: (content) => {
+            const [variable, property, value] = content;
+            return `${this.parseInstructionContent(variable)}[${this.parseInstructionContent(property)}] = ${this.parseInstructionContent(value)}`;
         },
 
         // undefined
@@ -318,7 +351,7 @@ class RuntimeFactory {
         // Define Function expression
         // TODO: Maybe use function() {} instead of () => {}
         51: (content) => {
-            const [_functionName, argsInstruction, ...bodyInstructions] = content;
+            const [functionName, argsInstruction, ...bodyInstructions] = content;
 
             const args = (argsInstruction as RuntimeInstruction).slice(1).join(", ");
             const body = (bodyInstructions as RuntimeInstruction[])
@@ -326,7 +359,8 @@ class RuntimeFactory {
                 .filter((i) => i)
                 .join("\n");
 
-            return `\n(${args}) => {\n${body}\n}\n`;
+            return `function ${functionName}(${args}) {\n${body}\n}\n`;
+            // return `\n(${args}) => {\n${body}\n}\n`;
         },
 
         // Set `const` variable
@@ -349,6 +383,18 @@ class RuntimeFactory {
             };
 
             return `const ${newName} = ${value}`;
+        },
+
+        // Probably something with scope, similar to 46
+        53: (content) => {
+            if (Array.isArray(content[0])) {
+                return content
+                    .map(this.parseInstructionContent)
+                    .filter((i) => i)
+                    .join("");
+            }
+
+            return "";
         },
 
         // Bitwise AND (&)
@@ -393,6 +439,17 @@ class RuntimeFactory {
             return `${this.parseInstructionContent(left)} ^ ${this.parseInstructionContent(right)}`;
         },
 
+        // For loop
+        63: (content) => {
+            const [_vars, stopInstruction, stepInstruction, bodyInstruction] = content;
+
+            const stopInstructionString = this.parseInstructionContent(stopInstruction);
+            const stepInstructionString = this.parseInstructionContent(stepInstruction);
+            const bodyInstructionString = this.parseInstructionContent(bodyInstruction);
+
+            return `for (; ${stopInstructionString}; ${stepInstructionString}) {\n${bodyInstructionString}\n}\n`;
+        },
+
         // Require Library
         require: (content) => {
             const [name] = content;
@@ -414,7 +471,11 @@ class RuntimeFactory {
         const [opcode, ...content] = instruction;
 
         if (!this.operations[opcode]) {
-            return `\n${JSON.stringify(instruction)}`;
+            if (typeof opcode === "number") {
+                return `\nUNKNOWN OP_CODE ${JSON.stringify(instruction)}`;
+            }
+
+            return `${this.REPLACER}${JSON.stringify(instruction)}${this.REPLACER}\n`;
         }
 
         return this.operations[opcode](content, index);
@@ -431,6 +492,15 @@ class RuntimeFactory {
 
         return this.parseInstruction(content, index);
     };
+
+    parseReplacers = (code: string) => {
+        const replacerRegex = new RegExp(`${this.REPLACER}(.*?)${this.REPLACER}`, "g");
+
+        return code.replace(replacerRegex, (_match, p1) => {
+            const instruction = JSON.parse(p1);
+            return this.parseInstruction(instruction);
+        });
+    };
 }
 
 export const parseRuntimes = (runtimes: Runtime[]) => {
@@ -439,15 +509,12 @@ export const parseRuntimes = (runtimes: Runtime[]) => {
     const runtimeFactory = new RuntimeFactory();
 
     return customRuntimes.map(([, name, ...instructions]) => {
-        const start = Date.now();
         const parsedInstructions = instructions.map(runtimeFactory.parseInstruction);
-
-        console.log(`Parsed ${name} in ${Date.now() - start}ms`);
-        console.log(runtimeFactory.variables);
+        const replacedInstructions = parsedInstructions.map(runtimeFactory.parseReplacers);
 
         return {
             name,
-            code: js(parsedInstructions.join("\n").trim(), beautifyOptions),
+            code: js(replacedInstructions.join("\n").trim(), beautifyOptions),
         };
     });
 };
