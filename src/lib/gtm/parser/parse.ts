@@ -14,7 +14,7 @@ export const parse = (container: Container) => {
 
     const parsedRuntimes = parseRuntimes(runtime);
     const { parsedMacros, triggerContextMacros } = parseMacros(macros);
-    const { parsedTags, triggerContextTags } = parseTags(tags);
+    const { parsedTags, triggerContextTags } = parseTags(tags, parsedRuntimes);
     const parsedTriggers = parseTriggers(predicates, rules, triggerContextMacros, triggerContextTags);
 
     const parsedContainer: ParsedContainer = {

@@ -290,7 +290,7 @@ export interface ResolvedTrigger extends ItemName {
 
 export interface ParsedRuntime {
     code: string;
-    permissions: Permissions;
+    // permissions: Permissions;
 }
 
 export interface ParsedRuntimes {

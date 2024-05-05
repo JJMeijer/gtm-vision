@@ -9,6 +9,7 @@ import type {
     TagSequencing,
     TriggerContextTags,
     ParsedBoundary,
+    ParsedRuntimes,
 } from "../types";
 import { OPERATORS, TAGS } from "./dictionaries";
 
@@ -134,7 +135,7 @@ const parseTagSequencing = (tag: Tag) => {
     return undefined;
 };
 
-export const parseTags = (tags: Tag[]) => {
+export const parseTags = (tags: Tag[], parsedRuntimes: ParsedRuntimes) => {
     const counters: Counter = {};
 
     const parsedTags: ParsedTag[] = [];
@@ -145,8 +146,15 @@ export const parseTags = (tags: Tag[]) => {
     };
 
     tags.forEach((tag, index) => {
-        const size = getItemSize(tag);
         const tagName = parseTagName(tag, counters);
+
+        const runtime = parsedRuntimes[tagName.type];
+        if (runtime) {
+            const { code } = runtime;
+            tag.vtp_javascript = code;
+        }
+
+        const size = getItemSize(tag);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
         const consent = tag.consent ? tag.consent.slice(1) : [];

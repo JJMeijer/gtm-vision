@@ -9,7 +9,6 @@
     $: ({ id, resolvedContainer } = data);
 
     $: browser && console.log(resolvedContainer.runtime);
-    $: browser && resolvedContainer.parsedRuntimes.forEach(runtime => console.log(runtime.code))
 
     $: setContext(id, resolvedContainer);
 </script>

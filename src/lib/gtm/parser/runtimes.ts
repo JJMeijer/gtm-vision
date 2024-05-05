@@ -1,7 +1,14 @@
 import jsBeautify from "js-beautify";
 
-import type { Runtime, RuntimeInstruction, RuntimeInstructionContent, RuntimeOperations } from "../types";
+import type {
+    ParsedRuntimes,
+    Runtime,
+    RuntimeInstruction,
+    RuntimeInstructionContent,
+    RuntimeOperations,
+} from "../types";
 import { beautifyOptions } from "./beautify-options";
+import { parseTemplateId } from "./utility";
 
 const { js } = jsBeautify;
 
@@ -508,13 +515,21 @@ export const parseRuntimes = (runtimes: Runtime[]) => {
 
     const runtimeFactory = new RuntimeFactory();
 
-    return customRuntimes.map(([, name, ...instructions]) => {
+    const parsedRuntimes: ParsedRuntimes = {};
+
+    customRuntimes.map(([, name, ...instructions]) => {
         const parsedInstructions = instructions.map(runtimeFactory.parseInstruction);
         const replacedInstructions = parsedInstructions.map(runtimeFactory.parseReplacers);
 
-        return {
-            name,
+        const id = parseTemplateId(name);
+        if (!id) {
+            return;
+        }
+
+        parsedRuntimes[id] = {
             code: js(replacedInstructions.join("\n").trim(), beautifyOptions),
         };
     });
+
+    return parsedRuntimes;
 };
