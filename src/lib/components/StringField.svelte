@@ -11,7 +11,7 @@
     export let value: string | number;
 </script>
 
-<p class="py-1.5 px-3 rounded-md border border-zinc-300 whitespace-pre overflow-x-scroll scrollbar-none w-full">
+<p class="py-1.5 px-3 min-h-9 rounded-md border border-zinc-300 whitespace-pre overflow-x-scroll scrollbar-none w-full">
     {#each String(value)
         .split(/({{.+?}})/)
         .filter((x) => x) as part}

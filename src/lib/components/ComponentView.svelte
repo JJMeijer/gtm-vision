@@ -10,6 +10,8 @@
     import TriggerConditions from "./TriggerConditions.svelte";
     import TriggerReferences from "./TriggerReferences.svelte";
     import TagConsent from "./TagConsent.svelte";
+    import Dropdown from "./Dropdown.svelte";
+    import CodeProperty from "./CodeProperty.svelte";
 
     export let data: ComponentData;
 </script>
@@ -27,6 +29,10 @@
             {#if data.type === "Tag"}
                 {#if data.component.tagSequencing}
                     <TagSequencing tagSequencing={data.component.tagSequencing} />
+                {/if}
+
+                {#if data.component.runtime}
+                    <CodeProperty code={data.component.runtime.code} language="javascript" />
                 {/if}
 
                 {#if data.component.consent.length > 0}

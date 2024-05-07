@@ -3,6 +3,7 @@
     import { IconClose } from "./icons";
     import { page } from "$app/stores";
     import { onDestroy, onMount } from "svelte";
+
     import { isObject } from "$lib/gtm/type-guards";
     import type { GenericObject } from "$lib/gtm/types";
 

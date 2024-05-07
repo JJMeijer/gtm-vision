@@ -9,6 +9,8 @@
     const onSubmit = (event: Event) => {
         event.preventDefault();
 
+        value = value.trim();
+
         if (!value) {
             input.setCustomValidity("Please enter a GTM ID");
             input.reportValidity();

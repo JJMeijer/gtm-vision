@@ -9,6 +9,7 @@ import type {
     TagSequencing,
     TriggerContextTags,
     ParsedBoundary,
+    ParsedRuntimes,
 } from "../types";
 import { OPERATORS, TAGS } from "./dictionaries";
 
@@ -22,7 +23,7 @@ const parseTagName = (tag: Tag, counters: Counter): ItemName => {
     let name = `${type} (${counter})`;
 
     if (type === "Unknown") {
-        console.log(tag);
+        console.warn(`Unknown tag type: ${tag.function}`);
     }
 
     // For GA UA the track type is added to make the name more clear.
@@ -134,7 +135,7 @@ const parseTagSequencing = (tag: Tag) => {
     return undefined;
 };
 
-export const parseTags = (tags: Tag[]) => {
+export const parseTags = (tags: Tag[], parsedRuntimes: ParsedRuntimes) => {
     const counters: Counter = {};
 
     const parsedTags: ParsedTag[] = [];
@@ -145,8 +146,9 @@ export const parseTags = (tags: Tag[]) => {
     };
 
     tags.forEach((tag, index) => {
-        const size = getItemSize(tag);
         const tagName = parseTagName(tag, counters);
+        const runtime = parsedRuntimes[tagName.type];
+        const size = getItemSize(tag);
         const properties = parseProperties(tag);
         const tagSequencing = parseTagSequencing(tag);
         const consent = tag.consent ? tag.consent.slice(1) : [];
@@ -157,6 +159,7 @@ export const parseTags = (tags: Tag[]) => {
             ...tagName,
             properties,
             consent,
+            ...(runtime ? { runtime } : null),
             ...(tagSequencing ? { tagSequencing } : null),
             references: {
                 variables: [],

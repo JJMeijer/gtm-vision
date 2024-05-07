@@ -126,18 +126,14 @@ export interface PermissionsList {
     [key: string]: Permissions;
 }
 
-export type RuntimeInstructionContent = string | number | boolean | number[] | RuntimeInstruction;
+export type RuntimeInstructionContent = string | number | boolean | RuntimeInstruction;
 export type RuntimeInstruction = [number | string, ...RuntimeInstructionContent[]];
+export type RuntimeInstructionContext = Record<string, unknown>;
 
 export type Runtime = [50, string, ...RuntimeInstruction[]];
 
-export interface RuntimeFactory {
-    [key: number | string]: (content: RuntimeInstructionContent[], variables: RuntimeVariables) => string;
-    function: (content: RuntimeInstructionContent[], variables: RuntimeVariables) => string;
-}
-
-export interface RuntimeVariables {
-    [key: string]: string;
+export interface RuntimeOperations {
+    [key: number | string]: (content: RuntimeInstructionContent[], index?: number) => string;
 }
 
 export interface Container {
@@ -239,6 +235,7 @@ export interface ParsedTag extends ItemName {
     properties: ParsedProperties;
     consent: string[];
     tagSequencing?: TagSequencing;
+    runtime?: ParsedRuntime;
     references: References;
     size: string;
 }
@@ -249,6 +246,7 @@ export interface ResolvedTag extends ItemName {
     properties: ResolvedProperties;
     consent: string[];
     tagSequencing?: ResolvedTagSequencing;
+    runtime?: ParsedRuntime;
     references: References;
     size: string;
 }
@@ -294,7 +292,7 @@ export interface ResolvedTrigger extends ItemName {
 
 export interface ParsedRuntime {
     code: string;
-    permissions: Permissions;
+    // permissions: Permissions;
 }
 
 export interface ParsedRuntimes {
@@ -315,4 +313,9 @@ export interface ResolvedContainer {
 
 export interface GenericObject {
     [key: string]: unknown;
+}
+
+export interface MinimalComponent {
+    name: string;
+    index: number;
 }
