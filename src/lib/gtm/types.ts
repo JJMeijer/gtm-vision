@@ -181,6 +181,7 @@ export interface ParsedMacro extends ItemName {
     index: number;
     category: "variables";
     properties: ParsedProperties;
+    runtime?: ParsedRuntime;
     format?: MacroFormat;
     references: References;
     size: string;
@@ -190,6 +191,7 @@ export interface ResolvedMacro extends ItemName {
     index: number;
     category: "variables";
     properties: ResolvedProperties;
+    runtime?: ParsedRuntime;
     format?: MacroFormat;
     references: References;
     size: string;

@@ -525,11 +525,10 @@ class RuntimeFactory {
 export const parseRuntimes = (runtimes: Runtime[]) => {
     const customRuntimes = runtimes.filter(([, name]) => name.startsWith("__cvt_"));
 
-    const runtimeFactory = new RuntimeFactory();
-
     const parsedRuntimes: ParsedRuntimes = {};
 
     customRuntimes.map(([, name, ...instructions]) => {
+        const runtimeFactory = new RuntimeFactory();
         const parsedInstructions = instructions.map(runtimeFactory.parseInstruction);
         const replacedInstructions = parsedInstructions.map(runtimeFactory.parseReplacers);
 

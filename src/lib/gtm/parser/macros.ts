@@ -7,6 +7,7 @@ import type {
     ParsedProperties,
     ParsedProperty,
     TriggerContextMacros,
+    ParsedRuntimes,
 } from "../types";
 import { MACROS } from "./dictionaries";
 import { getItemSize, parseTemplateId } from "./utility";
@@ -128,7 +129,7 @@ const enhanceMacroName = (itemName: ItemName, properties: ParsedProperties): voi
     }
 };
 
-export const parseMacros = (macros: Macro[]) => {
+export const parseMacros = (macros: Macro[], parsedRuntimes: ParsedRuntimes) => {
     const counters: Counter = {};
 
     const parsedMacros: ParsedMacro[] = [];
@@ -139,6 +140,7 @@ export const parseMacros = (macros: Macro[]) => {
 
     macros.forEach((macro, index) => {
         const variableName = parseMacroName(macro, counters);
+        const runtime = parsedRuntimes[variableName.type];
         const properties = parseProperties(macro);
         const format = parseFormat(macro);
         enhanceMacroName(variableName, properties);
@@ -149,6 +151,7 @@ export const parseMacros = (macros: Macro[]) => {
             category: "variables",
             ...variableName,
             properties,
+            ...(runtime ? { runtime } : null),
             ...(format ? { format } : null),
             references: {
                 variables: [],

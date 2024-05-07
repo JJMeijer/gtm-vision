@@ -13,7 +13,7 @@ export const parse = (container: Container) => {
     } = container;
 
     const parsedRuntimes = parseRuntimes(runtime);
-    const { parsedMacros, triggerContextMacros } = parseMacros(macros);
+    const { parsedMacros, triggerContextMacros } = parseMacros(macros, parsedRuntimes);
     const { parsedTags, triggerContextTags } = parseTags(tags, parsedRuntimes);
     const parsedTriggers = parseTriggers(predicates, rules, triggerContextMacros, triggerContextTags);
 

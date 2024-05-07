@@ -10,7 +10,6 @@
     import TriggerConditions from "./TriggerConditions.svelte";
     import TriggerReferences from "./TriggerReferences.svelte";
     import TagConsent from "./TagConsent.svelte";
-    import Dropdown from "./Dropdown.svelte";
     import CodeProperty from "./CodeProperty.svelte";
 
     export let data: ComponentData;
@@ -42,6 +41,12 @@
 
             {#if data.type === "Trigger"}
                 <TriggerConditions conditions={data.component.conditions} />
+            {/if}
+
+            {#if data.type === "Variable"}
+                {#if data.component.runtime}
+                    <CodeProperty code={data.component.runtime.code} language="javascript" />
+                {/if}
             {/if}
         </TitledContainer>
 
