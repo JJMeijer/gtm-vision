@@ -11,6 +11,7 @@
 
     import type { ResolvedContainer } from "$lib/gtm/types";
     import { getComponentLink } from "$lib/utility";
+    import { LoadingSpinner } from "$components";
 
     export let code: string;
     export let language: "html" | "javascript";
@@ -19,6 +20,7 @@
     let element: HTMLDivElement;
 
     let mounted = false;
+    let unminifying = false;
 
     const resolvedContainer = getContext<ResolvedContainer>($page.params.id);
 
@@ -93,14 +95,52 @@
 
     // extract variable references from the code
     $: variableReferences = Array.from(code.matchAll(/\{\{(.+?)\}\}/g)).map((match) => match[1]);
+
+    const onUnMinify = async () => {
+        if (unminifying) return;
+        unminifying = true;
+
+        const res = await fetch("/unminify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                code,
+            }),
+        });
+
+        unminifying = false;
+
+        if (!res.ok) {
+            console.error("Failed to unminify the code");
+            return;
+        }
+
+        const data = await res.json();
+
+        code = data.unminified;
+    };
 </script>
 
 <div class="flex flex-col pb-4 gap-1 w-full">
-    <p class="text-zinc-500/70">{language.toUpperCase()}</p>
+    <div class="flex flex-row items-center justify-between w-full">
+        <p class="text-zinc-500/70">{language.toUpperCase()}</p>
+        <button
+            on:click={onUnMinify}
+            title="Unminify the code (Powered by ChatGPT)"
+            class="bg-neutral-100 flex rounded-xl py-1 px-4 text-neutral-400/50 hover:text-neutral-600 hover:bg-neutral-300"
+        >
+            Unminify
+        </button>
+    </div>
     <div
-        class="border border-zinc-300 max-h-[20rem] overflow-y-auto scrollbar-thin hover:scrollbar-track-neutral-100 scrollbar-track-neutral-100/50 scrollbar-thumb-neutral-200"
+        class="relative border border-zinc-300 max-h-[20rem] overflow-y-auto scrollbar-thin hover:scrollbar-track-neutral-100 scrollbar-track-neutral-100/50 scrollbar-thumb-neutral-200 {unminifying &&
+            'pointer-events-none'}"
         bind:this={element}
-    />
+    >
+        {#if unminifying}<LoadingSpinner />{/if}
+    </div>
     {#if variableReferences.length > 0}
         <div class="flex flex-row items-center flex-wrap gap-2 pt-1">
             <span class="text-sm text-zinc-500">Variables:</span>
