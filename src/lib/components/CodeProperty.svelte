@@ -12,17 +12,24 @@
     import type { ResolvedContainer } from "$lib/gtm/types";
     import { getComponentLink } from "$lib/utility";
     import { LoadingSpinner } from "$components";
+    import type { ComponentType } from "./types";
+    import { addUnminified, unminifiedStore } from "$lib/stores";
 
     export let code: string;
     export let language: "html" | "javascript";
+    export let componentType: ComponentType;
 
     let view: EditorView;
     let element: HTMLDivElement;
 
     let mounted = false;
     let unminifying = false;
+    let unminified = false;
 
-    const resolvedContainer = getContext<ResolvedContainer>($page.params.id);
+    $: containerId = $page.params.id;
+    $: componentId = $page.params.index;
+
+    $: resolvedContainer = getContext<ResolvedContainer>(containerId);
 
     let updateCode = (code: string) => {
         view.dispatch({
@@ -93,12 +100,23 @@
         updateLanguage(language);
     }
 
+    $: code && (unminified = false);
+
     // extract variable references from the code
     $: variableReferences = Array.from(code.matchAll(/\{\{(.+?)\}\}/g)).map((match) => match[1]);
 
     const onUnMinify = async () => {
         if (unminifying) return;
         unminifying = true;
+
+        const cached = $unminifiedStore[containerId]?.[componentType]?.[componentId];
+
+        if (cached) {
+            updateCode(cached);
+            unminified = true;
+            unminifying = false;
+            return;
+        }
 
         const res = await fetch("/unminify", {
             method: "POST",
@@ -119,20 +137,37 @@
 
         const data = await res.json();
 
-        code = data.unminified;
+        updateCode(data.unminified);
+        addUnminified(containerId, componentType, componentId, data.unminified);
+        unminified = true;
+    };
+
+    const onShowOriginal = () => {
+        unminified = false;
+        updateCode(code);
     };
 </script>
 
 <div class="flex flex-col pb-4 gap-1 w-full">
     <div class="flex flex-row items-center justify-between w-full">
         <p class="text-zinc-500/70">{language.toUpperCase()}</p>
-        <button
-            on:click={onUnMinify}
-            title="Unminify the code (Powered by ChatGPT)"
-            class="bg-neutral-100 flex rounded-xl py-1 px-4 text-neutral-400/50 hover:text-neutral-600 hover:bg-neutral-300"
-        >
-            Unminify
-        </button>
+        {#if unminified}
+            <button
+                on:click={onShowOriginal}
+                title="Unminify the code (Powered by ChatGPT)"
+                class="bg-neutral-100 flex rounded-xl py-1 px-4 text-neutral-400/50 hover:text-neutral-600 hover:bg-neutral-300"
+            >
+                Show Original
+            </button>
+        {:else}
+            <button
+                on:click={onUnMinify}
+                title="Unminify the code (Powered by ChatGPT)"
+                class="bg-neutral-100 flex rounded-xl py-1 px-4 text-neutral-400/50 hover:text-neutral-600 hover:bg-neutral-300"
+            >
+                Unminify
+            </button>
+        {/if}
     </div>
     <div
         class="relative border border-zinc-300 max-h-[20rem] overflow-y-auto scrollbar-thin hover:scrollbar-track-neutral-100 scrollbar-track-neutral-100/50 scrollbar-thumb-neutral-200 {unminifying &&

@@ -372,24 +372,29 @@ class RuntimeFactory {
 
         // Set `const` variable
         52: (content) => {
-            const name = content[0] as string;
-            let newName = name;
-            let value = content[1];
+            const constStatements = [];
 
-            value = this.parseInstructionContent(value);
+            for (let i = 0; i < content.length - 1; i += 2) {
+                const name = content[i] as string;
+                let newName = name;
+                let value = content[i + 1];
 
-            const requireMatch = value.match(/require\("(.+)"\)/);
-            if (requireMatch) {
-                newName = requireMatch[1];
+                value = this.parseInstructionContent(value);
+                const requireMatch = value.match(/require\("(.+)"\)/);
+                if (requireMatch) {
+                    newName = requireMatch[1];
+                }
+
+                this.variables[name] = newName;
+
+                this.operations[name] = (content) => {
+                    return this.operations.func([name, ...content]);
+                };
+
+                constStatements.push(`const ${newName} = ${value}`);
             }
 
-            this.variables[name] = newName;
-
-            this.operations[name] = (content) => {
-                return this.operations.func([name, ...content]);
-            };
-
-            return `const ${newName} = ${value}`;
+            return constStatements.join("\n");
         },
 
         // Probably something with scope, similar to 46
@@ -501,6 +506,10 @@ class RuntimeFactory {
     };
 
     parseInstructionContent = (content: RuntimeInstructionContent, index?: number): string => {
+        if (typeof content === "undefined") {
+            return "";
+        }
+
         if (typeof content === "string") {
             return `"${content}"`;
         }

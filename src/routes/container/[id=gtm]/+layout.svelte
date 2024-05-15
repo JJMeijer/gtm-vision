@@ -7,6 +7,8 @@
 
     $: ({ id, resolvedContainer } = data);
 
+    $: console.log(resolvedContainer);
+
     $: setContext(id, resolvedContainer);
 </script>
 

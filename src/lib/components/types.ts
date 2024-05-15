@@ -1,5 +1,7 @@
 import type { ResolvedMacro, ResolvedTag, ResolvedTrigger } from "$lib/gtm/types";
 
+export type ComponentType = "Tag" | "Trigger" | "Variable";
+
 interface TagComponentData {
     type: "Tag";
     component: ResolvedTag;

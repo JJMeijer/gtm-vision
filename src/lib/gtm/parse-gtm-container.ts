@@ -8,6 +8,7 @@ export const parseGtmContainer = (containerText: string) => {
 
         return parsedContainer;
     } catch (err) {
+        console.error(err);
         return null;
     }
 };
