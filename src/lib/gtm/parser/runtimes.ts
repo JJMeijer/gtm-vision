@@ -63,14 +63,30 @@ class RuntimeFactory {
 
         // Variable assignment
         3: (content) => {
-            const [variable, value] = content;
+            const name = content[0] as string;
+            const value = content[1];
 
-            if (this.letInitialized[variable as string]) {
-                return `${variable} = ${this.parseInstructionContent(value)}`;
+            const parsedValue = this.parseInstructionContent(value);
+
+            if (this.letInitialized[name]) {
+                return `${this.variables[name] || name} = ${parsedValue}`;
             }
 
-            this.letInitialized[variable as string] = true;
-            return `let ${variable} = ${this.parseInstructionContent(value)}`;
+            let newName = name;
+
+            const requireMatch = parsedValue.match(/require\("(.+)"\)/);
+            if (requireMatch) {
+                newName = requireMatch[1];
+            }
+
+            this.variables[name] = newName;
+
+            this.operations[name] = (content) => {
+                return this.operations.func([name, ...content]);
+            };
+
+            this.letInitialized[name] = true;
+            return `let ${newName} = ${parsedValue}`;
         },
 
         // Break statement

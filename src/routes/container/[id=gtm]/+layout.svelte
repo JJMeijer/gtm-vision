@@ -10,6 +10,8 @@
 
     $: resolvedContainer && unMinifiedStoreVersionCheck(id, resolvedContainer.version);
     $: setContext(id, resolvedContainer);
+
+    $: console.log(resolvedContainer);
 </script>
 
 <div class="flex flex-col w-full h-full">
