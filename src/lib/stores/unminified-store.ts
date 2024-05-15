@@ -1,27 +1,39 @@
-import type { ComponentType } from "$components/types";
+import { get } from "svelte/store";
 import { storable } from "./storable";
 
-interface UnminifiedContainer {
-    Tag: Record<string, string>;
-    Variable: Record<string, string>;
-    Trigger: Record<string, string>;
-}
-
 interface UnminifiedStore {
-    [key: string]: UnminifiedContainer;
+    [key: string]: Record<string, string>;
 }
 
 export const unminifiedStore = storable<UnminifiedStore>({}, "unminified-store");
 
-export const addUnminified = (containerId: string, componentType: ComponentType, id: string, code: string) => {
+export const addUnminified = (containerId: string, name: string, code: string) => {
     unminifiedStore.update((store) => ({
         ...store,
         [containerId]: {
             ...store[containerId],
-            [componentType]: {
-                ...store[containerId]?.[componentType],
-                [id]: code,
-            },
+            [name]: code,
+        },
+    }));
+};
+
+export const unMinifiedStoreVersionCheck = (containerId: string, version: string) => {
+    const store = get(unminifiedStore);
+
+    if (!store[containerId]) {
+        return;
+    }
+
+    const currentVersion = store[containerId]?.version;
+
+    if (currentVersion === version) {
+        return;
+    }
+
+    unminifiedStore.update((store) => ({
+        ...store,
+        [containerId]: {
+            version,
         },
     }));
 };

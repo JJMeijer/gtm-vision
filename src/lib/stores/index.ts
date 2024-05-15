@@ -1,1 +1,1 @@
-export { unminifiedStore, addUnminified } from "./unminified-store";
+export { unminifiedStore, addUnminified, unMinifiedStoreVersionCheck } from "./unminified-store";

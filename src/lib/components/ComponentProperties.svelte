@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { ListOfResolvedBoundaries, ListOfResolvedMaps, ResolvedMap, ResolvedProperties } from "$lib/gtm/types";
 
-    import type { ComponentType } from "./types";
-
     import CodeProperty from "./CodeProperty.svelte";
     import StringProperty from "./StringProperty.svelte";
     import BooleanProperty from "./BooleanProperty.svelte";
@@ -10,8 +8,8 @@
     import MapProperty from "./MapProperty.svelte";
     import ListOfBoundariesProperty from "./ListOfBoundariesProperty.svelte";
 
+    export let componentName: string;
     export let properties: ResolvedProperties;
-    export let componentType: ComponentType;
 
     $: propertiesEntries = Object.entries(properties);
 
@@ -53,7 +51,7 @@
 
 <div class="flex flex-col">
     {#each codeProperties as [key, value]}
-        <CodeProperty code={value} language={key} {componentType} />
+        <CodeProperty code={value} language={key} {componentName} />
     {/each}
 
     {#each stringProperties as [name, value]}

@@ -12,12 +12,11 @@
     import type { ResolvedContainer } from "$lib/gtm/types";
     import { getComponentLink } from "$lib/utility";
     import { LoadingSpinner } from "$components";
-    import type { ComponentType } from "./types";
     import { addUnminified, unminifiedStore } from "$lib/stores";
 
     export let code: string;
     export let language: "html" | "javascript";
-    export let componentType: ComponentType;
+    export let componentName: string;
 
     let view: EditorView;
     let element: HTMLDivElement;
@@ -27,7 +26,6 @@
     let unminified = false;
 
     $: containerId = $page.params.id;
-    $: componentId = $page.params.index;
 
     $: resolvedContainer = getContext<ResolvedContainer>(containerId);
 
@@ -105,11 +103,20 @@
     // extract variable references from the code
     $: variableReferences = Array.from(code.matchAll(/\{\{(.+?)\}\}/g)).map((match) => match[1]);
 
+    const getCacheKey = (name: string): string => {
+        const templateMatch = name.match(/(Template-[\d]+)/);
+        if (!templateMatch) {
+            return name;
+        }
+
+        return templateMatch[1];
+    };
+
     const onUnMinify = async () => {
         if (unminifying) return;
         unminifying = true;
 
-        const cached = $unminifiedStore[containerId]?.[componentType]?.[componentId];
+        const cached = $unminifiedStore[containerId]?.[getCacheKey(componentName)];
 
         if (cached) {
             updateCode(cached);
@@ -138,7 +145,7 @@
         const data = await res.json();
 
         updateCode(data.unminified);
-        addUnminified(containerId, componentType, componentId, data.unminified);
+        addUnminified(containerId, getCacheKey(componentName), data.unminified);
         unminified = true;
     };
 

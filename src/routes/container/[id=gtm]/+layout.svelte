@@ -2,13 +2,13 @@
     import { Search, TopNavLink } from "$components";
     import { setContext } from "svelte";
     import type { LayoutServerData } from "./$types";
+    import { unMinifiedStoreVersionCheck } from "$lib/stores/unminified-store";
 
     export let data: LayoutServerData;
 
     $: ({ id, resolvedContainer } = data);
 
-    $: console.log(resolvedContainer);
-
+    $: resolvedContainer && unMinifiedStoreVersionCheck(id, resolvedContainer.version);
     $: setContext(id, resolvedContainer);
 </script>
 
