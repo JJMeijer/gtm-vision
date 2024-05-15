@@ -168,6 +168,7 @@
             </button>
         {:else}
             <button
+                disabled={unminifying}
                 on:click={onUnMinify}
                 title="Unminify the code (Powered by ChatGPT)"
                 class="bg-neutral-100 flex rounded-xl py-1 px-4 text-neutral-400/50 hover:text-neutral-600 hover:bg-neutral-300"
@@ -176,12 +177,13 @@
             </button>
         {/if}
     </div>
-    <div
-        class="relative border border-zinc-300 max-h-[20rem] overflow-y-auto scrollbar-thin hover:scrollbar-track-neutral-100 scrollbar-track-neutral-100/50 scrollbar-thumb-neutral-200 {unminifying &&
-            'pointer-events-none'}"
-        bind:this={element}
-    >
-        {#if unminifying}<LoadingSpinner />{/if}
+    <div class="relative">
+        <div
+            class="border border-zinc-300 max-h-[20rem] overflow-y-auto scrollbar-thin hover:scrollbar-track-neutral-100 scrollbar-track-neutral-100/50 scrollbar-thumb-neutral-200"
+            bind:this={element}
+        >
+            {#if unminifying}<LoadingSpinner />{/if}
+        </div>
     </div>
     {#if variableReferences.length > 0}
         <div class="flex flex-row items-center flex-wrap gap-2 pt-1">
