@@ -63,14 +63,30 @@ class RuntimeFactory {
 
         // Variable assignment
         3: (content) => {
-            const [variable, value] = content;
+            const name = content[0] as string;
+            const value = content[1];
 
-            if (this.letInitialized[variable as string]) {
-                return `${variable} = ${this.parseInstructionContent(value)}`;
+            const parsedValue = this.parseInstructionContent(value);
+
+            if (this.letInitialized[name]) {
+                return `${this.variables[name] || name} = ${parsedValue}`;
             }
 
-            this.letInitialized[variable as string] = true;
-            return `let ${variable} = ${this.parseInstructionContent(value)}`;
+            let newName = name;
+
+            const requireMatch = parsedValue.match(/require\("(.+)"\)/);
+            if (requireMatch) {
+                newName = requireMatch[1];
+            }
+
+            this.variables[name] = newName;
+
+            this.operations[name] = (content) => {
+                return this.operations.func([name, ...content]);
+            };
+
+            this.letInitialized[name] = true;
+            return `let ${newName} = ${parsedValue}`;
         },
 
         // Break statement
@@ -372,24 +388,29 @@ class RuntimeFactory {
 
         // Set `const` variable
         52: (content) => {
-            const name = content[0] as string;
-            let newName = name;
-            let value = content[1];
+            const constStatements = [];
 
-            value = this.parseInstructionContent(value);
+            for (let i = 0; i < content.length - 1; i += 2) {
+                const name = content[i] as string;
+                let newName = name;
+                let value = content[i + 1];
 
-            const requireMatch = value.match(/require\("(.+)"\)/);
-            if (requireMatch) {
-                newName = requireMatch[1];
+                value = this.parseInstructionContent(value);
+                const requireMatch = value.match(/require\("(.+)"\)/);
+                if (requireMatch) {
+                    newName = requireMatch[1];
+                }
+
+                this.variables[name] = newName;
+
+                this.operations[name] = (content) => {
+                    return this.operations.func([name, ...content]);
+                };
+
+                constStatements.push(`const ${newName} = ${value}`);
             }
 
-            this.variables[name] = newName;
-
-            this.operations[name] = (content) => {
-                return this.operations.func([name, ...content]);
-            };
-
-            return `const ${newName} = ${value}`;
+            return constStatements.join("\n");
         },
 
         // Probably something with scope, similar to 46
@@ -501,6 +522,10 @@ class RuntimeFactory {
     };
 
     parseInstructionContent = (content: RuntimeInstructionContent, index?: number): string => {
+        if (typeof content === "undefined") {
+            return "";
+        }
+
         if (typeof content === "string") {
             return `"${content}"`;
         }

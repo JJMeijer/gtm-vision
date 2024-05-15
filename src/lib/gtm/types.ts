@@ -112,6 +112,7 @@ export interface Predicate {
 export type Rule = Array<["if" | "unless" | "add" | "block", ...Array<number>]>;
 
 interface Resource {
+    version: string;
     macros: Macro[];
     predicates: Predicate[];
     rules: Rule[];
@@ -137,6 +138,7 @@ export interface RuntimeOperations {
 }
 
 export interface Container {
+    version: string;
     resource: Resource;
     runtime: Runtime[];
     permissions: PermissionsList;

@@ -1,4 +1,6 @@
 <script>
+    import { navigating } from "$app/stores";
+    import { LoadingSpinner } from "$components";
     import "../app.css";
 </script>
 
@@ -11,4 +13,7 @@
 
 <div class="h-full w-full bg-zinc-200 text-zinc-900">
     <slot />
+    {#if $navigating}
+        <LoadingSpinner />
+    {/if}
 </div>

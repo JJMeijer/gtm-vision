@@ -8,7 +8,7 @@ import { parseRuntimes } from "./runtimes";
 
 export const parse = (container: Container) => {
     const {
-        resource: { macros, tags, predicates, rules },
+        resource: { version, macros, tags, predicates, rules },
         runtime,
     } = container;
 
@@ -29,5 +29,6 @@ export const parse = (container: Container) => {
         ...containerFilter(resolvedContainer),
         parsedRuntimes,
         runtime,
+        version,
     };
 };

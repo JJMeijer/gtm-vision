@@ -8,6 +8,7 @@
     import MapProperty from "./MapProperty.svelte";
     import ListOfBoundariesProperty from "./ListOfBoundariesProperty.svelte";
 
+    export let componentName: string;
     export let properties: ResolvedProperties;
 
     $: propertiesEntries = Object.entries(properties);
@@ -50,7 +51,7 @@
 
 <div class="flex flex-col">
     {#each codeProperties as [key, value]}
-        <CodeProperty code={value} language={key} />
+        <CodeProperty code={value} language={key} {componentName} />
     {/each}
 
     {#each stringProperties as [name, value]}
