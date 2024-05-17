@@ -13,6 +13,7 @@
     import { getComponentLink } from "$lib/utility";
     import { LoadingSpinner } from "$components";
     import { addUnminified, unminifiedStore } from "$lib/stores";
+    import { browser } from "$app/environment";
 
     export let code: string;
     export let language: "html" | "javascript";
@@ -57,6 +58,7 @@
         doc: code,
         extensions: [
             lineNumbers(),
+            // foldGutter({ openText: "⮟", closedText: "⮞" }),
             drawSelection(),
             syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
             languageSetting.of(language === "html" ? html() : javascript()),
@@ -99,6 +101,15 @@
     }
 
     $: code && (unminified = false);
+
+    $: code &&
+        browser &&
+        (() => {
+            const firstLine = document.querySelector(".cm-line");
+            if (firstLine) {
+                firstLine.scrollIntoView();
+            }
+        })();
 
     // extract variable references from the code
     $: variableReferences = Array.from(code.matchAll(/\{\{(.+?)\}\}/g)).map((match) => match[1]);
