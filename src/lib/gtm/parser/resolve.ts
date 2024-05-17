@@ -15,14 +15,22 @@ import { decodeGtmScript } from "./utility";
 const { js, html } = jsbeautify;
 
 interface ResolveReference {
-    (source: ParsedTag | ParsedMacro, targetIndex: number, targets: ParsedMacro[] | ParsedTag[]): string;
+    (
+        source: ParsedTag | ParsedMacro,
+        targetIndex: number,
+        targets: ParsedMacro[] | ParsedTag[],
+        triggerTagLookup: Record<string, string>,
+    ): string;
 }
 
-const resolveReference: ResolveReference = (source, targetIndex, targets) => {
+const resolveReference: ResolveReference = (source, targetIndex, targets, triggerTagLookup) => {
     const target = targets[targetIndex] as ParsedMacro | ParsedTag;
 
-    if (target.references[source.category].indexOf(source.name) === -1) {
-        target.references[source.category].push(source.name);
+    const sourceName = triggerTagLookup[source.name] || source.name;
+    const sourceCategory = triggerTagLookup[source.name] ? "triggers" : source.category;
+
+    if (target.references[sourceCategory].indexOf(sourceName) === -1) {
+        target.references[sourceCategory].push(sourceName);
     }
 
     return `{{${target.name}}}`;
@@ -54,7 +62,11 @@ const resolveEscape = (escape: ResolvedEscape): string => {
     return type > 7 ? `"${reference}"` : reference;
 };
 
-export const resolver = (parsedContainer: ParsedContainer): ResolvedContainer => {
+interface Resolver {
+    (parsedContainer: ParsedContainer, triggerTagLookup: Record<string, string>): ResolvedContainer;
+}
+
+export const resolver: Resolver = (parsedContainer, triggerTagLookup) => {
     let sourceItem: ParsedTag | ParsedMacro;
 
     const { tags, variables } = parsedContainer;
@@ -65,7 +77,12 @@ export const resolver = (parsedContainer: ParsedContainer): ResolvedContainer =>
 
         Object.getOwnPropertyNames(obj).forEach((key) => {
             if (isReference(obj[key])) {
-                obj[key] = resolveReference(sourceItem, obj[key][1], obj[key][0] === "macro" ? variables : tags);
+                obj[key] = resolveReference(
+                    sourceItem,
+                    obj[key][1],
+                    obj[key][0] === "macro" ? variables : tags,
+                    triggerTagLookup,
+                );
                 return;
             }
 

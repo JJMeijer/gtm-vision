@@ -15,7 +15,12 @@ export const parse = (container: Container) => {
     const parsedRuntimes = parseRuntimes(runtime);
     const { parsedMacros, triggerContextMacros } = parseMacros(macros, parsedRuntimes);
     const { parsedTags, triggerContextTags } = parseTags(tags, parsedRuntimes);
-    const parsedTriggers = parseTriggers(predicates, rules, triggerContextMacros, triggerContextTags);
+    const { parsedTriggers, triggerTagLookup } = parseTriggers(
+        predicates,
+        rules,
+        triggerContextMacros,
+        triggerContextTags,
+    );
 
     const parsedContainer: ParsedContainer = {
         variables: parsedMacros,
@@ -23,7 +28,7 @@ export const parse = (container: Container) => {
         triggers: parsedTriggers,
     };
 
-    const resolvedContainer: ResolvedContainer = resolver(parsedContainer);
+    const resolvedContainer: ResolvedContainer = resolver(parsedContainer, triggerTagLookup);
 
     return {
         ...containerFilter(resolvedContainer),

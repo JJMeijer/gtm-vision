@@ -57,7 +57,7 @@ interface GetProperties {
         conditions: Condition[],
         triggerMacro: number | undefined,
         contextTags: TriggerContextTags,
-    ): ParsedProperties | undefined;
+    ): { properties?: ParsedProperties; triggerTagName?: string };
 }
 
 /**
@@ -75,12 +75,15 @@ const getProperties: GetProperties = (conditions, triggerMacro, contextTags) => 
             const uniqueTriggerIdMatch = triggerIdCondition.value.match(/\)(.+)\(/);
             if (uniqueTriggerIdMatch && uniqueTriggerIdMatch[1]) {
                 const uniqueTriggerId = uniqueTriggerIdMatch[1];
-                return (contextTags.customTriggerTags[uniqueTriggerId] as ParsedTag).properties;
+                return {
+                    properties: (contextTags.customTriggerTags[uniqueTriggerId] as ParsedTag).properties,
+                    triggerTagName: (contextTags.customTriggerTags[uniqueTriggerId] as ParsedTag).name,
+                };
             }
         }
     }
 
-    return undefined;
+    return {};
 };
 
 interface ParseTriggerGroups {
@@ -127,11 +130,12 @@ interface ParseTriggers {
         rules: Rule[],
         contextMacros: TriggerContextMacros,
         contextTags: TriggerContextTags,
-    ): ParsedTrigger[];
+    ): { parsedTriggers: ParsedTrigger[]; triggerTagLookup: Record<string, string> };
 }
 
-export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, contextTags): ParsedTrigger[] => {
+export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, contextTags) => {
     const counters: Counter = {};
+    const triggerTagLookup: Record<string, string> = {};
 
     const parsedTriggers: ParsedTrigger[] = rules.map((rule, index) => {
         const conditions: Condition[] = [];
@@ -183,7 +187,11 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
         });
 
         const triggerName = getTriggerName(conditions, eventMacros, counters);
-        const properties = getProperties(conditions, triggerMacro, contextTags);
+        const { properties, triggerTagName } = getProperties(conditions, triggerMacro, contextTags);
+
+        if (triggerTagName) {
+            triggerTagLookup[triggerTagName] = triggerName.name;
+        }
 
         size += new TextEncoder().encode(JSON.stringify(properties)).length;
 
@@ -201,5 +209,5 @@ export const parseTriggers: ParseTriggers = (predicates, rules, contextMacros, c
 
     parseTriggerGroups(parsedTriggers, contextTags);
 
-    return parsedTriggers;
+    return { parsedTriggers, triggerTagLookup };
 };
