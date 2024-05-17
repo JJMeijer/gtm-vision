@@ -43,7 +43,8 @@
             stringProperties.length +
             booleanProperties.length +
             mapProperties.length +
-            listOfMapsProperties.length
+            listOfMapsProperties.length +
+            listOfBoundaryProperties.length
     ) {
         console.warn("Some properties were not rendered:", propertiesEntries);
     }

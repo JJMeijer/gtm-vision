@@ -325,6 +325,16 @@ class RuntimeFactory {
             return ``;
         },
 
+        // While loop
+        42: (content) => {
+            const [conditionInstruction, _unknown1, _unknown2, codeBlockInstruction] = content;
+
+            const conditionInstructionString = this.parseInstructionContent(conditionInstruction);
+            const codeBlockInstructionString = this.parseInstructionContent(codeBlockInstruction);
+
+            return `while (${conditionInstructionString}) {\n${codeBlockInstructionString}\n}\n`;
+        },
+
         // Object property assignment
         43: (content) => {
             const [variable, property, value] = content;

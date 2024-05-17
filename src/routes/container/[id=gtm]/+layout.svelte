@@ -8,6 +8,7 @@
 
     $: ({ id, resolvedContainer } = data);
 
+    // $: console.log(resolvedContainer);
     $: resolvedContainer && unMinifiedStoreVersionCheck(id, resolvedContainer.version);
     $: setContext(id, resolvedContainer);
 </script>

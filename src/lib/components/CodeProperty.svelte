@@ -188,7 +188,7 @@
     {#if variableReferences.length > 0}
         <div class="flex flex-row items-center flex-wrap gap-2 pt-1">
             <span class="text-sm text-zinc-500">Variables:</span>
-            {#each variableReferences as variableReference}
+            {#each new Set(variableReferences) as variableReference}
                 <a
                     href={getComponentLink(variableReference, resolvedContainer)}
                     class="text-sm text-zinc-600 p-1 bg-zinc-200/50 hover:bg-zinc-200 rounded-md"

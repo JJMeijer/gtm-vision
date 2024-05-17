@@ -11,7 +11,7 @@
 
 <Dropdown {name} border={true}>
     <div class="flex flex-col px-6 gap-0.5 pb-2">
-        {#each rest as [operator, variable, value]}
+        {#each rest as [_, operator, variable, value]}
             <Condition {...{ operator, variable, value }} />
         {/each}
     </div>
