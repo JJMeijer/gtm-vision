@@ -29,6 +29,10 @@
                 return search(value, query);
             }
 
+            if (Array.isArray(value)) {
+                return value.some((item) => search(item, query));
+            }
+
             if (typeof value === "string") {
                 return value.toLowerCase().includes(query.toLowerCase());
             }
