@@ -364,6 +364,18 @@ class RuntimeFactory {
             return "";
         },
 
+        // for (var key in obj) {}
+        47: (content) => {
+            const [variable, iterable, bodyInstruction] = content;
+
+            const iterableString = this.parseInstructionContent(iterable);
+            const bodyInstructionString = this.parseInstructionContent(bodyInstruction);
+
+            this.variables[variable as string] = `${variable}`;
+
+            return `for (let ${variable} in ${iterableString}) {\n${bodyInstructionString}\n}\n`;
+        },
+
         // Define Function declaration
         50: (content) => {
             const [name, argsInstruction, ...bodyInstructions] = content;
