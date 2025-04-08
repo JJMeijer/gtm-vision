@@ -8,7 +8,6 @@ export const load = (async ({ fetch, params }) => {
 
     const containerText = await getGtmContainer(fetch, id);
 
-
     if (!containerText) {
         throw redirect(307, `/?gtmIdError=${GtmIdError.NotFound}&gtmId=${id}`);
     }
