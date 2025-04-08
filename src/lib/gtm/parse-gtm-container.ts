@@ -6,6 +6,9 @@ export const parseGtmContainer = (containerText: string) => {
         const container = JSON.parse(containerText) as Container;
         const parsedContainer = parse(container);
 
+        // console.log("Raw Container:", container);
+        // console.log("Parsed Container:", parsedContainer);
+
         return parsedContainer;
     } catch (err) {
         console.error(err);

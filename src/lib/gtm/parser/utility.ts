@@ -5,6 +5,11 @@ export const parseTemplateId = (templateString: string): string | void => {
     if (match && match[1]) {
         return `Template-${match[1]}`;
     }
+
+    const match2 = templateString.match("__cvt_([A-Z0-9]+)$");
+    if (match2 && match2[1]) {
+        return `Template-${match2[1]}`;
+    }
 };
 
 export const sentenceCase = (str: string): string => {
