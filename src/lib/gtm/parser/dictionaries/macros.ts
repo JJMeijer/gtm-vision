@@ -21,5 +21,6 @@ export const MACROS = {
     __hid: "HTML ID",
     __ctv: "Container Version",
     __r: "Random Number",
+    __awec: "User-Provided Data",
     unknown: "Unknown",
 } as const;
