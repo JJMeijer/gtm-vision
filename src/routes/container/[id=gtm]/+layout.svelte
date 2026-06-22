@@ -6,9 +6,9 @@
 
     export let data: LayoutServerData;
 
-    $: ({ id, resolvedContainer } = data);
+    $: ({ id, resolvedContainer, debug } = data);
 
-    // $: console.log(resolvedContainer);
+    $: debug && console.log(resolvedContainer);
     $: resolvedContainer && unMinifiedStoreVersionCheck(id, resolvedContainer.version);
     $: setContext(id, resolvedContainer);
 </script>

@@ -3,8 +3,9 @@ import { redirect } from "@sveltejs/kit";
 import type { LayoutLoad } from "./$types";
 import { GtmIdError } from "$constants";
 
-export const load = (async ({ fetch, params }) => {
+export const load = (async ({ fetch, params, url }) => {
     const { id } = params;
+    const debug = url.searchParams.get("debug") !== null;
 
     const containerText = await getGtmContainer(fetch, id);
 
@@ -21,6 +22,7 @@ export const load = (async ({ fetch, params }) => {
     return {
         id,
         resolvedContainer,
+        debug,
     };
 }) satisfies LayoutLoad;
 

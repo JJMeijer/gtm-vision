@@ -19,7 +19,7 @@ export const unminifyCompletion = async (code: string) => {
         },
     ];
 
-    const model = "gpt-4o";
+    const model = "gpt-5.4-nano";
 
     const res = await openai.chat.completions.create({
         messages,
